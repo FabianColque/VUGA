@@ -1,0 +1,9 @@
+li a{
+    cursor: pointer;
+    margin-right: 11px;
+}
+
+/*Button close in tab - configuration new data*/
+#tab-list .close {
+	margin-left: 7px;
+}

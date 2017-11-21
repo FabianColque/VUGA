@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF8">
+  <title>{{ current_group }}</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' /> 
+  <!--
+  Here we are adding the styles that the app needs
+  -->
+  <link rel="stylesheet" type="text/css" href="../static/js/global/keen/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../static/js/global/keen/keen-dashboards.css" />
+  <link rel="stylesheet" type="text/css" href="../static/css/global/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/global/dc.min.css">
+
+  <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/vexus2.css">
+
+  <!--
+  Here we are adding the libraries that the app needs
+  -->
+  <script src="../static/js/global/d3.js"></script>
+  <script src="../static/js/global/crossfilter.min.js"></script>
+  <script src="../static/js/global/dc.min.js"></script>
+  <script src="../static/js/global/lasso.min.js"></script>
+  <script src="../static/js/global/jquery.min.js"></script>
+  <script src="../static/js/global/jquery.dataTables.min.js"></script>
+  <script src="../static/js/global/bootstrap.min.js"></script>
+  <script src="../static/js/global/keen/holder.js"></script>
+  <script src="../static/js/global/keen/keen.min.js"></script>
+  <script src="../static/js/global/keen/meta.js"></script>
+  <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+  <script src="../static/js/global/jquery.csv-0.71.min.js"></script>
+
+
+  <script>
+    Holder.add_theme("white", { background: "#fff", foreground: "#a7a7a7", size: 10})
+  </script>
+
+  
+
+</head>
+<body class="application">
+  
+  <!--Start of Navigation bar-->
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        
+        <a class="navbar-brand" href="">VEXUS 2</a>
+      </div>
+
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-left">
+          <li><a id="namedb-vexus2"  target="_blank">{{current_group}}</a></li>
+          
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right" style="color:#FFF">
+          <li>
+            <input type="text" id="search-input" class="form-control" placeholder="Filter by ...">
+          </li>
+          <li>
+            <div id="data-count"><span class="filter-count" id="num_filtrado"></span> out of </br><strong id="idSelectionTotalStrong"></strong>Users</div>
+          </li>
+          <li>
+            <div class="col-md-1" id="resetall_container">
+                <button class="btn resetall">RESET<br />FILTERS</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--End of Navigation bar -->
+
+  <!--Start of main div Body-->
+  <div class="container-fluid" id="main_body">
+
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="chart-wrapper" id="projection_area">
+          <div class="chart-title">
+           <div class="row">
+              <div class="col-sm-4">
+                <p id="name-VIZ">dbname VIZ </p>  
+              </div>  
+              <div class="col-sm-4">
+                Dimension
+                <select class="select_proj"></select>  
+              </div>
+              <div class="col-sm-4">
+                Colors
+                <select class="select_color"></select>  
+              </div>
+           </div>
+          </div>
+          <div class="chart-stage" id="tooltip_object1">
+              <!--<img data-src="holder.jsk/100%x450/white">-->
+            <div class="row" >            
+            <div id="areaMainsvg_projection"></div>
+            <div class="botones3" style="text-align: center;position:absolute; top:30%;">
+                
+                <div class="switch__container">
+                  Lasso off/on
+                  <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
+                  <label for="switch-shadow"></label>
+                </div>
+
+                <input type="button" class="btn btn-default btn-xs" value="Lasso Reset" id="btn_lassoreset" style="display:none; margin-bottom: 2px" />
+                <input type="button" class="btn btn-default btn-xs" value="Select All" id="btn_selectall" style="display:none; margin-bottom: 2px" />
+                <input type="button" class="btn btn-default btn-xs" value="Reset All" id="btn_resetall" style="display:block; margin-bottom: 2px" />
+                <br>
+                <br>
+                <input type="button" class="btn btn-success" value="Explore" id="explore-viz" style="display:block; margin-bottom: 2px" />
+                <input type="button" class="btn btn-info" value="Save All" id="Save_All_obj1"  style="display:block; margin-bottom: 2px"/>
+                <input type="button" class="btn btn-warning" value="Save" id="Save_obj1"  style="display:block; margin-bottom: 2px"/>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                <div class="row">
+                  <div class="col-sm-4">
+                    Save Area
+                  </div>
+                  <div class="col-sm-2">
+                    <span class="glyphicon glyphicon glyphicon-stats" id="btn_back_Projection" aria-hidden="Left Align" style="float:right"></span>
+                  </div>
+                  <div class="col-sm-2">
+                    <span class="glyphicon glyphicon glyphicon-trash" id="btn_clearAll" aria-hidden="Left Align" style="float:right"></span>
+                  </div>
+                  <div class="col-sm-2">
+                    <span class="glyphicon glyphicon-floppy-open" aria-hidden="Left Align" style="float:right" data-toggle="modal" data-target="#icon_LoadFolderNewGroups"></span>                    
+                  </div>
+                  <div class="col-sm-2">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="Left Align" style="float:right" data-toggle="modal" data-target="#icon_SaveFolderNewGroups"></span>
+                    <!--<span class="glyphicon glyphicon-floppy-save" id="btn_saveJSON" aria-hidden="Left Align" style="float:right"></span>-->
+                  </div>
+                </div>
+              </div>
+              <div class="chart-stage" style="height: 426px; overflow-y: scroll">
+                  <!--<img data-src="holder.jsk/100%x450/white">-->
+                  <div id="idsaveareaUser" style="-webkit-inline-box"></div>
+              </div>
+              <div class="chart-notes">
+                <!--<input type="text" name="Title" id="title-save" value="Title" style="width:100%"><br>-->
+                <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" style="display:block">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div class="col-sm-5">
+          <div class="chart-wrapper" id="groups_id">
+              <div class="chart-title"> Group VIZ </div>
+              <div class="chart-stage" style="height: 475px;">
+                  <!--<img data-src="holder.jsk/100%x450/white">-->
+                  <div id="areaMainsvgGroup"></div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3"><!--part down 1-->
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="chart-wrapper">
+                <div class="chart-title"> Movies </div>
+                <div class="chart-stage">
+                    <!--<img data-src="holder.jsk/100%x173/white">-->
+                  <div id="dataTable_obj2" class="newchart" style="overflow-x: scroll">
+                    <!--Table Object 2-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="col-sm-5"><!--part down 2-->
+          <div class="row">
+              <div class="col-sm-12">
+                <div class="chart-wrapper">
+                  <div class="chart-stage">
+                    
+                    <div id="chart5" class="newchart" style="display:none">
+                      <div class="title"></div>
+                    </div>
+                    <div id="chart5g" class="newchart" style="display:none">
+                      <div class="title"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="chart-wrapper">
+                <div class="chart-title"> Users Table </div>
+                <div class="chart-stage">
+                    <!--<img data-src="holder.jsk/100%x550/white">-->
+                    <div class="row" id="dataTable_obj1">
+                        <!--Here is the table Obj1-->
+                    </div> 
+                </div>
+              </div>
+            </div>  
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="chart-wrapper">
+                <div class="chart-title"> Matriz Rating</div>
+                <div class="chart-stage">
+                  <div id="legend-heatmap"></div>
+                  <div id="heatmap" class="newchart">
+                    <div class="title"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="col-sm-4" id="div_graphs_obj1"><!--inicio de la part down 3-->
+        
+      </div><!--aqui termina la part down 3-->
+    </div>
+    
+
+  </div>
+  <!--End of main div Body-->
+
+  <script src="../static/js/start_VIZ.js"></script>
+  <script src="../static/js/projection_viz.js"></script>
+  <script src="../static/js/the_events.js"></script>
+  <script src="../static/js/draw_charts_obj1.js"></script>
+
+  <!--Start script to change configuration and VIZ-->
+  <script>
+    start()   
+  </script>
+  <!--End script to change configuration and VIZ-->
+
+
+  <!--
+  My javascript files
+  -->
+  
+
+</body>
+</html>

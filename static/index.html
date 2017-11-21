@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF8">
+  <title>Vexus 2.0</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' /> 
+  <!--
+  Here we are adding the styles that the app needs
+  -->
+  <link rel="stylesheet" type="text/css" href="js/global/keen/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="js/global/keen/keen-dashboards.css" />
+  <link rel="stylesheet" type="text/css" href="css/global/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="css/global/dc.min.css">
+
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+
+  <!--
+  Here we are adding the libraries that the app needs
+  -->
+  <script src="js/global/d3.js"></script>
+  <script src="js/global/jquery.min.js"></script>
+  <script src="js/global/jquery.dataTables.min.js"></script>
+  <script src="js/global/bootstrap.min.js"></script>
+  <script src="js/global/keen/holder.js"></script>
+  <script src="js/global/keen/keen.min.js"></script>
+  <script src="js/global/keen/meta.js"></script>
+  <script src="js/global/jquery.csv-0.71.min.js"></script>
+
+
+  <script>
+    //Holder.add_theme("sky", { background: "#fff", foreground: "#a7a7a7", size: 10})
+    //Holder.add_theme("bright", { background: "white", foreground: "gray", size: 12}).run()
+  </script>
+
+  
+
+</head>
+<body class="application">
+  
+  <!--Start of Navigation bar-->
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        
+        <a class="navbar-brand" href="">VEXUS 2</a>
+      </div>
+
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-left">
+          <li><a id="btn-configuration-newData"  target="_blank">Configuration</a></li>
+               
+          <!--<li><a onclick="btnLoadData_New_Authors()">Load Data</a></li>-->
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right" style="color:#FFF; visibility: hidden">
+          <li>
+            <input type="text" id="search-input" class="form-control" placeholder="Filter by ...">
+          </li>
+          <li>
+            <div id="data-count"><span class="filter-count" id="num_filtrado"></span> out of </br><strong id="idSelectionTotalStrong"></strong>Users</div>
+          </li>
+          <li>
+            <div class="col-md-1" id="resetall_container">
+                <button class="btn resetall">RESET<br />FILTERS</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--End of Navigation bar -->
+
+  <!--Start of main div Body-->
+  <div class="container-fluid" id="main_body">
+    
+    
+
+    <!--Start Configuration Div-->
+    <div class="row configuration-div">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title"> Configuration new Dataset</div>
+          <div class="chart-stage">
+            
+            <h3>Load Existing Dataset</h3>
+
+            <select class="form-control" id="tagselect_Existing_dataset"></select>
+            <br>
+            <button type="button" id="btn_load_existing_file" class="btn btn-success" style="width: 100%">Load</button>
+            
+            <h3>Add new data set</h3>
+            <div class="form-group">
+              <label class="control-label" for="name">
+                Title
+              </label>
+              <input class="form-control" id="nameDB" name="nameDB" type="text"  value="Movielens" />
+            </div>
+
+            <fieldset>
+              <div class="form-inline">
+                <div class="form-group">
+                  <legend>Upload Object1 File .csv</legend>
+                  <input type="file" id="fileUploadObj1" accept=".csv" style="display: inline-block" />
+                  <input type="button" id="btn_details_obj1" value="Details" />
+                </div>
+              </div>
+            </fieldset>
+
+            <br>
+            <br>
+
+            <fieldset>
+              <div class="form-inline">
+                <div class="form-group">
+                  <legend>Upload Object2 File .csv</legend>
+                  <input type="file" id="fileUploadObj2" accept=".csv" style="display: inline-block" />
+                  <input type="button" id="btn_details_obj2" value="Details" />
+                </div>
+              </div>
+            </fieldset>
+
+            <br>
+            <br>  
+
+            <fieldset>
+              <div class="form-inline">
+                <div class="form-group">
+                  <legend>Upload Ratings File .csv</legend>
+                  <input type="file" id="fileUploadRatings" accept=".csv" style="display: inline-block" />
+                  <input type="button" id="btn_details_ratings" value="Details" />
+                </div>
+              </div>
+            </fieldset>
+
+            <br>
+            <br>
+            
+            <fieldset>
+              <div class="form-inline">
+                <div class="form-group">
+                  <legend>Upload Dimensions File .csv</legend>
+                  <input type="file" id="fileUploadDims" accept=".csv" style="display: inline-block" />
+                  <input type="button" id="btn_details_dims" value="Details" />
+                </div>
+              </div>
+            </fieldset>
+
+          </div>
+          <div class="chart-notes"></div>
+        </div>
+      </div><!--aqui termina la primera mitad-->
+      <div class="col-sm-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">Details Configuration</div>
+          <div class="chart-stage">
+            <div class="details-confs" id="detail-obj1" style="display:none">
+              
+              <ul id="tab-list-obj1" class="nav nav-tabs" role="tablist"></ul>
+              <div id="tab-content-obj1" class="tab-content"></div>
+
+            </div>
+            <div class="details-confs" id="detail-obj2" style="display:none">
+              
+              <ul id="tab-list-obj2" class="nav nav-tabs" role="tablist"></ul>
+              <div id="tab-content-obj2" class="tab-content"></div>
+
+            </div>
+            <div class="details-confs" id="detail-rating" style="display:none">
+              
+              <ul id="tab-list-rating" class="nav nav-tabs" role="tablist"></ul>
+              <div id="tab-content-rating" class="tab-content"></div>
+
+            </div>
+            <div class="details-confs" id="detail-dims" style="display:none">
+              
+              <ul id="tab-list-dims" class="nav nav-tabs" role="tablist"></ul>
+              <div id="tab-content-dims" class="tab-content"></div>
+
+            </div>
+          </div>
+          <div class="chart-notes"></div>
+        </div>
+      </div>
+    </div>
+    <!--End Configuration Div-->
+    <div class="row">
+      <button type="button" class="btn btn-success" style="width: 100%">Generate</button>
+    </div>
+    </div>
+
+    <!--Start VIZ Div-->
+    <div class="viz-div" >
+      Visualization dsgsdfgd
+    </div>
+    <!--End VIZ Div-->
+
+  </div>
+  <!--End of main div Body-->
+
+
+  <!--Start script to change configuration and VIZ-->
+  <script>
+    $(".viz-div").css("display", "none");
+    $("#btn-configuration-newData").click(function(){
+      $(".configuration-div").css("display", "block");
+      $(".viz-div").css("display", "none");
+    })
+
+    $("#btn-visualization-data").click(function(){
+      $(".viz-div").css("display", "block");
+      $(".configuration-div").css("display", "none")
+    })
+
+    //Buttons for details 
+    $("#btn_details_obj1").click(function(){
+      $(".details-confs").css("display", "none")
+      $("#detail-obj1").css("display", 'block')
+    })
+
+    $("#btn_details_obj2").click(function(){
+      $(".details-confs").css("display", "none")
+      $("#detail-obj2").css("display", 'block')
+    })
+
+    $("#btn_details_ratings").click(function(){
+      $(".details-confs").css("display", "none")
+      $("#detail-rating").css("display", 'block')
+    })
+
+    $("#btn_details_dims").click(function(){
+      $(".details-confs").css("display", "none")
+      $("#detail-dims").css("display", 'block')
+    })
+  </script>
+  <!--End script to change configuration and VIZ-->
+
+
+  <!--
+  My javascript files
+  -->
+  <script src="js/configuration-newDataSet.js"></script>
+
+</body>
+</html>
