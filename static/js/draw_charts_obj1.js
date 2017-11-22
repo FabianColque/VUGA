@@ -584,6 +584,25 @@ function drawing_histo_obj1(){
 
     });
 
+    $("#id_tabla_obj1 tbody").off("click", "tr").on("click", "tr", function(d){
+      //$(this).toggleClass("selected");
+      if($(d.target).is('input')) { return; }
+      if($(this).hasClass("selected")){
+        $(this).removeClass("selected");
+      }else{
+        $(this).addClass("selected")
+      }
+      //fabian = [d,this]
+      var subddd = [dataTable_obj1.DataTable().row(this).data().idx];
+      console.log("chance me", subddd)
+      
+      var isselected = $(this).hasClass("selected");
+      if(isselected)
+        mychartNew.modify_size_circles(subddd, true)
+      else
+        mychartNew.modify_size_circles(subddd, false)
+    })
+
     function draw_TableHtml(headers){
       d3.select("#dataTable_obj1")
         .append("table")

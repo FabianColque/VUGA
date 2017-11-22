@@ -99,7 +99,12 @@ class get_data_projection(tornado.web.RequestHandler):
     dbname = mydata.get("dbname")
     path = "static/data/" + dbname + "/projection.json";
     path = str(path)
+    
+    time0 = time()
     res = load_json(path)
+    time1 = time()
+    print_message("get_data_projection", time1 - time0)
+
     self.write(json.dumps(res))
 
 class getData_Viz(tornado.web.RequestHandler):
@@ -107,11 +112,16 @@ class getData_Viz(tornado.web.RequestHandler):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
     path = getpath_db(dbname) + "dataViz.json"
+    
+    time0 = time()
     data_viz = load_json(path)
     res = {"dimensions": data_viz["dimensions"], "instances": []}
     data_selected = mydata.get("data_selected")
     for ds in data_selected:
       res["instances"].append(data_viz["instances"][ds])
+    time1 = time()
+    print_message("getData_Viz", time1 - time0)    
+
     self.write(json.dumps(res))
 
 class getDataObj2_table(tornado.web.RequestHandler):
@@ -120,14 +130,18 @@ class getDataObj2_table(tornado.web.RequestHandler):
     dbname = mydata.get("dbname")
     data_selected = mydata.get("data_selected")#this data is a array of Objects_1 IDs
     
-    print "miercoles"
-    print data_selected
-    print "miercoles"
-
     path = "static/data/" + dbname + "/"
+    time0 = time()
     data_ratings = load_json(path + "ratings.json")
-    data_obj2 = load_json(path + "object_2.json")
+    time1 = time()
+    print_message("load ratings.json", time1 - time0)
 
+    time0 = time()
+    data_obj2 = load_json(path + "object_2.json")
+    time1 = time()
+    print_message("load object_2.json", time1 - time0)
+
+    time0 = time()
     headers = [data_obj2["headers"][0], data_obj2["headers"][1], "Rating"]
     for x in xrange(2, len(data_obj2["headers"])):
       headers.append(data_obj2["headers"][x])
@@ -148,6 +162,8 @@ class getDataObj2_table(tornado.web.RequestHandler):
 
     for oo in obj2["body"]:
       obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/obj2["body"][oo]["len"])
+    time1 = time()
+    print_message("getDataObj2_table", time1 - time0)
 
     self.write(json.dumps(obj2)) 
 
@@ -157,16 +173,72 @@ class get_heatmap(tornado.web.RequestHandler):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
     data_selected = mydata.get("data_selected")
+
+    time0 = time()
     data_dim = load_json(getpath_db(dbname) + "heatmap.json")
     res = {"headers": data_dim["headers"], "body": []}
     for uu in data_selected:
       res["body"].append(data_dim["body"][uu])
+    time1 = time()
+    print_message("get heatmap", time1 - time0)
 
     self.write(json.dumps(res))
+
+
+class getDimension_legend(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    dim_num = mydata.get("dimension_num")
+    select = mydata.get("select")
+
+    colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
+
+    time0 = time()
+
+    data = load_json(getpath_db(dbname) + "heatmap.json")
+    details = load_json(getpath_db(dbname) + "details.json")
+    res = {"selector": "#areaMainsvg_projection", "title": data["headers"][dim_num], "hasChecks": 1, "body": []}
+    if len(details["Dimensions_charts"]) > dim_num:
+      res["mode"] = "static"
+      res["names"] = details["Dimensions_charts"][dim_num]["titles"]
+      res["colors"] = colors[0:len(details["Dimensions_charts"][dim_num]["titles"])]
+    else:
+      res["mode"] = "dynamic"
+      res["names"] = ["0", "1"]
+      res["colors"] = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']
+
+    if select == "all":
+      for dd in data["body"]:
+        res["body"].append(dd[dim_num])  
+    else:
+      for ss in select:
+        res["body"].append(data["body"][ss][dim_num])
+
+    time1 = time()
+    print_message("getDimension_legend", time1 - time0)
+
+    self.write(json.dumps(res))
+    
+class get_Details_options(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    data_details = load_json(getpath_db(dbname) + "details.json")
+    res = data_details["Dimensions_total"]
+    self.write(json.dumps(res))
+
+      
 
 ####  END  #### MY CLASSES ###################
 
 ### functions for support START ###############
+
+def print_message(label, mess):
+  print "***************************"
+  print "Time de %s : %s" % (label, mess)
+  print "**************************"
+
 
 def myformat_dec(x):
   hh = ('%.2f' % x).rstrip('0').rstrip('.')
@@ -214,6 +286,8 @@ application = tornado.web.Application([
   (r"/getData_Viz", getData_Viz),
   (r"/getDataObj2_table", getDataObj2_table),
   (r"/get_heatmap", get_heatmap),
+  (r"/getDimension_legend", getDimension_legend),
+  (r"/get_Details_options", get_Details_options),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
   ], **settings)
 

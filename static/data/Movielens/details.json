@@ -1,0 +1,58 @@
+{
+    "Dimensions_total": [
+        {"name"          :"Gender"},
+        {"name"          :"Age"},
+        {"name"          :"Ocupation"},
+        {"name"          :"#totalReviews"},
+        {"name"          :"#RevAction"},
+        {"name"          :"avgRatAction"}, 
+        {"name"          :"#RevAdventure"}, 
+        {"name"          :"avgRatAdventure"}, 
+        {"name"          :"#RevAnimation"}, 
+        {"name"          :"avgRatAnimation"}, 
+        {"name"          :"#RevChildren's"}, 
+        {"name"          :"avgRatChildren's"}, 
+        {"name"          :"#RevComedy"}, 
+        {"name"          :"avgRatComedy"}, 
+        {"name"          :"#RevCrime"}, 
+        {"name"          :"avgRatCrime"}, 
+        {"name"          :"#RevDocumentary"}, 
+        {"name"          :"avgRatDocumentary"}, 
+        {"name"          :"#RevDrama"}, 
+        {"name"          :"avgRatDrama"}, 
+        {"name"          :"#RevFantasy"}, 
+        {"name"          :"avgRatFantasy"}, 
+        {"name"          :"#RevFilm-Noir"}, 
+        {"name"          :"avgRatFilm-Noir"}, 
+        {"name"          :"#RevHorror"}, 
+        {"name"          :"avgRatHorror"}, 
+        {"name"          :"#RevMusical"}, 
+        {"name"          :"avgRatMusical"}, 
+        {"name"          :"#RevMystery"}, 
+        {"name"          :"avgRatMystery"}, 
+        {"name"          :"#RevRomance"}, 
+        {"name"          :"avgRatRomance"}, 
+        {"name"          :"#RevSci-Fi"}, 
+        {"name"          :"avgRatSci-Fi"}, 
+        {"name"          :"#RevThriller"}, 
+        {"name"          :"avgRatThriller"}, 
+        {"name"          :"#RevWar"}, 
+        {"name"          :"avgRatWar"}, 
+        {"name"          :"#RevWestern"}, 
+        {"name"          :"avgRatWestern"}
+    ],
+    "Dimensions_charts": [
+        {   "type_chart"    : "Pie Chart", 
+            "titles"        : ["F", "M"], 
+            "name"          : "gender"
+        }, {
+            "type_chart"    : "Bar Chart", 
+            "titles"        : ["Under 18", "18-24", "25-34", "35-44", "45-49", "50-55", "56+"], 
+            "name"          : "Age"
+        }, {
+            "type_chart"    : "Bar Chart", 
+            "titles"        : ["other", "academic/educator", "artist", "clerical/admin", "college/grad_student", "customer_service", "doctor/health_care", "executive/managerial", "farmer", "homemaker", "K-12_student", "lawyer", "programmer", "retired", "sales/marketing", "scientist", "self-employed", "technician/enginner", "tradesman/craftsman", "unemployed", "writer"], 
+            "name"          : "Ocupation"
+        }
+    ]
+}

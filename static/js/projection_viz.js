@@ -72,6 +72,29 @@ var vis_projection = function(){
 
     active_buttons();
   }
+  /**Drawing only the points selected after the exploration in projection**/
+  this.draw_only_selected = function(){
+    this.setVisibilityAll(false);
+    var auz = getdataselected();
+    for (var i = 0; i < auz.length; i++) {
+      d3.select("#chart_visUserssvg_projection"+" #pointDots"+auz[i]).style("visibility", "visible");
+    };
+  }
+
+  this.setVisibilityAll = function(flag){
+      setVisibilityTodo(flag);
+  }
+
+  var setVisibilityTodo = function(flag){
+    if(flag)
+      d3.select("#chart_visUserssvg_projection")
+        .selectAll(".pointDots")
+        .style("visibility", "visible");
+    else
+      d3.select("#chart_visUserssvg_projection")
+        .selectAll(".pointDots")
+        .style("visibility", "hidden");
+  }
 
   /*****************GET DATA SELECTED*********************/
   this.getDataSelected =function(){
@@ -92,6 +115,33 @@ var vis_projection = function(){
     .selectAll(".pointDots")
     .data(data_proj)
     .enter()
+    .append("rect")
+    .attr("class", "pointDots")
+    .attr("id", function(d, i){return "pointDots"+d[2]})
+    .attr("width", function(d){return 2*scalecircle(1)})
+    .attr("height", function(d){return 2*scalecircle(1)})
+    .attr("rx", function(d){return scalecircle(1)})
+    .attr("ry", function(d){return scalecircle(1)})
+    //.attr("r", function(d){return scalecircle(1)})
+    .attr("transform", function(d) { return "translate(" + d[0] + "," + d[1] + ")"; })
+    .style("visibility", "visible")
+    .style("opacity", 1)
+    .style("fill", "#bdbdbd")
+    .append("svg:title")
+    .text(function(d){
+      return d[2];
+    });  
+  }
+
+/*
+  this.draw_points = function(){
+    d3.select("#chart_visUsers"+id)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .selectAll(".pointDots")
+    .data(data_proj)
+    .enter()
     .append("circle")
     .attr("class", "pointDots")
     .attr("id", function(d, i){return "pointDots"+d[2]})
@@ -104,13 +154,40 @@ var vis_projection = function(){
     .text(function(d){
       return d[2];
     });  
+  }*/
+
+  this.modify_size_circles = function(subdata, flag){//flag = true entonces el circulo crece
+    var root = d3.select(selector + " #chart_visUsers"+id);
+    /*root.selectAll(".pointDots")
+        .style("visibility", "visible")
+        .style("stroke-width", border_default_circle)
+        .attr("r", function(d){return scalecircle(zoom.scale())});
+        */
+
+
+    for (var i = 0; i < subdata.length; i++) {
+      var r = $("#chart_visUsers" +id + " #pointDots" + subdata[i]).css("r");
+      r = r.slice(0, r.length-2);
+
+      var tam  = 0; 
+      if(flag)
+          tam = r*3
+      else
+          tam = scalecircle(zoom.scale())        
+      root.select("#pointDots" + subdata[i])
+      .style("r", function(d){
+          return tam
+      });
+    };    
   }
 
   var zoommed = function() {
     var root = d3.select(selector + " #chart_visUsers"+id);  
     root.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     root.selectAll(".pointDots")
-    .style("r", function(d){return scalecircle(zoom.scale())})
+    .attr("width", function(d){return 2*scalecircle(zoom.scale())})
+    .attr("height", function(d){return 2*scalecircle(zoom.scale())})
+    //.style("r", function(d){return scalecircle(zoom.scale())})
     .style("stroke-width", function(d, i){
       if(this.style.strokeWidth !== border_default_circle && this.style.strokeWidth){
         return scalecircle(zoom.scale())/2+"px";

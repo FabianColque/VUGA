@@ -12,5 +12,7 @@ d3.select("#explore-viz")
 			}else{//otherwise
 				histograms_obj1.refresh_All_Data(datahisto.instances)
 			}
-		}		
+		}
+
+		viz_proj.draw_only_selected();		
 	});
