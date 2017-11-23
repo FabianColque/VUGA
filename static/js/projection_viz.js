@@ -117,7 +117,7 @@ var vis_projection = function(){
     .enter()
     .append("rect")
     .attr("class", "pointDots")
-    .attr("id", function(d, i){return "pointDots"+d[2]})
+    .attr("id", function(d, i){return "pointDots"+i})
     .attr("width", function(d){return 2*scalecircle(1)})
     .attr("height", function(d){return 2*scalecircle(1)})
     .attr("rx", function(d){return scalecircle(1)})
@@ -157,27 +157,45 @@ var vis_projection = function(){
   }*/
 
   this.modify_size_circles = function(subdata, flag){//flag = true entonces el circulo crece
-    var root = d3.select(selector + " #chart_visUsers"+id);
-    /*root.selectAll(".pointDots")
-        .style("visibility", "visible")
-        .style("stroke-width", border_default_circle)
-        .attr("r", function(d){return scalecircle(zoom.scale())});
-        */
-
-
+    //var root = d3.select(selector + " #chart_visUsers"+id);
+    
     for (var i = 0; i < subdata.length; i++) {
-      var r = $("#chart_visUsers" +id + " #pointDots" + subdata[i]).css("r");
-      r = r.slice(0, r.length-2);
-
-      var tam  = 0; 
-      if(flag)
-          tam = r*3
-      else
-          tam = scalecircle(zoom.scale())        
-      root.select("#pointDots" + subdata[i])
-      .style("r", function(d){
-          return tam
-      });
+      var r = $("#chart_visUsers" +id + " #pointDots" + subdata[i]).attr("width");
+      r = parseFloat(r)
+      
+      var tam  = 0;
+      if(flag){
+        tam = 0;
+      }
+      else{
+        tam = scalecircle(zoom.scale())/2
+      }
+          
+      
+      console.log("modificar o no", flag, r, tam)  
+      d3.select("#pointDots" + subdata[i])
+        .attr("width", function(){
+          if(!flag)
+            return 2*scalecircle(zoom.scale())
+          
+          return 4*scalecircle(zoom.scale())
+        })
+        .attr("height", function(){
+          if(!flag)
+            return 2*scalecircle(zoom.scale())
+          
+          return 4*scalecircle(zoom.scale())
+        })
+        .attr("rx", function(d){
+          if(!flag)
+            return scalecircle(zoom.scale())
+          return 0
+        })
+        .attr("ry", function(d){
+          if(!flag)
+            return scalecircle(zoom.scale())
+          return 0
+        })      
     };    
   }
 

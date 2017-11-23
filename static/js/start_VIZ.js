@@ -9,6 +9,9 @@ var histograms_obj1 = ""
 //variable visualization of Legend
 var mylegend = null;
 
+//variable to save obj1
+var var_save_area = new draw_saveArea();
+
 //colors allowed
 var colorsArray2 = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 

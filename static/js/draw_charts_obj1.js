@@ -598,9 +598,9 @@ function drawing_histo_obj1(){
       
       var isselected = $(this).hasClass("selected");
       if(isselected)
-        mychartNew.modify_size_circles(subddd, true)
+        viz_proj.modify_size_circles(subddd, true)
       else
-        mychartNew.modify_size_circles(subddd, false)
+        viz_proj.modify_size_circles(subddd, false)
     })
 
     function draw_TableHtml(headers){
