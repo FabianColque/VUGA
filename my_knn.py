@@ -6,7 +6,7 @@ g = [[1,2,3,4,5,6,7], [2,3,4,5,3,2,6], [9,7,5,3,7,5,2], [5,9,1,4,8,2,6], [1,2,3,
 res = []
 aux_arr = []
 
-def my_knn(idx, data, K = 5):
+def my_knn(idx, data, K = 50):
   #format of data is a matriz normalized: objects_1 by dimensions 
   global aux_arr
   global res
@@ -50,6 +50,8 @@ def myFn(a, b):
   bb = int(res[b] * 10000)
   return aa - bb
   
-
+"""
+#example
 res2 = my_knn(0, g)
 print ("wtf", res2)
+"""

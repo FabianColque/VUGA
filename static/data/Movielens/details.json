@@ -54,5 +54,17 @@
             "titles"        : ["other", "academic/educator", "artist", "clerical/admin", "college/grad_student", "customer_service", "doctor/health_care", "executive/managerial", "farmer", "homemaker", "K-12_student", "lawyer", "programmer", "retired", "sales/marketing", "scientist", "self-employed", "technician/enginner", "tradesman/craftsman", "unemployed", "writer"], 
             "name"          : "Ocupation"
         }
+    ],
+    "features": [
+        {"type": "String", "detail": []},   {"type": "Number", "detail": []},       {"type": "Number", "detail": []},   {"type": "Number", "detail": []},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},
+        {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]},   {"type": "Number", "detail": []},   {"type": "Number", "detail": [1, 5]}
     ]
 }

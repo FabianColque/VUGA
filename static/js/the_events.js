@@ -1,5 +1,15 @@
 
 
+/*Explore new group since the save area*/
+d3.select("#btn_ExploreGroups")
+	.on("click", function(){
+		var data_selected = var_save_area.getData_idx();
+		console.log("data save get", data_selected)
+		var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "getNewGroups")
+		console.log("mis nuevos grupos", groups)
+	})
+
+
 /**Click to save one set of Objects_1*/
 d3.select("#Save_obj1")
 	.on("click", function(d){

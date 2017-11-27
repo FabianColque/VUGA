@@ -114,7 +114,13 @@ def projection(data, details):
 
     heatmap = {"headers": data[0][1:].tolist(), "body": arr_tsne2}
 
-    
+    print "mmmmmmmmmmmmmmmmm"
+    print heatmap["headers"]
+    print heatmap["body"][1:3]
+    print len(heatmap["body"][0])
+    print "mmmmmmmmmmmmmmmmm"
+
+    """
     fifib = "../data/BookCrossing/heatmap.json"
     fifim = "../data/Movielens/heatmap.json"
 
@@ -126,7 +132,7 @@ def projection(data, details):
       fd.close()
     except MyError as e:
       print 'ERROR writing', e.value
-
+    """
     
 
 

@@ -6,6 +6,13 @@ function draw_saveArea(){
     updating(newData)
   }
 
+  this.getData_idx = function(){
+    var dat = []
+    for(ds in data_selected_save)
+      dat.push(parseInt(ds))
+    return dat;
+  }
+
   function updating(newData){
     var data_idx = []
     for(nd in newData){

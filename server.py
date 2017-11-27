@@ -24,6 +24,10 @@ from sklearn import cluster
 import scipy.cluster.hierarchy as hier
 import scipy.spatial.distance as dist
 
+import my_algorithm
+
+
+
 class MyError(Exception):
   def __init__(self, value):
     self.value = value
@@ -228,7 +232,22 @@ class get_Details_options(tornado.web.RequestHandler):
     res = data_details["Dimensions_total"]
     self.write(json.dumps(res))
 
-      
+class getNewGroups(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    data_selected = mydata.get("data_selected")
+    #dataset = heatmap with the complete matrix normalized
+    dataset = load_json(getpath_db(dbname) + "heatmap.json")
+    dataset = dataset["body"]
+    #dimensionFull = File with dimensions not normalized, brute state
+    dimensionsFull = load_csv_matrix(getpath_db(dbname) + "full_dimensions.csv")
+    #features = the details of the data dimensions
+    features = load_json(getpath_db(dbname) + "details.json")
+    features = features["features"]
+
+    res = my_algorithm.generate(dataset, data_selected, 5, dimensionsFull, features)#I want 5 new groups
+    self.write(json.dumps(res))
 
 ####  END  #### MY CLASSES ###################
 
@@ -251,7 +270,12 @@ def load_json(file):
   res = []
   with open(file) as jsonfile:
     res = json.load(jsonfile)
-  return res    
+  return res
+
+def load_csv_matrix(file):
+  reader = csv.reader(open(file, 'rb'), delimiter = ",")
+  X = list(reader)
+  return np.array(X)    
 
 def binary_search_movieID(data, target):
   lower = 0
@@ -288,6 +312,7 @@ application = tornado.web.Application([
   (r"/get_heatmap", get_heatmap),
   (r"/getDimension_legend", getDimension_legend),
   (r"/get_Details_options", get_Details_options),
+  (r"/getNewGroups", getNewGroups),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
   ], **settings)
 
