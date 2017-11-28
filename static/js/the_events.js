@@ -4,9 +4,11 @@
 d3.select("#btn_ExploreGroups")
 	.on("click", function(){
 		var data_selected = var_save_area.getData_idx();
-		console.log("data save get", data_selected)
 		var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "getNewGroups")
 		console.log("mis nuevos grupos", groups)
+		if(!mynewGroups)
+			mynewGroups = new draw_groups();
+		mynewGroups.init(groups)
 	})
 
 
@@ -28,7 +30,6 @@ function btnSave_Obj1_individuals(){
 
 	//data_save = data_save.map(function(d){return {"id": d.id, "idx": d.idx, "n": d.n}})
 
-	console.log("holis save", aux);
 	var_save_area.update(aux);
 }	
 

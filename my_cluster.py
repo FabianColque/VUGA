@@ -29,13 +29,9 @@ def getCentroids(dataset, labels, k, numFeatures):
   centros = np.zeros((k, numFeatures))
   counts = np.zeros(k)
 
-  #print ("mierda", centros)
-
+  
   i = 0
   for da in dataset:
-    #print ("life", da)
-    #print ("ends", labels[i])
-    #print ("ra", centros[int(labels[i])])
     centros[int(labels[i])] += da
     counts[int(labels[i])] += 1
     i += 1

@@ -23,8 +23,6 @@ function draw_saveArea(){
       data_idx.push(parseInt(nd));
     }
 
-    console.log("frio", data_idx)
-
     d3.selectAll("#idsavearea_obj1 *").remove()
 
     var selection = d3.select("#idsavearea_obj1")
@@ -34,7 +32,6 @@ function draw_saveArea(){
     selection.enter()
       .append("p")
       .text(function(d){
-        console.log("historias", d)
         return 'Object_' + data_selected_save[d.toString()].n })
       .style("background-color", function(){
         return "#bebada";
@@ -49,7 +46,6 @@ function draw_saveArea(){
         .attr("class", "glyphicon glyphicon-remove")
         .style("float", "right")
         .on("click", function(d){
-          console.log("deleting", d)
           delete data_selected_save[d.toString()]
           updating({})
           //delete_element_inSave(d);

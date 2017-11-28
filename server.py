@@ -119,6 +119,9 @@ class getData_Viz(tornado.web.RequestHandler):
     
     time0 = time()
     data_viz = load_json(path)
+    time1 = time()
+    print_message("loading dataViz.json", time1 - time0)
+    time0 = time()
     res = {"dimensions": data_viz["dimensions"], "instances": []}
     data_selected = mydata.get("data_selected")
     for ds in data_selected:
@@ -237,16 +240,34 @@ class getNewGroups(tornado.web.RequestHandler):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
     data_selected = mydata.get("data_selected")
+    
+    
     #dataset = heatmap with the complete matrix normalized
+    time0 = time()
     dataset = load_json(getpath_db(dbname) + "heatmap.json")
     dataset = dataset["body"]
+    time1 = time()
+    print_message("load heatmap.json", time1 - time0)
+
     #dimensionFull = File with dimensions not normalized, brute state
+    time0 = time()
     dimensionsFull = load_csv_matrix(getpath_db(dbname) + "full_dimensions.csv")
+    time1 = time()
+    print_message("load full_dimensions.json", time1 - time0)
+
     #features = the details of the data dimensions
+    time0 = time()
     features = load_json(getpath_db(dbname) + "details.json")
     features = features["features"]
+    time1 = time()
+    print_message("load detais.json", time1 - time0)
 
+    #My algorithm
+    time0 = time()
     res = my_algorithm.generate(dataset, data_selected, 5, dimensionsFull, features)#I want 5 new groups
+    time1 = time()
+    print_message("algorithm vexus2", time1 - time0)
+
     self.write(json.dumps(res))
 
 ####  END  #### MY CLASSES ###################

@@ -12,31 +12,27 @@ k_groups        : It is the number of groups we want
 def generate(dataset, data_selected, k_groups, dataFull, features):
   neighbors = get_array_K_neighbors(dataset, data_selected)
   
-  print ("len neighbors", neighbors)
-
+  
   dataFull2 = []
   dataFull2.append(dataFull[0])
   for nn in neighbors:
     dataFull2.append(dataFull[nn + 1])# more one because at the first line are the names
 
   newdataset = normalizing(dataFull2, features) 
-  print ("holis newdataset", len(newdataset), len(newdataset[0]))
-
-  centers, labels = mycluster.kmeans(newdataset, k_groups, len(newdataset[0])) 
-  print ("labels", labels, len(labels))
-
-  return fixing_data(neighbors, labels)
-
-def fixing_data(data, labels):
-  data = list(data)
-  n_cluster = set(labels)
   
-  clu = [[] for i in range(len(n_cluster))]
+  centers, labels = mycluster.kmeans(newdataset, k_groups, len(newdataset[0])) 
+  
+  return fixing_data(neighbors, labels, k_groups)
+
+def fixing_data(data, labels, k_groups):
+  data = list(data)
+  
+  clu = [[] for i in range(k_groups)]
 
   for x in xrange(0, len(data)):
     clu[int(labels[x])].append(data[x])
 
-  zeros = [0]*len(n_cluster)
+  zeros = [0]*k_groups
   jjson = {"cluster": zeros, "content": []}
   for x in xrange(0, len(clu)):
     kk = {"id": x, "objects": clu[x]}
@@ -107,9 +103,6 @@ def normalizing(data, details):
   arr_tsne2 = np.array(arr_tsne)
   arr_tsne2 = arr_tsne2.tolist()
   
-  print "mmmmmmmmmmmmmmmmm"
-  print arr_tsne2[0]
-  print "mmmmmmmmmmmmmmmmm"
   return arr_tsne2
 
     
@@ -126,6 +119,5 @@ def get_array_K_neighbors(dataset, data_selected):
   for i in xrange(0,len(data_selected)):
     data = myknn.my_knn(data_selected[i], dataset)
     res |= set(data)
-  print ("do", res)
   return res
 

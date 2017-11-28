@@ -19,6 +19,10 @@ function drawing_histo_obj1(){
   /*variable for table object 1*/
   var dataTable_obj1 = ""
   var dataTable_obj2 = ""
+
+
+  /*variable que evita caragar dos veces las tablas*/
+  var tabla_refresh = false
 /*
   The data received must to have the next details:
   data = 
@@ -34,8 +38,7 @@ function drawing_histo_obj1(){
     dims_groups = [];
     array_charts = [];
     //data["dimensions"] = [data["dimensions"][0]]
-    console.log("nilaedad", data)
-
+    
     data_dimensions = data.dimensions;
     data_instances = data.instances;
 
@@ -269,6 +272,7 @@ function drawing_histo_obj1(){
 
   /***START*****TABLE OBJECT 2*************/ 
   function draw_datatable_obj2(){
+
     var data_obj2 = getDataViz_obj2();
     data_obj2.headers[0]= "ID"
 
@@ -362,7 +366,6 @@ function drawing_histo_obj1(){
   }
 
   function refreshTable_obj2(){
-    
     dc.events.trigger(function(){
       var aux = evt.top(Infinity)
       var aux2 = []
@@ -427,14 +430,22 @@ function drawing_histo_obj1(){
       .dimension(ndx)
       .group(ndxAll);
 
+    console.log("drawing_chartCount")
+
     count.on("renderlet.resetall", function(c){
+      console.log("click in one crossfilter?")
       var total     = c.dimension().size();
       var filtered  = c.group().value();
       var disabled  = (total == filtered);
       $(".resetall").attr("disabled", disabled);
 
-      refreshTable_obj1();
-      refreshTable_obj2();
+      if(tabla_refresh){
+        refreshTable_obj1();
+        refreshTable_obj2();  
+      }
+
+      tabla_refresh = true;
+      
       //var sub_data = evt.top(Infinity).map(function(d){return d.idx})
       //viz_proj.drawn_color_subselected(sub_data);
       draw_table_heatmap();      
@@ -509,7 +520,6 @@ function drawing_histo_obj1(){
   /*---START--------- Table Object 1*/
 
   function draw_datatable_obj1(data){
-    
     /*Extracting the headers to table Object 1*/
     var headers = [];
     headers.push("ID")
@@ -594,7 +604,6 @@ function drawing_histo_obj1(){
       }
       //fabian = [d,this]
       var subddd = [dataTable_obj1.DataTable().row(this).data().idx];
-      console.log("chance me", subddd)
       
       var isselected = $(this).hasClass("selected");
       if(isselected)

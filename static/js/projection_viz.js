@@ -72,6 +72,11 @@ var vis_projection = function(){
 
     active_buttons();
   }
+
+  this.setDataSelected = function(dd){
+    data_selected = dd;
+  }
+
   /**Drawing only the points selected after the exploration in projection**/
   this.draw_only_selected = function(){
     this.setVisibilityAll(false);
@@ -172,7 +177,6 @@ var vis_projection = function(){
       }
           
       
-      console.log("modificar o no", flag, r, tam)  
       d3.select("#pointDots" + subdata[i])
         .attr("width", function(){
           if(!flag)
@@ -312,7 +316,6 @@ var vis_projection = function(){
     //.classed("not-possible", false)
     //.classed("possible", true);
 
-    console.log("data_selected", data_selected)
   }
 
   var resetLasso = function(){

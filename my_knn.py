@@ -6,7 +6,7 @@ g = [[1,2,3,4,5,6,7], [2,3,4,5,3,2,6], [9,7,5,3,7,5,2], [5,9,1,4,8,2,6], [1,2,3,
 res = []
 aux_arr = []
 
-def my_knn(idx, data, K = 50):
+def my_knn(idx, data, K = 100):
   #format of data is a matriz normalized: objects_1 by dimensions 
   global aux_arr
   global res
