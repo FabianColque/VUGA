@@ -39,6 +39,14 @@ def myformat_dec(x):
 def projection(data, details):
 		#string, int
 
+	#ordering the data by ID
+	data = data[np.lexsort(np.fliplr(data).T)]
+	
+	auuu = data[len(data)-1]
+	data = np.delete(data, len(data)-1, axis=0)
+	data = np.insert(data, 0, auuu, axis=0)
+	
+	 
 	det_details = []
 
 	for det in details:
@@ -102,10 +110,6 @@ def projection(data, details):
  	
  	#arr_tsne = arr_tsne[1:6000]
  	arr_tsne2 = np.array(arr_tsne)
- 	
- 	print 'yyyyyyyyyyyyyyyyyyy'
- 	print arr_tsne2
- 	print 'yyyyyyyyyyyyyyyyyyy'
 
  	#arr_tsne2 = arr_tsne2[40000:]
  	time0 = time()
@@ -124,13 +128,17 @@ def projection(data, details):
  	time1 = time()
 
 
+ 	for ii in xrange(0, len(ptos)):
+ 		ptos[ii].append(data[ii+1][0])
+
  	print("time t-sne: ", time1 - time0)
+ 	#print("result", ptos)
  	#print ptos
 
  	## pedazo de code para generar el archivo de la proyeccion, pero no se queda, solo es por ahora
  	#print arr_tsne[0]
  	#np.savetxt("movielens-matrix..txt", arr_tsne, fmt = '%.4f')
-
+ 	
 	try:
 	  jsondata = simplejson.dumps(ptos,sort_keys=True)
 	  namejson = "projection.json";#fileoutput
@@ -139,7 +147,7 @@ def projection(data, details):
 	  fd.close()
 	except MyError as e:
 	  print 'ERROR writing', e.value
-
+	
  	##
 
 

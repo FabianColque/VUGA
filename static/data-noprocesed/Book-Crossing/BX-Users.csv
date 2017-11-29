@@ -271,7 +271,7 @@ User-ID,User-name,Location,Age
 1530,user1530,hartsdale-new york-usa,26
 1535,user1535,virginia beach-virginia-usa,69
 1541,user1541,köln-nordrhein-westfalen-germany,25
-1546,user1546,overland-missouri,40
+1546,user1546,overland-missouri-usa,40
 1548,user1548,brooklyn-new york-usa,28
 1554,user1554,lincoln-nebraska-usa,29
 1557,user1557,bloomington-indiana-usa,32
@@ -282,7 +282,7 @@ User-ID,User-name,Location,Age
 1583,user1583,san francisco-california-usa,48
 1585,user1585,albuquerque-new mexico-usa,29
 1586,user1586,north muskegon-michigan-united kingdom,14
-1589,user1589,clio-michigan,50
+1589,user1589,clio-michigan-usa,50
 1591,user1591,flensburg-schleswig-holstein-germany,24
 1596,user1596,jackson-tennessee-usa,51
 1597,user1597,west columbia-texas-usa,23
@@ -375,7 +375,7 @@ User-ID,User-name,Location,Age
 2103,user2103,minneapolis-minnesota-usa,43
 2106,user2106,denver-colorado-usa,44
 2115,user2115,escondido-california-usa,55
-2130,user2130,george town-penang,34
+2130,user2130,george town-penang-malaysia,34
 2134,user2134,oakland-california-usa,35
 2136,user2136,salem-oregon-usa,45
 2139,user2139,chesapeake-virginia-usa,33
@@ -462,7 +462,7 @@ User-ID,User-name,Location,Age
 2549,user2549,nice-alpes maritimes-france,31
 2562,user2562,wheeling-illinois-usa,53
 2567,user2567,arlington-washington-usa,53
-2578,user2578,burlington-ontario-canada,16
+2578,user2578,burlington-usa,-ontario-canada,16
 2583,user2583,cedar rapids-iowa-usa,33
 2590,user2590,el cerrito-california-usa,26
 2595,user2595,wiesbaden-hessen-germany,34
@@ -1170,7 +1170,7 @@ User-ID,User-name,Location,Age
 6318,user6318,ann arbor-michigan-usa,24
 6323,user6323,wilmington-north carolina-usa,35
 6324,user6324,reinbek-schleswig-holstein-germany,46
-6330,user6330,letchworth garden city-england,37
+6330,user6330,letchworth garden city-england-united kingdom,37
 6332,user6332,chagnon-n/a-france,27
 6333,user6333,san jose-california-usa,45
 6336,user6336,almonte-ontario-canada,41
@@ -1775,7 +1775,7 @@ User-ID,User-name,Location,Age
 9432,user9432,metz-lorraine-france,24
 9440,user9440,indianapolis-indiana-usa,21
 9445,user9445,maitland-new south wales-australia,14
-9446,user9446,southampton east-southampton-bermuda,19
+9446,user9446,southampton east-southampton-bermuda-usa,19
 9455,user9455,glen vine-isle of man-united kingdom,36
 9461,user9461,boston-massachusetts-usa,13
 9465,user9465,brooklyn-new york-usa,35
@@ -1789,7 +1789,7 @@ User-ID,User-name,Location,Age
 9525,user9525,woodbridge-new jersey-usa,15
 9528,user9528,gilbert-arizona-usa,17
 9541,user9541,st. louis-missouri-usa,27
-9550,user9550,palmerston north-manawatu,21
+9550,user9550,palmerston north-manawatu-new zealand,21
 9555,user9555,edinburgh-scotland-united kingdom,29
 9557,user9557,cols-ohio-usa,16
 9558,user9558,bismarck-north dakota-usa,57
@@ -1881,7 +1881,7 @@ User-ID,User-name,Location,Age
 10047,user10047,big lake-minnesota-usa,20
 10056,user10056,brisbane-queensland-australia,28
 10063,user10063,erie-colorado-usa,35
-10067,user10067,watton-norfolk-england,61
+10067,user10067,watton-norfolk-england-united kingdom,61
 10069,user10069,downham market-england-united kingdom,41
 10071,user10071,bocholt-nordrhein-westfalen-germany,17
 10076,user10076,dale-indiana-usa,34
@@ -2395,7 +2395,7 @@ User-ID,User-name,Location,Age
 12917,user12917,moore-oklahoma-usa,24
 12923,user12923,louisville-kentucky-usa,39
 12926,user12926,atlanta-georgia-usa,26
-12927,user12927,wolverhampton-england,52
+12927,user12927,wolverhampton-england-united kingdom,52
 12928,user12928,emonton-alberta-canada,11
 12929,user12929,hilo-hawaii-usa,44
 12945,user12945,kitchener-ontario-canada,30
@@ -2444,7 +2444,7 @@ User-ID,User-name,Location,Age
 13154,user13154,oradell-new jersey-usa,46
 13160,user13160,amsterdam-noord-holland-netherlands,65
 13164,user13164,scottsburg-indiana-usa,33
-13168,user13168,burlington-vermont-usa,60
+13168,user13168,burlington-usa,-vermont-usa,60
 13173,user13173,norfolk-virginia-usa,55
 13178,user13178,paris-ile-de-france-france,26
 13181,user13181,wirksworth-england-united kingdom,58
@@ -2557,7 +2557,7 @@ User-ID,User-name,Location,Age
 13786,user13786,edinburgh-scotland-united kingdom,25
 13794,user13794,aurora-illinois-usa,31
 13799,user13799,bolivar-missouri-usa,24
-13801,user13801,burlington-ontario-canada,104
+13801,user13801,burlington-usa,-ontario-canada,104
 13804,user13804,colle umberto-treviso-italy,30
 13810,user13810,berlin-berlin-germany,37
 13811,user13811,brighton--usa,41
@@ -2736,7 +2736,7 @@ User-ID,User-name,Location,Age
 14681,user14681,griffin-georgia-usa,18
 14682,user14682,notasulga-alabama-usa,24
 14683,user14683,london-ontario-canada,30
-14687,user14687,burlington-ontario-canada,21
+14687,user14687,burlington-usa,-ontario-canada,21
 14691,user14691,las vegas-nevada-usa,30
 14694,user14694,cincinnati-ohio-usa,55
 14710,user14710,minonk-illinois-usa,18
@@ -2851,7 +2851,7 @@ User-ID,User-name,Location,Age
 15308,user15308,san francisco-california-usa,26
 15310,user15310,pompano beach-florida-usa,29
 15330,user15330,kansas city-kansas-usa,52
-15333,user15333,las vegas-nevada,16
+15333,user15333,las vegas-nevada-usa,16
 15336,user15336,eau claire-wisconsin-usa,16
 15340,user15340,phoenix-arizona-usa,27
 15348,user15348,boulder-colorado-usa,21
@@ -2960,7 +2960,7 @@ User-ID,User-name,Location,Age
 15871,user15871,fiesole-,29
 15873,user15873,sparta-illinois-usa,70
 15883,user15883,redwood city-california-usa,28
-15887,user15887,grande prairie-alberta,44
+15887,user15887,grande prairie-alberta-canada,44
 15899,user15899,erlangen-bayern-germany,28
 15915,user15915,lawrence-kansas-usa,28
 15918,user15918,cardiff-wales-united kingdom,23
@@ -3141,7 +3141,7 @@ User-ID,User-name,Location,Age
 16692,user16692,austin-texas-usa,24
 16695,user16695,o`fallon-missouri-usa,42
 16696,user16696,st-irenee-quebec-canada,63
-16699,user16699,kent-washington,26
+16699,user16699,kent-washington-usa,26
 16708,user16708,gorokan-new south wales-australia,34
 16711,user16711,athens-alabama-usa,40
 16717,user16717,clive-iowa-usa,34
@@ -3170,7 +3170,7 @@ User-ID,User-name,Location,Age
 16796,user16796,kittery-maine-usa,79
 16797,user16797,elmhurst-illinois-usa,64
 16799,user16799,enterprise-alabama-usa,21
-16802,user16802,hayling island-hampshire-england,62
+16802,user16802,hayling island-hampshire-england-united kingdom,62
 16805,user16805,elk grove-california-usa,47
 16814,user16814,bloomington-indiana-usa,67
 16816,user16816,pinecrest-florida-usa,48
@@ -4390,7 +4390,7 @@ User-ID,User-name,Location,Age
 23051,user23051,mount laurel-new jersey-usa,40
 23052,user23052,columbus-ohio-usa,29
 23058,user23058,halifax-nova scotia-canada,28
-23061,user23061,burlington-vermont-usa,27
+23061,user23061,burlington-usa,-vermont-usa,27
 23064,user23064,pearland-texas-usa,39
 23065,user23065,plymouth-massachusetts-usa,26
 23068,user23068,milan-mi-italy,39
@@ -4430,7 +4430,7 @@ User-ID,User-name,Location,Age
 23207,user23207,berlin-berlin-germany,60
 23210,user23210,san diego-california-usa,62
 23216,user23216,oviedo-asturias-spain,39
-23217,user23217,somerset-n/a-bermuda,19
+23217,user23217,somerset-n/a-bermuda-usa,19
 23218,user23218,jacksonville-florida-usa,36
 23220,user23220,decatur-georgia-usa,44
 23225,user23225,lillooet-british columbia-canada,38
@@ -4479,7 +4479,7 @@ User-ID,User-name,Location,Age
 23511,user23511,chapel hill-north carolina-usa,56
 23517,user23517,condeixa-a-nova-coimbra-portugal,25
 23521,user23521,houston-texas-usa,41
-23528,user23528,barcelona-catalonia-catalonia,25
+23528,user23528,barcelona-catalonia-catalonia-spain,25
 23529,user23529,burraneer-new south wales-australia,38
 23534,user23534,asheville-north carolina-usa,48
 23541,user23541,quispamsis-new brunswick-canada,48
@@ -4497,7 +4497,7 @@ User-ID,User-name,Location,Age
 23594,user23594,besançon-n/a-france,22
 23595,user23595,collinsville-illinois-usa,45
 23597,user23597,bettendorf-iowa-usa,44
-23619,user23619,burlington-vermont-usa,34
+23619,user23619,burlington-usa,-vermont-usa,34
 23631,user23631,macon-georgia-usa,57
 23634,user23634,washington-dc-usa,23
 23635,user23635,southgate-michigan-usa,41
@@ -5009,7 +5009,7 @@ User-ID,User-name,Location,Age
 26309,user26309,bridgewater-nova scotia-canada,18
 26310,user26310,ellicott city-maryland-usa,32
 26314,user26314,east greenwich-rhode island-usa,26
-26332,user26332,derby-england,30
+26332,user26332,derby-england-united kingdom,30
 26334,user26334,calgary-alberta-canada,53
 26335,user26335,olympia-washington-usa,19
 26339,user26339,olympia-washington-usa,35
@@ -5243,7 +5243,7 @@ User-ID,User-name,Location,Age
 27486,user27486,halifax-nova scotia-canada,32
 27498,user27498,excelsior-minnesota-usa,35
 27499,user27499,chicago-illinois-usa,32
-27508,user27508,fenton-missouri,15
+27508,user27508,fenton-missouri-usa,15
 27514,user27514,new bern-north carolina-usa,43
 27517,user27517,midland-michigan-usa,15
 27518,user27518,sedalia-missouri-usa,35
@@ -5692,7 +5692,7 @@ User-ID,User-name,Location,Age
 29795,user29795,london-,27
 29802,user29802,west orange-new jersey-usa,20
 29805,user29805,dallas-texas-usa,65
-29814,user29814,grosse ile-michigan,51
+29814,user29814,grosse ile-michigan-usa,51
 29817,user29817,winthrop-massachusetts-usa,39
 29822,user29822,brainerd-minnesota-usa,56
 29834,user29834,brisbane-queensland-australia,21
@@ -5994,7 +5994,7 @@ User-ID,User-name,Location,Age
 31230,user31230,london-england-united kingdom,42
 31234,user31234,romsey-,51
 31238,user31238,american fork-utah-usa,68
-31241,user31241,conroe-texas,20
+31241,user31241,conroe-texas-usa,20
 31245,user31245,socorro-new mexico-usa,34
 31250,user31250,tulsa-oklahoma-usa,34
 31252,user31252,east granby-connecticut-usa,53
@@ -6029,7 +6029,7 @@ User-ID,User-name,Location,Age
 31406,user31406,lake helen-florida-usa,31
 31410,user31410,hillsdale-michigan-usa,46
 31412,user31412,pottstown-pennsylvania-usa,36
-31415,user31415,lyndoch-south australia,34
+31415,user31415,lyndoch-south-australia,34
 31418,user31418,reston-virginia-usa,54
 31419,user31419,wabern-bern-switzerland,42
 31424,user31424,lewisville-texas-usa,22
@@ -6239,7 +6239,7 @@ User-ID,User-name,Location,Age
 32438,user32438,lakeville-minnesota-usa,44
 32439,user32439,wrexham-wales-united kingdom,17
 32443,user32443,mukwonago-wisconsin-usa,49
-32444,user32444,burlington-ontario-canada,22
+32444,user32444,burlington-usa,-ontario-canada,22
 32450,user32450,nashville-tennessee-usa,15
 32451,user32451,billericay-england-united kingdom,21
 32462,user32462,düsseldorf-nordrhein-westfalen-germany,35
@@ -6404,7 +6404,7 @@ User-ID,User-name,Location,Age
 33246,user33246,columbia-pennsylvania-usa,24
 33250,user33250,rome-georgia-usa,32
 33257,user33257,kenner-louisiana-usa,23
-33262,user33262,houston-texas,20
+33262,user33262,houston-texas-usa,20
 33263,user33263,alliance-ohio-usa,23
 33264,user33264,oklahoma city-oklahoma-usa,33
 33269,user33269,vancouver wa-washington-usa,55
@@ -6613,7 +6613,7 @@ User-ID,User-name,Location,Age
 34277,user34277,bukit tunku-kuala lumpur-malaysia,22
 34292,user34292,beaverton-,18
 34296,user34296,portland-oregon-usa,30
-34300,user34300,burlington-ontario-canada,35
+34300,user34300,burlington-usa,-ontario-canada,35
 34301,user34301,langen-niedersachsen-germany,33
 34314,user34314,north vancouver-british columbia-canada,22
 34315,user34315,slc-utah-usa,18
@@ -6799,7 +6799,7 @@ User-ID,User-name,Location,Age
 35259,user35259,hanover-pennsylvania-usa,63
 35260,user35260,islandia--usa,54
 35266,user35266,victoria-british columbia-canada,38
-35270,user35270,burlington-connecticut-usa,36
+35270,user35270,burlington-usa,-connecticut-usa,36
 35274,user35274,acton-ontario-canada,42
 35284,user35284,portland-oregon-usa,60
 35304,user35304,san francisco-california-usa,20
@@ -6856,7 +6856,7 @@ User-ID,User-name,Location,Age
 35544,user35544,invercargill-southland-new zealand,36
 35548,user35548,anchorage-alaska-usa,42
 35551,user35551,scarborough-ontario-canada,71
-35552,user35552,st. joseph-michigan,76
+35552,user35552,st. joseph-michigan-usa,76
 35569,user35569,canandaigua-new york-usa,71
 35586,user35586,westlake village-california-usa,60
 35592,user35592,san francisco-california-usa,47
@@ -7394,7 +7394,7 @@ User-ID,User-name,Location,Age
 38138,user38138,warwick-new york-usa,39
 38148,user38148,san antonio-texas-usa,37
 38149,user38149,new york-new york-usa,34
-38158,user38158,burlington-ontario-canada,30
+38158,user38158,burlington-usa,-ontario-canada,30
 38169,user38169,houston-texas-usa,24
 38171,user38171,lichfield-england-united kingdom,56
 38172,user38172,middletown-pennsylvania-usa,47
@@ -7530,7 +7530,7 @@ User-ID,User-name,Location,Age
 38864,user38864,lacey-washington-usa,51
 38865,user38865,mentor-ohio-usa,16
 38872,user38872,bonn-nordrhein-westfalen-germany,35
-38881,user38881,gijón-asturias,25
+38881,user38881,gijón-asturias-spain,25
 38890,user38890,san diego-california-usa,52
 38904,user38904,manhattan-kansas-usa,43
 38905,user38905,canmore-alberta-canada,57
@@ -8231,7 +8231,7 @@ User-ID,User-name,Location,Age
 42509,user42509,bay shore-new york-usa,31
 42514,user42514,portland-,56
 42518,user42518,katy-texas-usa,46
-42532,user42532,edmonton-alberta,14
+42532,user42532,edmonton-alberta-canada,14
 42543,user42543,bologna-emilia romagna-italy,20
 42552,user42552,chicago-illinois-usa,58
 42560,user42560,buenos aires-buenos aires-argentina,32
@@ -8303,7 +8303,7 @@ User-ID,User-name,Location,Age
 42902,user42902,brisbane-queensland-australia,30
 42914,user42914,clarksville-indiana-usa,26
 42917,user42917,quesnel-british columbia-canada,36
-42923,user42923,seattle-washington,17
+42923,user42923,seattle-washington-usa,17
 42925,user42925,visalia-california-usa,75
 42932,user42932,saskatoon-saskatchewan-canada,45
 42935,user42935,kelowna-british columbia-canada,31
@@ -8546,7 +8546,7 @@ User-ID,User-name,Location,Age
 44128,user44128,statesville-north carolina-usa,61
 44130,user44130,salt lake city-utah-usa,14
 44132,user44132,cocoa beach-florida-usa,66
-44135,user44135,mangrove bay-n/a-bermuda,43
+44135,user44135,mangrove bay-n/a-bermuda-usa,43
 44140,user44140,parsonsburg-maryland-usa,25
 44153,user44153,houston-texas-usa,68
 44165,user44165,santa barbara-california-usa,44
@@ -8761,7 +8761,7 @@ User-ID,User-name,Location,Age
 45249,user45249,st. paul-minnesota-usa,29
 45255,user45255,peachtree city-georgia-usa,35
 45262,user45262,brooklyn-new york-usa,43
-45280,user45280,calgary-alberta,46
+45280,user45280,calgary-alberta-canada,46
 45282,user45282,toronto-ontario-canada,54
 45284,user45284,somerset-california-usa,46
 45285,user45285,tampa-florida-usa,16
@@ -8940,7 +8940,7 @@ User-ID,User-name,Location,Age
 46269,user46269,recife-pernambuco-brazil,26
 46279,user46279,portland-oregon-usa,47
 46280,user46280,aschaffenburg-bayern-germany,20
-46286,user46286,toledo-ohio,22
+46286,user46286,toledo-ohio-usa22
 46291,user46291,selden-new york-usa,50
 46292,user46292,albuquerque-new mexico-usa,10
 46293,user46293,almonte-ontario-canada,38
@@ -9546,9 +9546,9 @@ User-ID,User-name,Location,Age
 49743,user49743,troutman-north carolina-usa,61
 49744,user49744,reno-nevada-usa,59
 49745,user49745,pompton plains-new jersey-usa,38
-49753,user49753,burlington-wisconsin-usa,14
+49753,user49753,burlington-usa,-wisconsin-usa,14
 49755,user49755,london-england-united kingdom,31
-49771,user49771,san antonio-texas,35
+49771,user49771,san antonio-texas-usa,35
 49773,user49773,pisa-toscana,28
 49776,user49776,london-england-united kingdom,73
 49779,user49779,loma linda-california-usa,34
@@ -9976,7 +9976,7 @@ User-ID,User-name,Location,Age
 51996,user51996,falls church-virginia-usa,46
 52005,user52005,snohomish-washington-usa,57
 52008,user52008,keene-new hampshire-usa,42
-52011,user52011,burlington-ontario-canada,37
+52011,user52011,burlington-usa,-ontario-canada,37
 52013,user52013,vancouver-british columbia-canada,16
 52021,user52021,lodi-california-usa,27
 52022,user52022,köln-nrw-germany,36
@@ -10240,13 +10240,13 @@ User-ID,User-name,Location,Age
 53288,user53288,sydney-new south wales-australia,14
 53300,user53300,raby-new south wales-australia,15
 53301,user53301,milpitas-california-usa,29
-53304,user53304,south burlington-vermont-usa,52
+53304,user53304,south burlington-usa,-vermont-usa,52
 53308,user53308,manalapan-new jersey-usa,20
 53315,user53315,fairbanks-alaska-usa,21
 53317,user53317,coquitlam-british columbia-canada,38
 53319,user53319,elk grove-california-usa,40
 53321,user53321,mexico-new york-usa,17
-53330,user53330,burlington-vermont-usa,20
+53330,user53330,burlington-usa,-vermont-usa,20
 53332,user53332,hampton-virginia-usa,41
 53338,user53338,vancouver-british columbia-canada,24
 53344,user53344,san jose-california-usa,43
@@ -10319,7 +10319,7 @@ User-ID,User-name,Location,Age
 53614,user53614,barreiro-barreiro-portugal,30
 53617,user53617,creston-british columbia-canada,57
 53628,user53628,brest-bretagne-france,22
-53639,user53639,seattle-washington,22
+53639,user53639,seattle-washington-usa,22
 53645,user53645,apollo-pennsylvania-usa,50
 53648,user53648,austin-texas-usa,39
 53656,user53656,san antonio-texas-usa,21
@@ -10428,7 +10428,7 @@ User-ID,User-name,Location,Age
 54165,user54165,adelaide-south australia-australia,27
 54167,user54167,dixon-kentucky-usa,50
 54173,user54173,san diego-california-usa,38
-54181,user54181,chalfont st giles-england,48
+54181,user54181,chalfont st giles-england-united kingdom,48
 54193,user54193,bartlesville-oklahoma-usa,27
 54198,user54198,perth-western australia-australia,44
 54199,user54199,des moines-iowa-usa,53
@@ -10569,7 +10569,7 @@ User-ID,User-name,Location,Age
 54911,user54911,gridley-california-usa,17
 54913,user54913,leipzig-sachsen-germany,24
 54932,user54932,mechanicsburg-pennsylvania-usa,59
-54934,user54934,warrensburg-missouri,37
+54934,user54934,warrensburg-missouri-usa,37
 54943,user54943,fredericton-new brunswick-canada,19
 54946,user54946,poole-dorset-united kingdom,49
 54948,user54948,surrey-british columbia-canada,20
@@ -10587,7 +10587,7 @@ User-ID,User-name,Location,Age
 55014,user55014,lee-new hampshire-usa,23
 55021,user55021,santa clara-california-usa,44
 55026,user55026,st. augustine-florida-usa,5
-55027,user55027,burlington-north carolina-usa,44
+55027,user55027,burlington-usa,-north carolina-usa,44
 55034,user55034,gold coast-queensland-australia,21
 55040,user55040,oslo-oslo-norway,18
 55042,user55042,oak park-illinois-usa,57
@@ -11149,7 +11149,7 @@ User-ID,User-name,Location,Age
 57786,user57786,clones-co.monaghan-ireland,43
 57787,user57787,orangeville-ontario-canada,21
 57788,user57788,victoria-british columbia-canada,83
-57789,user57789,s. burlington-vermont-usa,51
+57789,user57789,s. burlington-usa,-vermont-usa,51
 57803,user57803,houston-texas-usa,29
 57804,user57804,downers grove-illinois-usa,41
 57811,user57811,phoenix-arizona-usa,32
@@ -11192,7 +11192,7 @@ User-ID,User-name,Location,Age
 57966,user57966,ottawa-ontario-canada,38
 57970,user57970,hercules-california-usa,52
 57981,user57981,new york-new york-usa,27
-57983,user57983,lahore-punjab,25
+57983,user57983,lahore-punjab-pakistan,25
 57986,user57986,highland park-new jersey-usa,25
 57991,user57991,boca raton-florida-usa,31
 57999,user57999,nashville-tennessee-usa,21
@@ -11684,7 +11684,7 @@ User-ID,User-name,Location,Age
 60417,user60417,decatur-georgia-usa,45
 60418,user60418,lyon-rhône-alpes-france,31
 60419,user60419,lovelock-nevada-usa,36
-60426,user60426,burlington-wisconsin-usa,18
+60426,user60426,burlington-usa,-wisconsin-usa,18
 60427,user60427,basingstoke-england-united kingdom,37
 60428,user60428,hook-hampshire-united kingdom,34
 60443,user60443,stoke-on-trent-england-united kingdom,40
@@ -11968,7 +11968,7 @@ User-ID,User-name,Location,Age
 61901,user61901,tucson-arizona-usa,63
 61910,user61910,las cruces-new mexico-usa,44
 61912,user61912,alexandria-virginia-usa,28
-61913,user61913,las vegas-nevada,34
+61913,user61913,las vegas-nevada-usa,34
 61926,user61926,ann arbor-michigan-usa,59
 61930,user61930,gibsons-british columbia-canada,50
 61934,user61934,cranberry twp-pennsylvania-usa,46
@@ -12184,7 +12184,7 @@ User-ID,User-name,Location,Age
 63079,user63079,barcelona-barcelona-spain,25
 63083,user63083,nantes-loire atlantique-france,21
 63096,user63096,bendigo-victoria-australia,40
-63097,user63097,thornton-colorado,33
+63097,user63097,thornton-colorado-usa,33
 63101,user63101,oakland-california-usa,40
 63103,user63103,valladolid-castilla y león-spain,28
 63105,user63105,goffstown-new hampshire-usa,44
@@ -13794,7 +13794,7 @@ User-ID,User-name,Location,Age
 71188,user71188,los angeles-california-usa,26
 71193,user71193,houston-texas-usa,61
 71201,user71201,baltimore-maryland-usa,31
-71223,user71223,seattle-washington,62
+71223,user71223,seattle-washington-usa,62
 71226,user71226,st. louis-missouri-usa,52
 71229,user71229,glen waverley-victoria-australia,51
 71232,user71232,minnetonka-minnesota-usa,16
@@ -13930,7 +13930,7 @@ User-ID,User-name,Location,Age
 71889,user71889,vancouver-british columbia-canada,25
 71905,user71905,fürth-bayern-germany,32
 71912,user71912,hospitalet ll. barcelona-barcelona-spain,38
-71914,user71914,vitoria-alava,24
+71914,user71914,vitoria-alava-spain,24
 71918,user71918,frankfurt am main-hessen-germany,36
 71927,user71927,hagen-niedersachsen-germany,32
 71935,user71935,austin-texas-usa,31
@@ -14102,7 +14102,7 @@ User-ID,User-name,Location,Age
 72885,user72885,northfield-minnesota-usa,50
 72887,user72887,albany-georgia-usa,54
 72888,user72888,bloomfield-new jersey-usa,25
-72909,user72909,burlington-ontario-canada,32
+72909,user72909,burlington-usa,-ontario-canada,32
 72915,user72915,windham-new hampshire-usa,35
 72921,user72921,woodstock-new york-usa,29
 72936,user72936,albuqueruqe-new mexico-usa,42
@@ -15011,7 +15011,7 @@ User-ID,User-name,Location,Age
 77506,user77506,san rafael-california-usa,26
 77516,user77516,palm springs-california-usa,35
 77517,user77517,azusa-california-usa,38
-77523,user77523,manchester-england,27
+77523,user77523,manchester-england-united kingdom,27
 77524,user77524,greenwood-south carolina-usa,38
 77526,user77526,fort lee-new jersey-usa,26
 77528,user77528,karlstad-n/a-sweden,27
@@ -15512,7 +15512,7 @@ User-ID,User-name,Location,Age
 80096,user80096,antwerp-antwerpen-belgium,23
 80105,user80105,fort worth-texas-usa,39
 80116,user80116,portland-oregon-usa,44
-80119,user80119,burlington-ontario-canada,63
+80119,user80119,burlington-usa,-ontario-canada,63
 80121,user80121,norman-oklahoma-usa,24
 80135,user80135,ipoh-perak-malaysia,29
 80144,user80144,norfolk-virginia-usa,42
@@ -15799,7 +15799,7 @@ User-ID,User-name,Location,Age
 81662,user81662,lower sackville-nova scotia-canada,16
 81674,user81674,carver-minnesota-usa,52
 81675,user81675,fitchburg-wisconsin-usa,49
-81678,user81678,st. peters-missouri,29
+81678,user81678,st. peters-missouri-usa,29
 81682,user81682,bluffton-south carolina,36
 81689,user81689,fuenlabrada-madrid-spain,19
 81702,user81702,royal oak-michigan-usa,16
@@ -16423,7 +16423,7 @@ User-ID,User-name,Location,Age
 84696,user84696,edinburgh-scotland-united kingdom,28
 84700,user84700,kingston-ontario-canada,60
 84715,user84715,upland-indiana-usa,22
-84716,user84716,auckland-auckland,44
+84716,user84716,auckland-auckland-new zealand,44
 84719,user84719,bothell-washington-usa,50
 84724,user84724,senecaville-ohio-usa,32
 84727,user84727,king george-virginia-usa,58
@@ -16966,7 +16966,7 @@ User-ID,User-name,Location,Age
 87536,user87536,rochester-new york-usa,43
 87540,user87540,saint cloud-minnesota-usa,52
 87543,user87543,brisbane-queensland-australia,41
-87544,user87544,burlington-massachusetts-usa,17
+87544,user87544,burlington-usa,-massachusetts-usa,17
 87555,user87555,lexington-kentucky-usa,31
 87560,user87560,perry point-maryland-usa,48
 87562,user87562,como-lombardia-italy,37
@@ -17123,7 +17123,7 @@ User-ID,User-name,Location,Age
 88264,user88264,pamplona-navarra-spain,46
 88280,user88280,copenhagen-n/a-denmark,24
 88283,user88283,hamburg-hamburg-germany,24
-88299,user88299,waukon-iowa,20
+88299,user88299,waukon-iowa-usa,20
 88304,user88304,pr-yukon territory-singapore,27
 88305,user88305,pocatello-idaho-usa,50
 88313,user88313,edmonton-alberta-canada,34
@@ -17505,7 +17505,7 @@ User-ID,User-name,Location,Age
 90534,user90534,cagliari-sardegna-italy,35
 90542,user90542,margate-queensland-australia,24
 90551,user90551,parma-emilia romagna-italy,40
-90564,user90564,burlington-ontario-canada,38
+90564,user90564,burlington-usa,-ontario-canada,38
 90565,user90565,genoa-liguria,25
 90588,user90588,oxford-england-united kingdom,26
 90609,user90609,blacksburg-virginia-usa,20
@@ -17898,7 +17898,7 @@ User-ID,User-name,Location,Age
 92649,user92649,prarieville-louisiana-usa,15
 92650,user92650,tempe-arizona-usa,58
 92652,user92652,saint john-new brunswick-canada,32
-92658,user92658,burlington-washington-usa,39
+92658,user92658,burlington-usa,-washington-usa,39
 92659,user92659,burnley-victoria-australia,26
 92664,user92664,calgary-alberta-canada,49
 92665,user92665,st. louis-missouri-usa,43
@@ -17919,7 +17919,7 @@ User-ID,User-name,Location,Age
 92724,user92724,woodburn-oregon-usa,35
 92727,user92727,marietta-georgia-usa,33
 92749,user92749,rancho cordova-california-usa,38
-92754,user92754,saginaw-michigan,17
+92754,user92754,saginaw-michigan-usa,17
 92761,user92761,jena-thueringen-germany,29
 92766,user92766,east hartford-connecticut-usa,70
 92776,user92776,nepean-ontario-canada,26
@@ -18729,7 +18729,7 @@ User-ID,User-name,Location,Age
 96567,user96567,seattle-washington-usa,62
 96571,user96571,louisville-kentucky-usa,45
 96575,user96575,zagreb-n/a-croatia,34
-96579,user96579,st. louis-missouri,43
+96579,user96579,st. louis-missouri-usa,43
 96590,user96590,brownsville-pa-usa,32
 96591,user96591,great neck-new york-usa,21
 96595,user96595,hartsdale-new york-usa,33
@@ -18990,7 +18990,7 @@ User-ID,User-name,Location,Age
 98045,user98045,redfern-new south wales-australia,23
 98049,user98049,hummelstown--usa,61
 98061,user98061,frankfurt-hessen-germany,35
-98070,user98070,st charles-missouri,25
+98070,user98070,st charles-missouri-usa,25
 98073,user98073,tijeras-new mexico-usa,53
 98076,user98076,middletown-new york-usa,34
 98078,user98078,rochester-michigan-usa,54
@@ -19340,7 +19340,7 @@ User-ID,User-name,Location,Age
 99847,user99847,den haag-n/a-netherlands,56
 99848,user99848,flagstaff hill-south australia-australia,55
 99857,user99857,vitoria-basque country-spain,19
-99865,user99865,burlington-massachusetts-usa,39
+99865,user99865,burlington-usa,-massachusetts-usa,39
 99873,user99873,san jose-california-usa,52
 99882,user99882,bolton-england-united kingdom,20
 99887,user99887,birmingham-england-united kingdom,25
@@ -19447,7 +19447,7 @@ User-ID,User-name,Location,Age
 100434,user100434,grasberg-niedersachsen-germany,20
 100435,user100435,tübingen-baden-wuerttemberg-germany,29
 100438,user100438,townsville-queensland-australia,44
-100440,user100440,alexandria-louisiana-usa & canada,31
+100440,user100440,alexandria-louisiana-canada,31
 100442,user100442,calgary-alberta-canada,48
 100449,user100449,watford-england-united kingdom,20
 100454,user100454,jacksonville-florida-usa,23
@@ -20315,7 +20315,7 @@ User-ID,User-name,Location,Age
 104867,user104867,weymouth-massachusetts-usa,49
 104869,user104869,fraserburgh-scotland-united kingdom,31
 104871,user104871,skokie-illinois-usa,20
-104872,user104872,edmonton-alberta,23
+104872,user104872,edmonton-alberta-canada,23
 104875,user104875,neyagawa-osaka-japan,28
 104880,user104880,madison-wisconsin-usa,21
 104883,user104883,houston-texas-usa,73
@@ -20719,7 +20719,7 @@ User-ID,User-name,Location,Age
 106956,user106956,portland-maine-usa,44
 106959,user106959,hospitalet de llobregat-barcelona-spain,20
 106966,user106966,richmond-virginia-usa,32
-106970,user106970,gijón-asturias,30
+106970,user106970,gijón-asturias-spain,30
 106979,user106979,san francisco-california-usa,34
 106988,user106988,san diego-california-usa,52
 107005,user107005,denver-colorado-usa,54
@@ -21067,7 +21067,7 @@ User-ID,User-name,Location,Age
 108832,user108832,riyadh-n/a-saudi arabia,57
 108836,user108836,seattle-washington-usa,29
 108854,user108854,winston-salem-north carolina-usa,32
-108856,user108856,gainesville-florida-alachua,60
+108856,user108856,gainesville-florida-alachua-usa,60
 108864,user108864,bonn-nordrhein-westfalen-germany,26
 108870,user108870,allentown-pennsylvania-usa,30
 108882,user108882,chagrin falls-ohio-usa,19
@@ -21658,7 +21658,7 @@ User-ID,User-name,Location,Age
 111946,user111946,hamburg-hamburg-germany,27
 111947,user111947,albuquerque-new mexico-usa,30
 111953,user111953,halifax-nova scotia-canada,19
-111954,user111954,burlington-ontario-canada,25
+111954,user111954,burlington-usa,-ontario-canada,25
 111969,user111969,madrid-madrid-spain,44
 111979,user111979,seattle-washington-usa,24
 111981,user111981,wilmette-illinois-usa,70
@@ -21792,7 +21792,7 @@ User-ID,User-name,Location,Age
 112688,user112688,tregear-new south wales-australia,48
 112693,user112693,bellerose-new york-usa,28
 112707,user112707,elliminyt-victoria-australia,79
-112709,user112709,stockport-cheshire-england,42
+112709,user112709,stockport-cheshire-england-united kingdom,42
 112711,user112711,penfield-pennsylvania-usa,45
 112719,user112719,duluth-minnesota-usa,63
 112722,user112722,geneva-geneva-switzerland,44
@@ -21844,7 +21844,7 @@ User-ID,User-name,Location,Age
 112931,user112931,wichita-kansas-usa,34
 112932,user112932,austin-texas-usa,34
 112933,user112933,valladolid-castilla y leon-spain,38
-112940,user112940,burlington-massachusetts-usa,11
+112940,user112940,burlington-usa,-massachusetts-usa,11
 112946,user112946,ringwood-oklahoma-usa,51
 112953,user112953,davenport-iowa-usa,31
 112955,user112955,round rock-texas-usa,33
@@ -22279,7 +22279,7 @@ User-ID,User-name,Location,Age
 115208,user115208,van buren-missouri-usa,16
 115224,user115224,miami-florida-usa,25
 115227,user115227,vancouver-british columbia-canada,59
-115231,user115231,solon-ohio,49
+115231,user115231,solon-ohio-usa49
 115234,user115234,st. peters-missouri-usa,32
 115238,user115238,bethpage-new york-usa,25
 115247,user115247,montreal-quebec-canada,14
@@ -22545,7 +22545,7 @@ User-ID,User-name,Location,Age
 116563,user116563,seattle-washington-usa,37
 116565,user116565,antioch-tennessee-usa,40
 116577,user116577,powhatan-virginia-usa,41
-116582,user116582,minneapolis-minnesota,32
+116582,user116582,minneapolis-minnesota-usa,32
 116587,user116587,chesterfield-missouri-usa,9
 116599,user116599,tehran-tehran-iran,29
 116600,user116600,northbrook-illinois-usa,37
@@ -22556,7 +22556,7 @@ User-ID,User-name,Location,Age
 116630,user116630,syracuse-new york-usa,61
 116634,user116634,manteca-california-usa,36
 116644,user116644,basingstoke-england-united kingdom,39
-116653,user116653,cambridge-england,20
+116653,user116653,cambridge-england-united kingdom,20
 116656,user116656,madrid-madrid-spain,21
 116664,user116664,naperville-illinois-usa,60
 116669,user116669,london-england-united kingdom,42
@@ -22642,7 +22642,7 @@ User-ID,User-name,Location,Age
 117111,user117111,toronto-ontario-canada,30
 117112,user117112,new westminster-british columbia-canada,25
 117113,user117113,milwaukee-wisconsin-usa,35
-117115,user117115,vancouver-washington,28
+117115,user117115,vancouver-washington-usa,28
 117116,user117116,st. peters-missouri-usa,30
 117123,user117123,valley village-california-usa,30
 117124,user117124,cranbrook-queensland-australia,33
@@ -22666,7 +22666,7 @@ User-ID,User-name,Location,Age
 117186,user117186,coventry-england-united kingdom,31
 117188,user117188,sacramento-california-usa,48
 117200,user117200,omaha-nebraska-usa,20
-117210,user117210,st louis-missouri,35
+117210,user117210,st louis-missouri-usa,35
 117215,user117215,levittown-new york-usa,27
 117218,user117218,vancouver-british columbia-canada,32
 117222,user117222,augsburg-bayern-germany,34
@@ -22739,7 +22739,7 @@ User-ID,User-name,Location,Age
 117581,user117581,alton-illinois-usa,41
 117593,user117593,fredericton-new brunswick-canada,31
 117594,user117594,moline-illinois-usa,26
-117603,user117603,burlington-vermont-usa,25
+117603,user117603,burlington-usa,-vermont-usa,25
 117609,user117609,norman-oklahoma-usa,52
 117618,user117618,seattle-washington-usa,41
 117619,user117619,nashua-new hampshire-usa,50
@@ -22896,7 +22896,7 @@ User-ID,User-name,Location,Age
 118446,user118446,londonderry-new hampshire-usa,33
 118450,user118450,naperville-illinois-usa,48
 118455,user118455,lansing-illinois-usa,40
-118458,user118458,nottingham-england,29
+118458,user118458,nottingham-england-united kingdom,29
 118468,user118468,inverness-illinois-usa,29
 118469,user118469,cadott-wisconsin-usa,34
 118475,user118475,portage-wisconsin-usa,22
@@ -23121,7 +23121,7 @@ User-ID,User-name,Location,Age
 119567,user119567,pensacola-florida-usa,27
 119575,user119575,north vancouver-british columbia-canada,30
 119578,user119578,bay city-,20
-119579,user119579,grosse pointe farms-michigan,37
+119579,user119579,grosse pointe farms-michigan-usa,37
 119580,user119580,pensacola-florida-usa,14
 119583,user119583,cicero-indiana-usa,19
 119584,user119584,santiago-region metropolitana-chile,19
@@ -23704,7 +23704,7 @@ User-ID,User-name,Location,Age
 122738,user122738,coal township-pennsylvania-usa,15
 122740,user122740,leicestershire-england-united kingdom,23
 122741,user122741,meadow lake-saskatchewan-canada,25
-122743,user122743,spokane-washington,36
+122743,user122743,spokane-washington-usa,36
 122747,user122747,houston-texas-usa,45
 122751,user122751,innsbruck-tyrol-austria,26
 122766,user122766,hamburg-hamburg-germany,22
@@ -24434,7 +24434,7 @@ User-ID,User-name,Location,Age
 126396,user126396,baltimore-maryland-usa,11
 126402,user126402,fenton-missouri-usa,54
 126404,user126404,warwick-new york-usa,38
-126408,user126408,burlington-vermont-usa,20
+126408,user126408,burlington-usa,-vermont-usa,20
 126410,user126410,columbia-missouri-usa,60
 126411,user126411,moises s. bertoni-caazapa-paraguay,26
 126415,user126415,aluqueruqe-new mexico-usa,14
@@ -24497,7 +24497,7 @@ User-ID,User-name,Location,Age
 126697,user126697,hershey-pennsylvania-usa,30
 126706,user126706,irvine-california-usa,36
 126707,user126707,narbonne-languedoc-roussillon-france,28
-126713,user126713,burlington-north carolina-usa,45
+126713,user126713,burlington-usa,-north carolina-usa,45
 126716,user126716,palmer-alaska-usa,37
 126720,user126720,mt. pleasant-michigan-usa,50
 126726,user126726,stone mountain-georgia-usa,34
@@ -24530,7 +24530,7 @@ User-ID,User-name,Location,Age
 126860,user126860,portland-oregon-usa,28
 126861,user126861,colorado springs-colorado-usa,51
 126862,user126862,hong kong-n/a-hong kong,21
-126866,user126866,northglenn-colorado,43
+126866,user126866,northglenn-colorado-usa,43
 126870,user126870,halifax-nova scotia-canada,17
 126874,user126874,recklinghausen-nordrhein-westfalen-germany,20
 126878,user126878,campbell river-british columbia-canada,55
@@ -24870,7 +24870,7 @@ User-ID,User-name,Location,Age
 128622,user128622,tinley park-illinois-usa,23
 128623,user128623,zürich-zürich-switzerland,41
 128624,user128624,oberhausen-nordrhein-westfalen-germany,20
-128628,user128628,anna-ohio,22
+128628,user128628,anna-ohio-usa22
 128631,user128631,palencia-castilla y leon-spain,28
 128633,user128633,mount prospect-illinois-usa,27
 128639,user128639,st. louis-,57
@@ -24912,7 +24912,7 @@ User-ID,User-name,Location,Age
 128799,user128799,vancouver-british columbia-canada,31
 128804,user128804,mesa-arizona-usa,43
 128809,user128809,ourense-ourense-spain,34
-128834,user128834,keswick-cumbria-england,14
+128834,user128834,keswick-cumbria-england-united kingdom,14
 128835,user128835,bellingham-washington-usa,60
 128838,user128838,arlington-virginia-usa,23
 128841,user128841,melrose-massachusetts-usa,42
@@ -25567,7 +25567,7 @@ User-ID,User-name,Location,Age
 132130,user132130,hiedelberg-hamburg-germany,26
 132131,user132131,titusville-pennsylvania-usa,68
 132133,user132133,fairfield-california-usa,23
-132136,user132136,berga-berguedà-berguedà,24
+132136,user132136,berga-berguedà-berguedà-spain,24
 132140,user132140,wayland-michigan-usa,33
 132142,user132142,henderson-nevada-usa,43
 132143,user132143,mt. view-missouri-usa,60
@@ -25640,7 +25640,7 @@ User-ID,User-name,Location,Age
 132476,user132476,rolla-missouri-usa,34
 132479,user132479,jefferson city-tennessee-usa,21
 132485,user132485,st louis-missouri-usa,28
-132487,user132487,burlington-ontario-canada,22
+132487,user132487,burlington-usa,-ontario-canada,22
 132494,user132494,düsseldorf-nordrhein-westfalen-germany,30
 132500,user132500,fürth-,29
 132505,user132505,hamburg-hamburg-germany,32
@@ -25883,7 +25883,7 @@ User-ID,User-name,Location,Age
 133706,user133706,palmyra-western australia-australia,30
 133708,user133708,pictou-nova scotia-canada,58
 133709,user133709,san antonio-texas-usa,37
-133723,user133723,burlington-wisconsin-usa,17
+133723,user133723,burlington-usa,-wisconsin-usa,17
 133732,user133732,andover-minnesota-usa,21
 133733,user133733,gold coast-queensland-australia,22
 133736,user133736,albuquerque-new mexico-usa,14
@@ -26141,7 +26141,7 @@ User-ID,User-name,Location,Age
 134988,user134988,pocatello-idaho-usa,26
 134990,user134990,islamabad-,24
 134992,user134992,stanton-england-united kingdom,33
-134997,user134997,st. louis-missouri,28
+134997,user134997,st. louis-missouri-usa,28
 134998,user134998,la canada-california-usa,48
 134999,user134999,scottsburg-indiana-usa,28
 135006,user135006,salt lake city-utah-usa,47
@@ -26201,7 +26201,7 @@ User-ID,User-name,Location,Age
 135321,user135321,fayetteville-north carolina-usa,46
 135322,user135322,essex junction-vermont-usa,47
 135324,user135324,olympia-washington-usa,50
-135329,user135329,paget-n/a-bermuda,40
+135329,user135329,paget-n/a-bermuda-usa,40
 135330,user135330,san clemente-california-usa,61
 135331,user135331,lewiston-maine-usa,30
 135337,user135337,st. paul-minnesota-usa,14
@@ -26725,7 +26725,7 @@ User-ID,User-name,Location,Age
 137808,user137808,bethany-oklahoma-usa,30
 137817,user137817,ipswich-queensland-australia,29
 137823,user137823,teaneck-new jersey-usa,17
-137833,user137833,athens-ohio,34
+137833,user137833,athens-ohio-usa34
 137835,user137835,oakridge-oregon-usa,40
 137839,user137839,powell river-british columbia-canada,43
 137840,user137840,philadelphia-pennsylvania-usa,34
@@ -27242,7 +27242,7 @@ User-ID,User-name,Location,Age
 140324,user140324,canberra-australian capital territory-australia,26
 140334,user140334,sandefjord-vestfold-norway,28
 140337,user140337,tucson-arizona-usa,27
-140340,user140340,zeeland-michigan,42
+140340,user140340,zeeland-michigan-usa,42
 140341,user140341,atlanta-georgia-usa,15
 140345,user140345,yutz-moselle-france,25
 140346,user140346,coquitlam-british columbia-canada,45
@@ -27682,7 +27682,7 @@ User-ID,User-name,Location,Age
 142524,user142524,detroit-michigan-usa,36
 142534,user142534,leesburg-virginia-usa,48
 142537,user142537,kitchener-ontario-canada,32
-142540,user142540,derbyshire-england-england,51
+142540,user142540,derbyshire-england-england-united kingdom,51
 142541,user142541,las vegas-nevada-usa,24
 142545,user142545,kekaha-hawaii-usa,50
 142549,user142549,brussels-brussels capital region-belgium,26
@@ -28756,7 +28756,7 @@ User-ID,User-name,Location,Age
 147925,user147925,calgary-alberta-canada,44
 147936,user147936,rosser-manitoba-canada,39
 147941,user147941,steyr-oberösterreich-austria,45
-147943,user147943,so burlington-vermont-usa,54
+147943,user147943,so burlington-usa,-vermont-usa,54
 147944,user147944,wantage-new jersey-usa,61
 147955,user147955,reading-berkshire-united kingdom,31
 147956,user147956,dortmund-nordrhein-westfalen-germany,23
@@ -30792,7 +30792,7 @@ User-ID,User-name,Location,Age
 159133,user159133,tomball-texas-usa,33
 159137,user159137,waban-massachusetts-usa,42
 159143,user159143,hanson-massachusetts-usa,40
-159144,user159144,burlington-vermont-usa,38
+159144,user159144,burlington-usa,-vermont-usa,38
 159146,user159146,tustin-california-usa,26
 159147,user159147,el paso-texas-usa,31
 159175,user159175,east brunswick-new jersey,24
@@ -31129,7 +31129,7 @@ User-ID,User-name,Location,Age
 161146,user161146,ottawa-ontario-canada,51
 161157,user161157,bozeman-montana-usa,55
 161167,user161167,salzburg-salzburg-austria,27
-161170,user161170,burlington-vermont-usa,28
+161170,user161170,burlington-usa,-vermont-usa,28
 161173,user161173,kamloops-british columbia-canada,48
 161178,user161178,orlando-,39
 161185,user161185,hagerstown-maryland-usa,30
@@ -31172,7 +31172,7 @@ User-ID,User-name,Location,Age
 161380,user161380,herkimer-new york-usa,16
 161386,user161386,alexander-illinois-usa,47
 161390,user161390,norfolk-virginia-usa,29
-161391,user161391,burlington-vermont-usa,27
+161391,user161391,burlington-usa,-vermont-usa,27
 161393,user161393,garland-texas-usa,27
 161396,user161396,minneapolis-minnesota-usa,37
 161400,user161400,northfield-minnesota-usa,21
@@ -31180,7 +31180,7 @@ User-ID,User-name,Location,Age
 161431,user161431,cary-north carolina-usa,43
 161436,user161436,green bay-wisconsin-usa,33
 161441,user161441,ottawa-ontario-canada,27
-161443,user161443,leonidas-michigan,58
+161443,user161443,leonidas-michigan-usa,58
 161448,user161448,brentwood-new york-usa,57
 161452,user161452,enicintas-california-usa,31
 161453,user161453,springfield-missouri-usa,19
@@ -31525,7 +31525,7 @@ User-ID,User-name,Location,Age
 163153,user163153,willow spring-north carolina-usa,28
 163169,user163169,shepherdsville-kentucky-usa,27
 163177,user163177,williamstown-new jersey-usa,42
-163179,user163179,berlin-berlin,25
+163179,user163179,berlin-berlin-germany,25
 163181,user163181,valencia-valencia-spain,30
 163184,user163184,san juan-puerto rico-usa,41
 163187,user163187,germantown-maryland-usa,35
@@ -31597,7 +31597,7 @@ User-ID,User-name,Location,Age
 163534,user163534,northampton-england-united kingdom,37
 163539,user163539,glen ellyn-illinois-usa,59
 163544,user163544,fort smith-arkansas-usa,58
-163545,user163545,burlington-vermont-usa,65
+163545,user163545,burlington-usa,-vermont-usa,65
 163548,user163548,andújar-jaén-spain,33
 163553,user163553,antwerp-antwerp-belgium,49
 163554,user163554,cambridge-ontario-canada,35
@@ -31860,7 +31860,7 @@ User-ID,User-name,Location,Age
 164874,user164874,jacksonville-florida-usa,22
 164884,user164884,north vancouver-british columbia-canada,24
 164896,user164896,wilsonville-oregon-usa,43
-164901,user164901,burlington-ontario-canada,38
+164901,user164901,burlington-usa,-ontario-canada,38
 164905,user164905,tuscaloosa-alabama-usa,29
 164919,user164919,horton-michigan-usa,35
 164922,user164922,garden valley-california-usa,69
@@ -32075,7 +32075,7 @@ User-ID,User-name,Location,Age
 166023,user166023,milford-new hampshire-usa,48
 166030,user166030,st charles-illinois-usa,33
 166035,user166035,west covina-california-usa,64
-166041,user166041,burlington-wisconsin-usa,34
+166041,user166041,burlington-usa,-wisconsin-usa,34
 166049,user166049,dortmund-nordrhein-westfalen-germany,26
 166055,user166055,clausthal-zellerfeld-niedersachsen-germany,24
 166060,user166060,san pedro-laguna-n/a-philippines,13
@@ -32187,7 +32187,7 @@ User-ID,User-name,Location,Age
 166606,user166606,sydney-new south wales-australia,11
 166610,user166610,santa cruz-california-usa,30
 166613,user166613,ormond beach-florida-usa,19
-166615,user166615,colchester-england,31
+166615,user166615,colchester-england-united kingdom,31
 166616,user166616,wolfsburg-niedersachsen-germany,47
 166617,user166617,swansea-wales-united kingdom,55
 166618,user166618,baton rouge-louisiana-usa,18
@@ -32779,7 +32779,7 @@ User-ID,User-name,Location,Age
 169655,user169655,fox creek-alberta-canada,58
 169657,user169657,carbondale-colorado-usa,56
 169659,user169659,montreal-quebec-canada,21
-169668,user169668,windom-minnesota,35
+169668,user169668,windom-minnesota-usa,35
 169673,user169673,lake elmo-minnesota-usa,13
 169681,user169681,cottage grove-minnesota-usa,41
 169682,user169682,minneapolis-minnesota-usa,26
@@ -32810,7 +32810,7 @@ User-ID,User-name,Location,Age
 169788,user169788,belle harbor-new york-usa,43
 169789,user169789,gelnhausen-hessen-germany,23
 169800,user169800,london-ontario-canada,24
-169802,user169802,gillingham-kent-england,30
+169802,user169802,gillingham-kent-england-united kingdom,30
 169807,user169807,lake villa-illinois-usa,42
 169814,user169814,belgrave-victoria-australia,40
 169821,user169821,mobile-alabama-usa,44
@@ -32868,7 +32868,7 @@ User-ID,User-name,Location,Age
 170085,user170085,langerwehe-nordrhein westfalen-germany,39
 170090,user170090,monroe-washington-usa,55
 170104,user170104,dublin-ohio-usa,19
-170118,user170118,barcelona-barcelona-catalonia,32
+170118,user170118,barcelona-barcelona-catalonia-spain,32
 170128,user170128,mainz-rheinland-pfalz-germany,24
 170132,user170132,huron-ohio-usa,70
 170133,user170133,tyresö-storstockholm-sweden,36
@@ -33347,7 +33347,7 @@ User-ID,User-name,Location,Age
 172518,user172518,berlin-berlin-germany,25
 172522,user172522,albuquerque-new mexico-usa,41
 172531,user172531,portland-oregon-usa,11
-172533,user172533,burlington-ontario-canada,13
+172533,user172533,burlington-usa,-ontario-canada,13
 172543,user172543,lisbon-n/a-portugal,27
 172553,user172553,siena-toscana-italy,28
 172558,user172558,chelsea-quebec-canada,18
@@ -33777,7 +33777,7 @@ User-ID,User-name,Location,Age
 174610,user174610,roseburg-oregon-usa,47
 174616,user174616,wichita-kansas-usa,29
 174619,user174619,la mesa-california-usa,63
-174625,user174625,houston-texas,32
+174625,user174625,houston-texas-usa,32
 174630,user174630,anchorage-alaska-usa,49
 174633,user174633,nashville-tennessee-usa,31
 174635,user174635,florida city-florida-usa,29
@@ -34014,7 +34014,7 @@ User-ID,User-name,Location,Age
 175880,user175880,bury st edmunds-england-united kingdom,0
 175886,user175886,hindmarsh island-south australia-australia,52
 175891,user175891,los palacios-sevilla-spain,24
-175892,user175892,white bear lake-minnesota,71
+175892,user175892,white bear lake-minnesota-usa,71
 175898,user175898,west orange-new jersey-usa,71
 175902,user175902,bundaberg-queensland-australia,14
 175905,user175905,halifax-nova scotia-canada,32
@@ -34210,7 +34210,7 @@ User-ID,User-name,Location,Age
 176887,user176887,surrey-england-united kingdom,30
 176894,user176894,salt lake city-utah-usa,32
 176895,user176895,oklahoma city-oklahoma-usa,50
-176902,user176902,o`fallon-missouri-usa,25
+176902,user176902,ofallon-missouri-usa,25
 176903,user176903,irving-texas-usa,24
 176918,user176918,coppell-texas-usa,32
 176921,user176921,bluewater-queensland-australia,27
@@ -34851,7 +34851,7 @@ User-ID,User-name,Location,Age
 180204,user180204,cleveland-minnesota-usa,44
 180206,user180206,bath-england-united kingdom,27
 180210,user180210,madrid-madrid-spain,33
-180231,user180231,budapest and boston-budapest and ma-hungary and usa,30
+180231,user180231,budapest and boston-budapest and ma-usa,30
 180242,user180242,madrid-madrid-spain,47
 180248,user180248,alhaurin el garnde-malaga spain-spain,24
 180257,user180257,fuengirola-n/a-spain,17
@@ -35341,7 +35341,7 @@ User-ID,User-name,Location,Age
 182824,user182824,simi valley-california-usa,37
 182831,user182831,groves-texas-usa,54
 182834,user182834,espoo-etelä-suomen lääni-finland,19
-182837,user182837,burlington-vermont-usa,26
+182837,user182837,burlington-usa,-vermont-usa,26
 182838,user182838,cumberland-maryland-usa,26
 182840,user182840,denton-texas-usa,23
 182843,user182843,ghaziabad-uttar pradesh-india,31
@@ -35414,7 +35414,7 @@ User-ID,User-name,Location,Age
 183196,user183196,peoria-illinois-usa,33
 183199,user183199,woodside-california-usa,61
 183200,user183200,highland-california-usa,37
-183202,user183202,burlington-ontario-canada,53
+183202,user183202,burlington-usa,-ontario-canada,53
 183205,user183205,glasgow-scotland-united kingdom,22
 183207,user183207,cocoa-florida-usa,40
 183210,user183210,foxboro-wisconsin-usa,46
@@ -36587,7 +36587,7 @@ User-ID,User-name,Location,Age
 189691,user189691,honolulu-hawaii-usa,54
 189700,user189700,minden-nordrhein-westfalen-germany,41
 189706,user189706,canberra-australian capital territory-australia,47
-189708,user189708,burlington-ontario-canada,28
+189708,user189708,burlington-usa,-ontario-canada,28
 189714,user189714,beverly-massachusetts-usa,53
 189718,user189718,oxford-ohio-usa,24
 189721,user189721,oxford-england-united kingdom,21
@@ -36805,7 +36805,7 @@ User-ID,User-name,Location,Age
 190910,user190910,tamborine-queensland-australia,55
 190921,user190921,toronto-ontario-canada,20
 190922,user190922,romulus-new york-usa,41
-190923,user190923,burlington-vermont-usa,45
+190923,user190923,burlington-usa,-vermont-usa,45
 190925,user190925,hobe sound-florida-usa,51
 190927,user190927,cheltenham-victoria-australia,0
 190937,user190937,harrisburg-pennsylvania-usa,54
@@ -37055,7 +37055,7 @@ User-ID,User-name,Location,Age
 192228,user192228,tazewell-virginia-usa,53
 192230,user192230,topeka-kansas-usa,30
 192235,user192235,wabash-indiana-usa,32
-192236,user192236,horley-surrey,24
+192236,user192236,horley-surrey-canada,24
 192240,user192240,munster-indiana-usa,50
 192243,user192243,león-castilla y león-spain,39
 192244,user192244,astoria-new york-usa,26
@@ -37583,7 +37583,7 @@ User-ID,User-name,Location,Age
 195097,user195097,hull-yorkshire-united kingdom,28
 195100,user195100,franklin-tennessee-usa,52
 195101,user195101,hallowell-maine-usa,55
-195102,user195102,lyon-rhône alpes,26
+195102,user195102,lyon-rhône alpes-france,26
 195105,user195105,brattleboro-,61
 195108,user195108,singapore-n/a-singapore,21
 195116,user195116,newcastle upon tyne-tyne & wear-united kingdom,27
@@ -37841,7 +37841,7 @@ User-ID,User-name,Location,Age
 196435,user196435,seattle-washington-usa,38
 196436,user196436,nashua-new hampshire-usa,25
 196441,user196441,aston-pennsylvania-usa,53
-196442,user196442,burlington-new jersey-usa,30
+196442,user196442,burlington-usa,-new jersey-usa,30
 196443,user196443,shawnee-kansas-usa,35
 196444,user196444,münster-nordrhein-westfalen-germany,30
 196445,user196445,muscat-mina al fahal-oman,64
@@ -37906,7 +37906,7 @@ User-ID,User-name,Location,Age
 196711,user196711,mesa-arizona-usa,42
 196714,user196714,houston-texas-usa,35
 196715,user196715,montpelier-,43
-196716,user196716,colorado springs-colorado,50
+196716,user196716,colorado springs-colorado-usa,50
 196721,user196721,austin-texas-usa,55
 196722,user196722,saint paul-minnesota-usa,40
 196723,user196723,new port richey-florida-usa,51
@@ -38011,7 +38011,7 @@ User-ID,User-name,Location,Age
 197297,user197297,port dover-ontario-canada,60
 197298,user197298,houghton-michigan-usa,30
 197299,user197299,toronto-ontario-canada,47
-197301,user197301,burlington-vermont-usa,29
+197301,user197301,burlington-usa,-vermont-usa,29
 197304,user197304,maerne-veneto-italy,32
 197307,user197307,kelkheim-hessen-germany,30
 197314,user197314,palm coast-florida-usa,60
@@ -38063,7 +38063,7 @@ User-ID,User-name,Location,Age
 197548,user197548,st. louis-missouri-usa,52
 197550,user197550,galati-galati-romania,40
 197561,user197561,düsseldorf-nordrhein-westfalen-germany,38
-197562,user197562,barcelona-catalonia-catalonia,26
+197562,user197562,barcelona-catalonia-catalonia-spain,26
 197571,user197571,padova-veneto-italy,26
 197574,user197574,ottawa-ontario-canada,17
 197582,user197582,mansfield-pennsylvania-usa,21
@@ -38142,7 +38142,7 @@ User-ID,User-name,Location,Age
 197971,user197971,johnson city-tennessee-usa,34
 197978,user197978,rome-lazio-italy,32
 197984,user197984,drums-pennsylvania-usa,62
-197997,user197997,burlington-wisconsin-usa,29
+197997,user197997,burlington-usa,-wisconsin-usa,29
 198001,user198001,minneapolis-minnesota-usa,46
 198002,user198002,san antonio-texas-usa,29
 198003,user198003,carmichael-california-usa,48
@@ -38197,7 +38197,7 @@ User-ID,User-name,Location,Age
 198289,user198289,new york city-new york-usa,45
 198290,user198290,virginia beach-virginia-usa,49
 198292,user198292,london-england-united kingdom,31
-198295,user198295,burlington-ontario-canada,29
+198295,user198295,burlington-usa,-ontario-canada,29
 198303,user198303,cambridge-massachusetts-usa,47
 198304,user198304,ormskirk-lancashire-united kingdom,30
 198306,user198306,winchester-connecticut-usa,15
@@ -38346,7 +38346,7 @@ User-ID,User-name,Location,Age
 199042,user199042,st. john`s-newfoundland-canada,28
 199045,user199045,new york-new york-usa,30
 199047,user199047,miami-florida-usa,37
-199050,user199050,edmonton-alberta,33
+199050,user199050,edmonton-alberta-canada,33
 199054,user199054,alexandria-virginia-usa,33
 199058,user199058,apex-north carolina-usa,27
 199063,user199063,huddersfield-england-united kingdom,25
@@ -38550,7 +38550,7 @@ User-ID,User-name,Location,Age
 200204,user200204,odessa-texas-usa,57
 200209,user200209,north waterboro-maine-usa,41
 200219,user200219,saint louis-missouri-usa,40
-200226,user200226,burlington-ontario-canada,39
+200226,user200226,burlington-usa,-ontario-canada,39
 200230,user200230,elkview-west virginia-usa,26
 200232,user200232,lacey-washington-usa,57
 200233,user200233,las vegas-nevada-usa,7
@@ -39506,7 +39506,7 @@ User-ID,User-name,Location,Age
 205303,user205303,santa fe-new mexico-usa,22
 205314,user205314,spartanburg-south carolina-usa,26
 205318,user205318,surrey-british columbia-canada,17
-205328,user205328,london-england,29
+205328,user205328,london-england-united kingdom,29
 205337,user205337,new preston-connecticut-usa,66
 205338,user205338,new plymouth-taranaki-new zealand,30
 205348,user205348,london-england-united kingdom,31
@@ -40241,7 +40241,7 @@ User-ID,User-name,Location,Age
 208741,user208741,breda-noord-brabant-netherlands,30
 208744,user208744,bayreuth-bayern-germany,14
 208751,user208751,lafayette-california-usa,55
-208754,user208754,delran-new jersey-burlington,35
+208754,user208754,delran-new jersey-burlington-usa,,35
 208757,user208757,merion station-pennsylvania-usa,46
 208758,user208758,verona-virginia-usa,57
 208761,user208761,st helens-oregon-usa,77
@@ -40358,7 +40358,7 @@ User-ID,User-name,Location,Age
 209299,user209299,san diego-california-usa,19
 209303,user209303,gillespie-illinois-usa,47
 209306,user209306,bedford-indiana-usa,43
-209313,user209313,irving-texas,20
+209313,user209313,irving-texas-usa,20
 209323,user209323,wiesbaden-hessen-germany,34
 209324,user209324,ann arbor-michigan-usa,32
 209327,user209327,moab-utah-usa,33
@@ -40433,7 +40433,7 @@ User-ID,User-name,Location,Age
 209637,user209637,cedar rapids-iowa-usa,45
 209639,user209639,london-england-united kingdom,22
 209643,user209643,grand junction-colorado-usa,66
-209645,user209645,colleyville-texas,62
+209645,user209645,colleyville-texas-usa,62
 209649,user209649,carlow-n/a-ireland,31
 209651,user209651,colne-england-united kingdom,41
 209654,user209654,oakland-california-usa,35
@@ -40733,7 +40733,7 @@ User-ID,User-name,Location,Age
 211183,user211183,glen burnie-maryland-usa,60
 211185,user211185,london-england-united kingdom,39
 211187,user211187,kuranda-queensland-australia,67
-211194,user211194,slough-england-u.k.,22
+211194,user211194,slough-england-united kingdom,22
 211198,user211198,mason-ohio-usa,32
 211199,user211199,driftwood-texas-usa,49
 211205,user211205,houston-texas-usa,30
@@ -41014,7 +41014,7 @@ User-ID,User-name,Location,Age
 212751,user212751,tulsa-oklahoma-usa,33
 212752,user212752,mount clemens-michigan-usa,37
 212758,user212758,canning vale-western australia-australia,37
-212760,user212760,burlington-iowa-usa,43
+212760,user212760,burlington-usa,-iowa-usa,43
 212761,user212761,london-,32
 212771,user212771,mansfield-ohio-usa,36
 212775,user212775,cincinnati-ohio-usa,70
@@ -41089,7 +41089,7 @@ User-ID,User-name,Location,Age
 213102,user213102,gaithersburg-maryland-usa,57
 213104,user213104,laguna niguel-california-usa,54
 213108,user213108,fairhope-alabama-usa,32
-213109,user213109,burlington-ontario-canada,56
+213109,user213109,burlington-usa,-ontario-canada,56
 213111,user213111,etobicoke-ontario-canada,38
 213113,user213113,westmount-quebec-canada,32
 213115,user213115,north scituate-rhode island-usa,51
@@ -41166,7 +41166,7 @@ User-ID,User-name,Location,Age
 213519,user213519,vancouver-british columbia-canada,29
 213522,user213522,wichita-kansas-usa,47
 213531,user213531,bolingbrook-illinois-usa,63
-213532,user213532,burlington-connecticut-usa,40
+213532,user213532,burlington-usa,-connecticut-usa,40
 213535,user213535,terryville-connecticut-usa,37
 213537,user213537,sandpoint-idaho-usa,54
 213538,user213538,ft. lauderdale-florida-usa,46
@@ -41274,7 +41274,7 @@ User-ID,User-name,Location,Age
 214031,user214031,snowmass village-,42
 214035,user214035,bellingham-washington-usa,50
 214041,user214041,cedar rapids-iowa-usa,37
-214042,user214042,burlington-ontario-canada,63
+214042,user214042,burlington-usa,-ontario-canada,63
 214046,user214046,san diego-california-usa,37
 214050,user214050,madrid-madrid-spain,42
 214063,user214063,coupeville-washington-usa,39
@@ -42166,7 +42166,7 @@ User-ID,User-name,Location,Age
 218729,user218729,orlando-florida-usa,19
 218734,user218734,southern pines-north carolina-usa,62
 218736,user218736,transient-british columbia-canada,22
-218737,user218737,london-middx,35
+218737,user218737,london-middx-united kingdom,35
 218742,user218742,woodland park-colorado-usa,57
 218745,user218745,dunedin-n/a-new zealand,50
 218746,user218746,katy-texas-usa,64
@@ -42534,7 +42534,7 @@ User-ID,User-name,Location,Age
 220653,user220653,bronx-new york-usa,29
 220660,user220660,chicago-illinois-usa,63
 220661,user220661,trussville-alabama-canada,41
-220664,user220664,burlington-vermont-usa,28
+220664,user220664,burlington-usa,-vermont-usa,28
 220680,user220680,tampa-florida-usa,72
 220682,user220682,arlington-virginia-usa,52
 220683,user220683,cairo-maadi-egypt,21
@@ -42693,7 +42693,7 @@ User-ID,User-name,Location,Age
 221543,user221543,alta loma-california-usa,46
 221545,user221545,scottsboro-alabama-usa,23
 221550,user221550,moravian falls-n carolina-usa,50
-221552,user221552,christchurch-christchurch,50
+221552,user221552,christchurch-christchurch-new zealand,50
 221553,user221553,frankfurt am main-hessen-germany,27
 221555,user221555,glasgow-scotland-united kingdom,19
 221557,user221557,madison-,30
@@ -43347,7 +43347,7 @@ User-ID,User-name,Location,Age
 224806,user224806,manchester-england-united kingdom,35
 224807,user224807,san antonio-,15
 224809,user224809,nashua-new hampshire-usa,61
-224814,user224814,burlington-vermont-usa,26
+224814,user224814,burlington-usa,-vermont-usa,26
 224819,user224819,sant cugat-barcelona-spain,27
 224832,user224832,...-new york-usa,13
 224843,user224843,beamsville-ontario-canada,81
@@ -43525,7 +43525,7 @@ User-ID,User-name,Location,Age
 225788,user225788,meadville-pennsylvania-usa,28
 225799,user225799,mainz-rheinland-pfalz-germany,37
 225806,user225806,burnaby-british columbia-canada,15
-225808,user225808,seremban-negeri sembilan,18
+225808,user225808,seremban-negeri sembilan-malaysia,18
 225810,user225810,el cajon-california-usa,56
 225812,user225812,gladwyne-pennsylvania-usa,30
 225816,user225816,chicago-illinois-usa,54
@@ -44020,7 +44020,7 @@ User-ID,User-name,Location,Age
 228320,user228320,brooklyn-wisconsin-usa,45
 228321,user228321,santa cruz-california-usa,22
 228327,user228327,maryland heights-missouri-usa,17
-228332,user228332,st. peters-missouri,46
+228332,user228332,st. peters-missouri-usa,46
 228334,user228334,brooklyn-new york-usa,53
 228335,user228335,limoges-limousin-france,26
 228344,user228344,virginia beach-virginia-usa,35
@@ -44281,7 +44281,7 @@ User-ID,User-name,Location,Age
 229635,user229635,oklahoma city-oklahoma-usa,22
 229641,user229641,levelland-texas-usa,68
 229651,user229651,washington-dc-usa,30
-229654,user229654,burlington-iowa-usa,27
+229654,user229654,burlington-usa,-iowa-usa,27
 229656,user229656,austin-texas-usa,30
 229658,user229658,dawsonville-georgia-usa,22
 229665,user229665,barcelona-barcelona-spain,17
@@ -44309,7 +44309,7 @@ User-ID,User-name,Location,Age
 229756,user229756,prineville-oregon-usa,66
 229757,user229757,diemen-noord-holland-netherlands,24
 229767,user229767,mechanicsville-virginia-usa,32
-229768,user229768,highland-michigan,23
+229768,user229768,highland-michigan-usa,23
 229770,user229770,batavia-new york-usa,32
 229772,user229772,adelantoe-california-usa,20
 229780,user229780,painesville-ohio-usa,48
@@ -44442,7 +44442,7 @@ User-ID,User-name,Location,Age
 230490,user230490,binghamton-new york-usa,31
 230492,user230492,cologne-nordrhein-westfalen-germany,35
 230496,user230496,simi valley-california-usa,34
-230497,user230497,oviedo-asturias,27
+230497,user230497,oviedo-asturias-spain,27
 230511,user230511,bilbao-país vasco-spain,53
 230514,user230514,indooroopilly-queensland-australia,31
 230522,user230522,colorado springs-colorado-usa,52
@@ -44945,7 +44945,7 @@ User-ID,User-name,Location,Age
 233084,user233084,midland-michigan-usa,29
 233085,user233085,kalamazoo-michigan-usa,29
 233087,user233087,bay city-michigan-usa,14
-233098,user233098,burlington-new jersey-usa,70
+233098,user233098,burlington-usa,-new jersey-usa,70
 233101,user233101,mosman-new south wales-australia,31
 233112,user233112,richmond-virginia-usa,40
 233119,user233119,lakeville-minnesota-usa,27
@@ -45315,8 +45315,8 @@ User-ID,User-name,Location,Age
 234989,user234989,danville-california-usa,20
 234993,user234993,barcelona-cataluña-spain,23
 235002,user235002,córdoba-córdoba-argentina,39
-235008,user235008,burlington-ontario-canada,28
-235019,user235019,burlington-vermont-usa,23
+235008,user235008,burlington-usa,-ontario-canada,28
+235019,user235019,burlington-usa,-vermont-usa,23
 235028,user235028,glen iris-victoria-australia,33
 235037,user235037,barth-mecklenburg-vorpommern-germany,28
 235038,user235038,bonn-nordrhein-westfalen-germany,30
@@ -45391,7 +45391,7 @@ User-ID,User-name,Location,Age
 235391,user235391,chicago-illinois-usa,38
 235392,user235392,st. louis-missouri-usa,27
 235394,user235394,lleida-cataluña-spain,22
-235396,user235396,tokyo-tokyo,18
+235396,user235396,tokyo-tokyo-japan,18
 235403,user235403,milton keynes-england-united kingdom,28
 235407,user235407,fort worth-texas-usa,28
 235417,user235417,lennox-california-usa,30
@@ -45499,7 +45499,7 @@ User-ID,User-name,Location,Age
 235935,user235935,bridgeton-new jersey-usa,43
 235937,user235937,fribourg-fribourg-switzerland,25
 235940,user235940,new york city-new york-usa,27
-235941,user235941,aurora-colorado,33
+235941,user235941,aurora-colorado-usa,33
 235942,user235942,düsseldorf-nordrhein-westfalen-germany,29
 235946,user235946,buchholz-niedersachsen-germany,40
 235951,user235951,ballwin-missouri-usa,36
@@ -46052,7 +46052,7 @@ User-ID,User-name,Location,Age
 238670,user238670,columbus-ohio-usa,57
 238671,user238671,kirkwood-missouri-usa,44
 238672,user238672,invercargill-n/a-new zealand,42
-238686,user238686,burlington-washington-usa,14
+238686,user238686,burlington-usa,-washington-usa,14
 238697,user238697,vidalia-georgia-usa,46
 238708,user238708,boston-massachusetts-usa,22
 238710,user238710,recco-liguria-italy,28
@@ -46412,7 +46412,7 @@ User-ID,User-name,Location,Age
 240426,user240426,brighton-ontario-canada,55
 240428,user240428,phoenix-arizona-usa,50
 240432,user240432,kolding-jylland-denmark,33
-240438,user240438,wilfleinsdorf-niederoesterreich,16
+240438,user240438,wilfleinsdorf-niederoesterreich-austria,16
 240440,user240440,barcelona-catalunya-spain,30
 240442,user240442,jersey city-new jersey-usa,43
 240444,user240444,albuquerque-new mexico-united kingdom,13
@@ -46885,7 +46885,7 @@ User-ID,User-name,Location,Age
 242903,user242903,albuquerque-new mexico-usa,67
 242908,user242908,seattle-washington-usa,24
 242909,user242909,kingston-ontario-canada,23
-242912,user242912,boulder-colorado,22
+242912,user242912,boulder-colorado-usa,22
 242914,user242914,dallas-texas-usa,43
 242924,user242924,shelton-washington-usa,23
 242926,user242926,st. paul-minnesota-usa,8
@@ -47135,7 +47135,7 @@ User-ID,User-name,Location,Age
 244375,user244375,pasadena-california-usa,47
 244376,user244376,regensburg-bayern-germany,24
 244386,user244386,london-alberta-united kingdom,34
-244389,user244389,houston-texas,60
+244389,user244389,houston-texas-usa,60
 244391,user244391,louisville-kentucky-usa,15
 244400,user244400,west linn-oregon-usa,55
 244402,user244402,lafayette-louisiana-usa,66
@@ -47305,7 +47305,7 @@ User-ID,User-name,Location,Age
 245162,user245162,fallriver-massachusetts-usa,40
 245175,user245175,surprise-arizona-usa,36
 245176,user245176,la mirada-california-usa,63
-245179,user245179,angleton-texas,28
+245179,user245179,angleton-texas-usa,28
 245182,user245182,mardi-new south wales-australia,35
 245184,user245184,chandler-arizona-usa,30
 245188,user245188,halifax-nova scotia-canada,55
@@ -47457,7 +47457,7 @@ User-ID,User-name,Location,Age
 245952,user245952,timaru-canterbury-new zealand,23
 245954,user245954,royal oak-michigan-usa,22
 245958,user245958,camp foster-okinawa-japan,23
-245959,user245959,burlington-ontario-canada,54
+245959,user245959,burlington-usa,-ontario-canada,54
 245975,user245975,münster-nordrhein-westfalen-germany,34
 245978,user245978,iowa city-iowa-usa,28
 245998,user245998,milan-lombardia-italy,22
@@ -47554,7 +47554,7 @@ User-ID,User-name,Location,Age
 246452,user246452,oakville-ontario-canada,41
 246456,user246456,middletown-new jersey-usa,47
 246464,user246464,munich-bayern-germany,38
-246465,user246465,columbus-ohio,34
+246465,user246465,columbus-ohio-usa34
 246468,user246468,berkeley-california-usa,31
 246469,user246469,berlin-maryland-usa,58
 246470,user246470,kimberling city-missouri-usa,31
@@ -47655,7 +47655,7 @@ User-ID,User-name,Location,Age
 246984,user246984,concord-california-usa,59
 246985,user246985,manchester-new hampshire-usa,32
 246995,user246995,harrisburg-illinois-usa,19
-247002,user247002,burlington-vermont-usa,29
+247002,user247002,burlington-usa,-vermont-usa,29
 247010,user247010,manchester-new hampshire-usa,34
 247014,user247014,boston-massachusetts-usa,29
 247015,user247015,saint louis-,36
@@ -48081,7 +48081,7 @@ User-ID,User-name,Location,Age
 249052,user249052,franklin-indiana-usa,34
 249058,user249058,fresno-california-usa,38
 249063,user249063,los angeles-california-usa,39
-249064,user249064,burlington-north carolina,43
+249064,user249064,burlington-usa,-north carolina,43
 249068,user249068,chicago-illinois-usa,21
 249072,user249072,krosno-n/a-poland,32
 249077,user249077,barcelona-barcelona-spain,0
@@ -48600,7 +48600,7 @@ User-ID,User-name,Location,Age
 251409,user251409,hayward-california-usa,29
 251410,user251410,melbourne-victoria-australia,15
 251415,user251415,mesa-arizona-usa,21
-251419,user251419,harpenden-hertfordshire-england,54
+251419,user251419,harpenden-hertfordshire-england-united kingdom,54
 251422,user251422,cumberland-maryland-usa,23
 251426,user251426,blackpool-england-united kingdom,51
 251438,user251438,germantown-maryland-usa,30
@@ -48926,7 +48926,7 @@ User-ID,User-name,Location,Age
 252884,user252884,wetzikon-zurich-switzerland,33
 252896,user252896,bedford-new hampshire-usa,36
 252900,user252900,utrecht-utrecht-netherlands,21
-252901,user252901,ponce-puerto rico-puerto rico,25
+252901,user252901,ponce-puerto rico-puerto rico-usa,25
 252903,user252903,canterbury-england-united kingdom,21
 252904,user252904,hannover-niedersachsen-germany,25
 252908,user252908,vancouver-british columbia-canada,26
@@ -49218,7 +49218,7 @@ User-ID,User-name,Location,Age
 254268,user254268,arlington-texas-usa,48
 254270,user254270,solon-iowa-usa,34
 254271,user254271,washago-ontario-canada,55
-254280,user254280,new paris-ohio,34
+254280,user254280,new paris-ohio-usa34
 254288,user254288,minneapolis-minnesota-usa,23
 254292,user254292,rockford-illinois-usa,35
 254294,user254294,medford-massachusetts-usa,25
@@ -49849,7 +49849,7 @@ User-ID,User-name,Location,Age
 257541,user257541,columbia-missouri-usa,27
 257543,user257543,halifax-nova scotia-canada,47
 257548,user257548,ray-michigan usa-,45
-257550,user257550,popular bluff-missouri,37
+257550,user257550,popular bluff-missouri-usa,37
 257551,user257551,indanopolis-indiana-usa,54
 257557,user257557,canton-ohio-usa,31
 257560,user257560,wagga wagga--australia,32
@@ -50032,7 +50032,7 @@ User-ID,User-name,Location,Age
 258402,user258402,wellington-n/a-new zealand,40
 258404,user258404,louisville-kentucky-usa,45
 258406,user258406,stone mountain-georgia-usa,49
-258409,user258409,pharr-texas,72
+258409,user258409,pharr-texas-usa,72
 258413,user258413,walluf-hessen-germany,36
 258414,user258414,hong kong-n/a-hong kong,45
 258419,user258419,halifax-nova scotia-canada,31
@@ -50523,7 +50523,7 @@ User-ID,User-name,Location,Age
 260965,user260965,vancouver-british columbia-canada,47
 260978,user260978,barcelona--spain,31
 260987,user260987,canoga park-california-usa,36
-260989,user260989,portsmouth-ohio,29
+260989,user260989,portsmouth-ohio-usa29
 260990,user260990,appomattox-virginia-usa,15
 260991,user260991,carouge-geneve-switzerland,21
 260999,user260999,tulsa--usa,23
@@ -50565,13 +50565,13 @@ User-ID,User-name,Location,Age
 261221,user261221,nordenham-niedersachsen-germany,44
 261222,user261222,muenchen-bayern-germany,77
 261231,user261231,black hawk-south dakota-usa,49
-261235,user261235,waitakere-auckland,15
+261235,user261235,waitakere-auckland-new zealand,15
 261236,user261236,london-n/a-united kingdom,23
 261237,user261237,melbourne-victoria-australia,22
 261258,user261258,san fernando-cádiz-spain,32
 261264,user261264,rio vista-california-usa,30
 261265,user261265,bremerton-washington-usa,22
-261269,user261269,kansas city-missouri,31
+261269,user261269,kansas city-missouri-usa,31
 261274,user261274,delmont-pennsylvania-usa,52
 261283,user261283,koeln-nordrhein-westfalen-germany,45
 261284,user261284,bridgewater-new jersey-usa,14
@@ -51504,7 +51504,7 @@ User-ID,User-name,Location,Age
 266331,user266331,chimacum-washington-usa,59
 266337,user266337,waterloo-ontario-canada,22
 266340,user266340,landrum-south carolina-usa,64
-266358,user266358,burlington-ontario-canada,51
+266358,user266358,burlington-usa,-ontario-canada,51
 266362,user266362,creston-iowa-usa,54
 266366,user266366,strasbourg-alsace-france,29
 266387,user266387,overland park-kansas-usa,44
@@ -52108,7 +52108,7 @@ User-ID,User-name,Location,Age
 269353,user269353,tomball-texas-usa,54
 269357,user269357,stoke on trent-england-united kingdom,51
 269364,user269364,goettingen-niedersachsen-germany,38
-269373,user269373,burlington-ontario-canada,30
+269373,user269373,burlington-usa,-ontario-canada,30
 269374,user269374,beaver-pennsylvania-usa,52
 269378,user269378,amadora-lisboa-portugal,41
 269379,user269379,lacrosse-wisconsin-usa,46
@@ -52375,7 +52375,7 @@ User-ID,User-name,Location,Age
 270682,user270682,worcester-england-united kingdom,47
 270692,user270692,mississauga-ontario-canada,18
 270701,user270701,rome-ohio-usa,54
-270702,user270702,burlington-ontario-canada,39
+270702,user270702,burlington-usa,-ontario-canada,39
 270709,user270709,albuquerque-new mexico-usa,51
 270713,user270713,toronto-ontario-canada,27
 270714,user270714,charlotte-north carolina-usa,36
@@ -52501,7 +52501,7 @@ User-ID,User-name,Location,Age
 271306,user271306,dallas-texas-usa,39
 271307,user271307,burnaby-british columbia-canada,64
 271322,user271322,burgdorf-niedersachsen-deutschland,33
-271342,user271342,burlington-vermont-usa,50
+271342,user271342,burlington-usa,-vermont-usa,50
 271352,user271352,luebeck-schleswig-holstein-germany,24
 271353,user271353,berlin-berlin-germany,23
 271354,user271354,minneapolis-minnesota-usa,34
@@ -53672,7 +53672,7 @@ User-ID,User-name,Location,Age
 277641,user277641,san francisco-california-usa,50
 277646,user277646,washington-dc-dc-usa,36
 277648,user277648,goodlettsville-tennessee-usa,27
-277650,user277650,burlington-vermont-usa,34
+277650,user277650,burlington-usa,-vermont-usa,34
 277651,user277651,toronto-ontario-canada,38
 277657,user277657,beaufort-south carolina-usa,50
 277660,user277660,choisy le roi-ile de france-france,26

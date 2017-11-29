@@ -39,6 +39,7 @@ d3.select("#explore-viz")
 		var data_selected = viz_proj.getDataSelected();
 		if(data_selected.length != 0){
 			var datahisto = post_to_server_global({"data_selected": data_selected, "dbname": name_dataset}, "getData_Viz")
+			console.log("data Viz", datahisto)
 			if(histograms_obj1 == ""){//if histograms_obj1 not exist
 				histograms_obj1 = new drawing_histo_obj1();
 				histograms_obj1.init(datahisto);

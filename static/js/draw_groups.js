@@ -166,6 +166,7 @@ var draw_groups = function(){
 
 
         /*************Update are projection and histograms*************************/
+        console.log("selectionDataGroups", selectionDataGroups)
         var datahisto = post_to_server_global({"data_selected": dataGroups.content[selectionDataGroups[0]].objects, "dbname": name_dataset}, "getData_Viz")
         viz_proj.setDataSelected(dataGroups.content[selectionDataGroups[0]].objects)
         viz_proj.draw_only_selected()

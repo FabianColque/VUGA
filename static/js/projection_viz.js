@@ -64,7 +64,8 @@ var vis_projection = function(){
       var f = [];
       f.push(xScale(d[0]));
       f.push(yScale(d[1]));
-      f.push(i);
+      f.push(i)
+      f.push(d[2]);
       return f;
     });
 
@@ -113,6 +114,7 @@ var vis_projection = function(){
   /***********************************************************/
 
   this.draw_points = function(){
+    console.log("data_projection", data_proj)
     d3.select("#chart_visUsers"+id)
     .append("svg")
     .attr("width", width)
@@ -134,7 +136,7 @@ var vis_projection = function(){
     .style("fill", "#bdbdbd")
     .append("svg:title")
     .text(function(d){
-      return d[2];
+      return d[3];
     });  
   }
 
