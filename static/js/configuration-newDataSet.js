@@ -21,15 +21,24 @@ function generate_all_data(){
 
   var g = d3.selectAll("#tab-list-dims li")
   var dimensions_selected = []
-  g[0].forEach(function(d, i){gg = d3.select(d).select("#tab-dims-ok").style("color"); if(gg == "rgb(255, 0, 0)" || gg == "red")dimensions_selected.push(i+1) })
+  var features = []
+  var setDimensions_selected = {}
+
+  g[0].forEach(function(d, i){
+    gg = d3.select(d).select("#tab-dims-ok").style("color"); 
+    if(gg == "rgb(255, 0, 0)" || gg == "red"){
+      dimensions_selected.push(i+1) 
+      setDimensions_selected[i.toString()] = true;
+    }
+  })
   console.log("ella", dimensions_selected)
   for(var i = 0; i < dimensions_selected.length; i++){
     res_dimensions["Dimensions_total"].push({"name": dimensions_headers[dimensions_selected[i]]})
-    console.log("recontra mierda", res_dimensions)
+    //console.log("recontra mierda", res_dimensions)
   }
 
 
-  console.log("res_dimensions", res_dimensions)
+  //console.log("res_dimensions", res_dimensions)
   //extracting the dimensions charts
 
   var dimensions_charts = []
@@ -41,7 +50,7 @@ function generate_all_data(){
     else
       dim_permit[i.toString()] = false;
   })
-  console.log("dim_permit", dim_permit);
+  //console.log("dim_permit", dim_permit);
   d3.selectAll("#tab-content-obj1 .tab-pane")[0].forEach(
     function(d, i){
       if(dim_permit[i.toString()] == true){
@@ -65,13 +74,44 @@ function generate_all_data(){
             ran = ran.split(",")
         }
 
-        dimensions_charts.push({"name": name, "type_chart": t_chart, "t_var": t_var, "dom": dom, "ran": ran})
+        dimensions_charts.push({"name": name, "type_chart": t_chart, "t_var": t_var, "dom": dom, "ran": ran, "idx": i+1})
       }
-      console.log("holis", d, i)
+      //console.log("holis", d, i)
     }
   )
 
-  console.log("dimensions_charts", dimensions_charts)
+  //console.log("dimensions_charts", dimensions_charts)
+
+  //extracting features
+
+  d3.selectAll("#tab-content-dims .tab-pane")[0].forEach(
+    function(d, i){
+      if(setDimensions_selected[i.toString()] == true){
+        
+        var type = d3.select(d).select("#conf-dims-"+dimensions_headers[i+1]+"-typeVDim").property("value")
+        var details = []
+        if(type != "String"){
+          var min = d3.select(d).select("#minimum").property("value")
+          var max = d3.select(d).select("#maximum").property("value")
+          if(min == "" || max == ""){
+            details = []
+          }else{
+            details = [min, max]
+          }
+        }else{
+          details = []
+        }
+        features.push({"type": type, "detail": details})
+      }
+    }
+  );
+
+  res_dimensions["Dimensions_charts"] = dimensions_charts;
+  res_dimensions["features"] = features
+  res_dimensions["dbname"] = $("#nameDB").val()
+  console.log("respuesta", res_dimensions)
+
+  post_to_server_global(res_dimensions, "save_and_generate_newData")
 
 
   /*********END *********** *DETAILS.JSON and dataViz GENERATE*/
@@ -300,7 +340,7 @@ function post_to_server_global(jsondata, service){
     url             :   "/" + service,
     type            :   'POST',
     contentType     :   'application/json',
-    data            :   jsondata,
+    data            :   JSON.stringify(jsondata),
     async           :   false,
     success         :   function(da){results = JSON.parse(da);}
   });

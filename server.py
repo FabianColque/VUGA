@@ -95,6 +95,166 @@ class recover_name_datasets(tornado.web.RequestHandler):
     self.write(json.dumps(dir_list))    
 
 
+#This class save and generate the new files as dataViz and details .json
+class save_and_generate_newData(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = str(mydata.get("dbname"))
+    details = mydata
+    print ("mydata", dbname) 
+    #generate details.json
+    detailsjson = {"Dimensions_total": details["Dimensions_total"], "Dimensions_charts": [], "features": details["features"]}
+    dimensionsData = load_json(getpath_db(dbname) + "dimensions.json")
+
+    
+    for dc in details["Dimensions_charts"]:
+      if dc["t_var"] == "Categorical":
+        #busqueda de todas las posibles categorias
+        auxset = set()
+        for di in dimensionsData["body"]:
+          auxset.add(di[int(dc["idx"])])
+        detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": list(auxset), "type_chart": dc["type_chart"]})
+      else:
+        if len(dc["dom"]) == 0:
+          detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": [], "type_chart": dc["type_chart"]})     
+        else:
+          detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": dc["ran"], "type_chart": dc["type_chart"]})
+
+    save_json(getpath_db(dbname) + "details.json", detailsjson)
+
+    dataObj1 = load_json(getpath_db(dbname) + "object_1.json")
+
+    dataViz = {"dimensions": detailsjson["Dimensions_charts"], "instances": []}
+    for i in xrange(0, len(dimensionsData["body"])):
+      #aux = {"idx": i, "id": dimensionsData["body"][i][0], "name": dimensionsData["headers"][i], "values": []}
+      aux = {}
+      aux["idx"] = i
+      aux["id"] = dimensionsData["body"][i][0]
+      aux["n"] = dataObj1["body"][i][1]
+      aux["values"] = []
+      for j in  xrange(0, len(detailsjson["Dimensions_charts"])):
+        jj = details["Dimensions_charts"][j]["idx"]
+        if details["Dimensions_charts"][j]["t_var"] == "Categorical":
+          ind = detailsjson["Dimensions_charts"][j]["titles"].index(dimensionsData["body"][i][jj])
+          aux["values"].append(ind)
+        else:
+          for k in xrange(0, len(details["Dimensions_charts"][j]["dom"])):
+            if k == 0 and int(dimensionsData["body"][i][jj]) < int(details["Dimensions_charts"][j]["dom"][k]):
+              aux["values"].append(0)
+            elif k == (len(details["Dimensions_charts"][j]["dom"])-1) and int(dimensionsData["body"][i][jj]) >= int(details["Dimensions_charts"][j]["dom"][k]):
+              aux["values"].append(k)
+            elif int(dimensionsData["body"][i][jj]) >= int(details["Dimensions_charts"][j]["dom"][k-1]) and int(dimensionsData["body"][i][jj]) < int(details["Dimensions_charts"][j]["dom"][k]):
+              aux["values"].append(k)
+      dataViz["instances"].append(aux) 
+
+    
+    save_json(getpath_db(dbname) + "dataViz.json", dataViz)
+
+    #now generate the heatmap and projection
+
+    det_details = []
+    iii = 0
+    
+    len_charts = len(detailsjson["Dimensions_charts"])
+
+    for det in detailsjson["features"]:
+      if iii < len_charts:
+        det_details.append([0, len(detailsjson["Dimensions_charts"][iii]["titles"])-1])
+      elif det["type"] == "String":
+        det_details.append([100000, -1000000])
+      else:
+        if det["detail"] == []:
+          det_details.append([100000, -1000000])
+        else:
+          det_details.append(det["detail"])
+      iii += 1
+
+    
+
+    for da in dimensionsData["body"]:
+      for j in xrange(0, len(details["features"])):
+        if j < len_charts:
+          continue
+        elif det["type"] == "String":
+          continue
+        else:
+          if details["features"][j]["detail"] == []:
+            det_details[j][0] = min(det_details[j][0], float(da[j+1]))
+            det_details[j][1] = max(det_details[j][1], float(da[j+1]))
+
+    
+    #here begin the t-sne algorithm with python
+    arr_tsne = []
+    heat_tsne = []
+    ii = 0
+    for da in dimensionsData["body"]:
+      aux = []
+      aux_heat = []
+      for i in  xrange(0, len(details["features"])):
+        val = 0.0
+        val_heat = 0.0
+        if i < len_charts:
+          ind = dataViz["instances"][ii]["values"][i]
+          val = myscale(det_details[i][0], det_details[i][1], 0.0, 1.0, float(ind))
+          val_heat = val
+        elif detailsjson["features"][i]["type"] == "String":
+          ind = detailsjson["Dimensions_charts"][i]["titles"].index(da[i+1])
+          val = myscale(det_details[i][0], det_details[i][1], 0.0, 1.0, float(ind))    
+          val_heat = val
+        else:
+          #print ("nilaedad", da[i+1], det_details[i])
+          val = myscale(float(det_details[i][0]), float(det_details[i][1]), 0.0, 1.0, float(da[i+1]))    
+          if float(da[i+1]) < float(det_details[i][0]):
+            val_heat = -1
+          else:
+            val_heat = val
+        if val < 0 or val > 1:
+          print ("error limites tsne", det_details[i], da[i+1])
+        #print ("special", da, da[i+1])
+        
+        val = myformat_dec5(val)
+        val_heat = myformat_dec5(val)
+        aux.append(val)
+        aux_heat.append(val_heat)
+
+      arr_tsne.append(aux)
+      heat_tsne.append(aux_heat)
+      ii += 1
+
+    arr_tsne2 = np.array(arr_tsne)
+
+    heat_tsne2 = np.array(heat_tsne)
+    heat_tsne2 = heat_tsne2.tolist()
+
+    heatmap = {"headers": dimensionsData["headers"][1:], "body": heat_tsne2}
+    save_json(getpath_db(dbname)+ "heatmap.json", heatmap)
+
+    
+    #comentado por que demora mucho hacer la projection
+    time0 = time()
+    model = TSNE(n_components=2, random_state=0)
+    np.set_printoptions(suppress=True)
+    points = model.fit_transform(arr_tsne2)
+
+    mptos = np.matrix(points)
+    ptos = mptos.tolist()
+
+    time1 = time()
+
+    for ii in xrange(0, len(ptos)):
+      ptos[ii].append(dimensionsData["body"][ii][0])   
+
+    print ("tsne-principal time", time1 - time0)
+    
+    save_json(getpath_db(dbname) + "projection.json", ptos)  
+    
+    print ("pretending", arr_tsne2)
+
+    print ("aqui acaba")
+    self.write(json.dumps(""))
+
+
+
 class start_new_template_Viz(tornado.web.RequestHandler):
   def get(self):
     dbname = self.get_argument("g")
@@ -254,20 +414,26 @@ class getNewGroups(tornado.web.RequestHandler):
 
     #dimensionFull = File with dimensions not normalized, brute state
     time0 = time()
-    dimensionsFull = load_csv_matrix(getpath_db(dbname) + "full_dimensions.csv")
+    dimensionsFull = load_json(getpath_db(dbname) + "dimensions.json")
     time1 = time()
     print_message("load full_dimensions.json", time1 - time0)
 
     #features = the details of the data dimensions
     time0 = time()
     features = load_json(getpath_db(dbname) + "details.json")
-    features = features["features"]
+    #features = features["features"]
     time1 = time()
     print_message("load detais.json", time1 - time0)
 
+    #dataViz
+    time0 = time()
+    dataViz = load_json(getpath_db(dbname) + "dataViz.json")
+    time1 = time()
+    print_message("load dataViz.json", time1 - time0)
+
     #My algorithm
     time0 = time()
-    res = my_algorithm.generate(dataset, data_selected, 5, dimensionsFull, features)#I want 5 new groups
+    res = my_algorithm.generate(dataset, data_selected, 5, dimensionsFull, features, dataViz)#I want 5 new groups
     time1 = time()
     print_message("algorithm vexus2", time1 - time0)
 
@@ -282,10 +448,20 @@ def print_message(label, mess):
   print "Time de %s : %s" % (label, mess)
   print "**************************"
 
+def save_json(path, data):
+  with open( path , "w") as outfile:
+    json.dump(data, outfile)      
 
 def myformat_dec(x):
   hh = ('%.2f' % x).rstrip('0').rstrip('.')
   return float(hh)
+
+def myformat_dec5(x):
+  hh = ('%.2f' % x).rstrip('0').rstrip('.')
+  return float(hh)
+
+def myscale(old_min, old_max, new_min, new_max, old_value):
+  return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 
 
 def getpath_db(dbname):
   return ("static/data/" + dbname + "/")
@@ -337,6 +513,7 @@ application = tornado.web.Application([
   (r"/getDimension_legend", getDimension_legend),
   (r"/get_Details_options", get_Details_options),
   (r"/getNewGroups", getNewGroups),
+  (r"/save_and_generate_newData", save_and_generate_newData),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
   ], **settings)
 
