@@ -56,9 +56,11 @@ class save_new_dataset_configuration(tornado.web.RequestHandler):
 
     name_file = mydata.get("filename")
     data_final = mydata.get("data")
+    
     headers = data_final[0]
     data_final = data_final[1:]
-    if name_file == "object_2":
+    
+    if name_file == "object_2" or name_file == "object_1" or name_file == "dimensions":
       data_final  = sorted(data_final)
     elif name_file == "ratings":
       path = "static/data/" + dbname + "/object_2.json"
@@ -68,13 +70,14 @@ class save_new_dataset_configuration(tornado.web.RequestHandler):
         idx = binary_search_movieID(data_obj2["body"], df[1])
         if not df[0] in rats:
           rats[df[0]] = []
+          rats[df[0]].append({"o2": idx, "r": df[2]})
         else:
           if idx != -1:
             rats[df[0]].append({"o2": idx, "r": df[2]})
-        
+      data_final = rats
 
     #hasta aqui
-    data_final = {"headers": headers, "body": rats}
+    data_final = {"headers": headers, "body": data_final}
 
     with open( (route + '/' + mydata.get("filename") + '.json' ) , "w") as outfile:
       json.dump(data_final, outfile)  
@@ -301,7 +304,7 @@ def load_csv_matrix(file):
 def binary_search_movieID(data, target):
   lower = 0
   upper = len(data)
-  while lower < upper:   # use < instead of <=
+  while lower <= upper:   # use < instead of <=
     x = lower + (upper - lower) // 2
     val = data[x][0] #array[x]
     if target == val:
@@ -311,7 +314,7 @@ def binary_search_movieID(data, target):
           break        # you're looking for
       lower = x
     elif target < val:
-      upper = x    
+      upper = x
   return -1
 
 ### functions for support  END  ###############
