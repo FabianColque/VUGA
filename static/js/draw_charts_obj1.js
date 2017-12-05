@@ -434,21 +434,27 @@ function drawing_histo_obj1(){
 
     count.on("renderlet.resetall", function(c){
       console.log("click in one crossfilter?")
-      var total     = c.dimension().size();
-      var filtered  = c.group().value();
-      var disabled  = (total == filtered);
-      $(".resetall").attr("disabled", disabled);
 
-      if(tabla_refresh){
-        refreshTable_obj1();
-        refreshTable_obj2();  
-      }
+      mouse_wait(true)
 
-      tabla_refresh = true;
-      
-      //var sub_data = evt.top(Infinity).map(function(d){return d.idx})
-      //viz_proj.drawn_color_subselected(sub_data);
-      draw_table_heatmap();      
+      setTimeout(function(){
+        var total     = c.dimension().size();
+        var filtered  = c.group().value();
+        var disabled  = (total == filtered);
+        $(".resetall").attr("disabled", disabled);
+
+        if(tabla_refresh){
+          refreshTable_obj1();
+          refreshTable_obj2();  
+        }
+
+        tabla_refresh = true;
+        
+        //var sub_data = evt.top(Infinity).map(function(d){return d.idx})
+        //viz_proj.drawn_color_subselected(sub_data);
+        draw_table_heatmap();     
+        mouse_wait(false) 
+      }, 0)
     })
 
     evt = ndx.dimension(function(d){return d.idx;})
@@ -665,10 +671,12 @@ function drawing_histo_obj1(){
             d3.select(this)
               .append("div")
                 .attr('class', "chart-title")
+                .text(function(d){console.log(d);return data_dimensions[d]["name"];})
             d3.select(this)
               .append("div")
                 .attr("class", "chart-stage")
-                .attr("id", "chart_Obj1_" + d)
+                .append("div")
+                  .attr("id", "chart_Obj1_" + d)
             d3.select(this)
               .append("div")
                 .attr("class", "chart-notes")

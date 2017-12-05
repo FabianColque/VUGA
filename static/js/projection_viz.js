@@ -114,7 +114,6 @@ var vis_projection = function(){
   /***********************************************************/
 
   this.draw_points = function(){
-    console.log("data_projection", data_proj)
     d3.select("#chart_visUsers"+id)
     .append("svg")
     .attr("width", width)

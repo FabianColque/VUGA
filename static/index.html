@@ -248,5 +248,35 @@
   <script src="js/configuration_support.js"></script>
   <script src="js/configuration-newDataSet.js"></script>
 
+  <script>
+    d3.select("body").append("div").attr("class", "loader").style("display", "none").style("position", "fixed").style("top", "50%").style("left", "50%")
+
+
+    function mouse_wait(status){
+      d3.select("body").style("cursor", function(){
+        if(status)
+          return "wait"
+        return "default"
+      })
+    }
+
+    function fn_loading(status){
+      console.log("fn_loading");
+      d3.select("#main_body")
+        .style("opacity", function(){
+          if(status)return 0.5
+          return 1
+        })
+      d3.select(".loader")
+        .style("display", function(){
+          if(status)return "block"
+          return "none"
+        })
+        //.style("top", left+"%")
+        //.style("left", top+"%")
+        //.style("left", "50%")
+    }
+  </script>
+
 </body>
 </html>
