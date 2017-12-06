@@ -6,6 +6,7 @@ d3.select("#btn_ExploreGroups")
 		fn_loading(true);
 		setTimeout(function(){
 			var data_selected = var_save_area.getData_idx();
+			original_save = data_selected
 			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "getNewGroups")
 			console.log("mis nuevos grupos", groups)
 			if(!mynewGroups)
@@ -19,7 +20,6 @@ d3.select("#btn_ExploreGroups")
 /*Click to save All Data in Object_1 table*/
 d3.select("#Save_All_obj1")
 	.on("click", function(d){
-		console.log("rules Save_All_obj1")
 		btnSave_Obj1_All();
 	})
 
@@ -64,7 +64,6 @@ d3.select("#explore-viz")
 			var data_selected = viz_proj.getDataSelected();
 			if(data_selected.length != 0){
 				var datahisto = post_to_server_global({"data_selected": data_selected, "dbname": name_dataset}, "getData_Viz")
-				console.log("data Viz", datahisto)
 				if(histograms_obj1 == ""){//if histograms_obj1 not exist
 					histograms_obj1 = new drawing_histo_obj1();
 					histograms_obj1.init(datahisto);

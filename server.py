@@ -26,7 +26,7 @@ import scipy.spatial.distance as dist
 
 import my_algorithm
 
-
+ 
 
 class MyError(Exception):
   def __init__(self, value):
@@ -290,6 +290,10 @@ class getData_Viz(tornado.web.RequestHandler):
     for ds in data_selected:
       res["instances"].append(data_viz["instances"][ds])
     time1 = time()
+
+    if "original_save" in mydata:
+      print ("existe original_save")
+
     print_message("getData_Viz", time1 - time0)    
 
     self.write(json.dumps(res))
@@ -442,6 +446,15 @@ class getNewGroups(tornado.web.RequestHandler):
 ####  END  #### MY CLASSES ###################
 
 ### functions for support START ###############
+
+def kl_divergence(histo_1, histo_2):
+  n = len(histo_1)
+  res = 0
+  for i in xrange(0, n):
+    aux   = float(histo_1[i]) / float(histo_2[i])
+    aux2  = math.log10(aux) 
+    res += (histo_1[i] * aux2)
+  return res
 
 def print_message(label, mess):
   print "***************************"

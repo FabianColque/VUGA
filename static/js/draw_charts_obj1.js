@@ -430,11 +430,10 @@ function drawing_histo_obj1(){
       .dimension(ndx)
       .group(ndxAll);
 
-    console.log("drawing_chartCount")
+    
 
     count.on("renderlet.resetall", function(c){
-      console.log("click in one crossfilter?")
-
+      
       mouse_wait(true)
 
       setTimeout(function(){
@@ -671,7 +670,9 @@ function drawing_histo_obj1(){
             d3.select(this)
               .append("div")
                 .attr('class', "chart-title")
-                .text(function(d){console.log(d);return data_dimensions[d]["name"];})
+                .text(function(d){
+                  return data_dimensions[d]["name"];
+                })
             d3.select(this)
               .append("div")
                 .attr("class", "chart-stage")

@@ -58,7 +58,10 @@ def normalizing(data, details, dataViz, indices):
         det_details.append([100000, -1000000])
       else:
         det_details.append(det["detail"])
+    #iii += 1
   
+
+
   for da in data:
     for i in xrange(0, len(details["features"])):
       if i < len_charts:
@@ -71,6 +74,8 @@ def normalizing(data, details, dataViz, indices):
           det_details[i][1] = max(det_details[i][1], float(da[i+1]))
 
   
+  
+
   arr_tsne = []
   heat_tsne = []
   ii = 0
@@ -91,14 +96,14 @@ def normalizing(data, details, dataViz, indices):
         else:
           val_heat = val
       if val < 0 or val > 1:
-        print ("new grupos errors", det_details[i], da[i+1])
+        print ("new grupos errors", det_details[i], da[i+1], i)
       #print ("special", da, da[i+1])
       
       val = myformat_dec(val)
       aux.append(val)
     arr_tsne.append(aux)
     ii += 1        
-
+  print ("det_details", det_details)
   #arr_tsne = arr_tsne[1:6000]
   arr_tsne2 = np.array(arr_tsne)
   arr_tsne2 = arr_tsne2.tolist()
