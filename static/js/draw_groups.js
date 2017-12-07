@@ -39,7 +39,7 @@ var draw_groups = function(){
     data["content"].forEach(function(d){
       if(d.objects.length > 0){
         dataGroups["cluster"].push(0);
-        dataGroups["content"].push({"id": iiii, "objects": d.objects})
+        dataGroups["content"].push({"id": iiii, "objects": d.objects, "similarity": d.similarity * 100})
         iiii += 1
       }
     })
@@ -203,7 +203,7 @@ var draw_groups = function(){
     node.append("title")
       .text(function(d) { 
         gru = dataGroups.content[parseInt(d.name)];
-        return gru.objects.length + " Users";
+        return gru.objects.length + " Users \n Similarity: " + gru.similarity + "%";
       })
 
     var edgelabels = svg.selectAll(".edgelabel")

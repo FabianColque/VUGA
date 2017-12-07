@@ -3,6 +3,8 @@ import numpy as np
 import my_cluster as mycluster
 import my_knn as myknn
 
+import math
+
 """
 data_selected   : It is the data selected in save area interface
 dataset         : It is the total data
@@ -48,7 +50,6 @@ def normalizing(data, details, dataViz, indices):
   iii = 0 
   len_charts = len(details["Dimensions_charts"])
 
-  
   for det in details["features"]:
     if iii < len_charts:
       det_details.append([0, len(details["Dimensions_charts"][iii]["titles"])-1])
@@ -61,7 +62,8 @@ def normalizing(data, details, dataViz, indices):
         det_details.append(det["detail"])
     iii += 1
   
-  
+
+
   for da in data:
     for i in xrange(0, len(details["features"])):
       if i < len_charts:
@@ -126,3 +128,58 @@ def get_array_K_neighbors(dataset, data_selected):
     res |= set(data)
   return res
 
+#This is the KL-divergence
+def process_similarity(data_heatmap, newGroups, data_ori):
+  
+  n_dimen = len(data_heatmap[0])
+  
+  ori = np.zeros(n_dimen)
+  for do in data_ori:
+    for i in xrange(0, n_dimen):
+      ori[i] += data_heatmap[do][i]
+    ori = ori / float(len(data_ori))
+
+  histograms = []
+  for ng in newGroups["content"]:
+    aux = np.zeros(n_dimen)
+    for cc in ng["objects"]:
+      for i in xrange(0, n_dimen):
+        aux[i] += data_heatmap[cc][i]
+    aux = aux / float(len(ng["objects"]))
+    histograms.append(aux)
+
+  res_kl = []
+  for hi in histograms:
+    res_kl.append(kl_divergence(ori, hi))
+  for rr in xrange(0, len(res_kl)):
+    newGroups["content"][rr]["similarity"] = res_kl[rr]
+  return newGroups
+
+def kl_divergence(histo_1, histo_2):
+
+
+  print ("alma", histo_1, histo_2)
+
+  n = len(histo_1)
+  eps = np.finfo(float).eps
+  res = 0
+  for i in xrange(0, n):
+    print ("botella", histo_1[i], histo_2[i])
+    p = float(histo_1[i]) 
+    if p < 0.0:
+      p = 0.0
+    if p > 1.0:
+      p = 1.0
+    #p += eps
+
+    q = float(histo_2[i])
+    if q < 0.0:
+      q = 0.0
+    if q > 1.0:
+      q = 1.0    
+    q += eps
+    
+    aux   = p / q
+    aux2  = math.log10(aux) 
+    res += (p * aux2)
+  return res

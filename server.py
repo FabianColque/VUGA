@@ -291,8 +291,11 @@ class getData_Viz(tornado.web.RequestHandler):
       res["instances"].append(data_viz["instances"][ds])
     time1 = time()
 
-    if "original_save" in mydata:
-      print ("existe original_save")
+
+    print ("mydata", mydata)
+    # if original_group exist => we are going to calculate the KL-divergence between the two heatmaps
+    if "original_group" in mydata:
+      print ("existe original_group")
 
     print_message("getData_Viz", time1 - time0)    
 
@@ -441,6 +444,9 @@ class getNewGroups(tornado.web.RequestHandler):
     time1 = time()
     print_message("algorithm vexus2", time1 - time0)
 
+    print ("que nuevos grupos", res)
+    res = my_algorithm.process_similarity(dataset, res, data_selected)
+    print ("termino similitud")
     self.write(json.dumps(res))
 
 ####  END  #### MY CLASSES ###################
