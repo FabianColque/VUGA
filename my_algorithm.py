@@ -48,20 +48,20 @@ def normalizing(data, details, dataViz, indices):
   iii = 0 
   len_charts = len(details["Dimensions_charts"])
 
+  
   for det in details["features"]:
     if iii < len_charts:
       det_details.append([0, len(details["Dimensions_charts"][iii]["titles"])-1])
     elif det["type"] == "String":
       det_details.append([-10000, 10000])
     else:
-      if det["type"] == []:
+      if det["detail"] == []:
         det_details.append([100000, -1000000])
       else:
         det_details.append(det["detail"])
-    #iii += 1
+    iii += 1
   
-
-
+  
   for da in data:
     for i in xrange(0, len(details["features"])):
       if i < len_charts:
