@@ -446,7 +446,7 @@ class getNewGroups(tornado.web.RequestHandler):
 
     print ("que nuevos grupos", res)
     res = my_algorithm.process_similarity(dataset, res, data_selected)
-    print ("termino similitud")
+    print ("termino similitud", res)
     self.write(json.dumps(res))
 
 ####  END  #### MY CLASSES ###################

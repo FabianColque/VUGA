@@ -34,7 +34,7 @@ var draw_groups = function(){
 
     clearAll();
 
-    dataGroups = {"cluster": [], "content": []}
+    /*dataGroups = {"cluster": [], "content": []}
     var iiii = 0;
     data["content"].forEach(function(d){
       if(d.objects.length > 0){
@@ -42,12 +42,12 @@ var draw_groups = function(){
         dataGroups["content"].push({"id": iiii, "objects": d.objects, "similarity": d.similarity * 100})
         iiii += 1
       }
-    })
+    })*/
 
     console.log("data", data)
-    console.log("dataGroups", dataGroups)
+    //console.log("dataGroups", dataGroups)
 
-    //dataGroups = data;
+    dataGroups = data;
 
     d3.select(selector)
       .append("svg")
@@ -203,7 +203,7 @@ var draw_groups = function(){
     node.append("title")
       .text(function(d) { 
         gru = dataGroups.content[parseInt(d.name)];
-        return gru.objects.length + " Users \n Similarity: " + gru.similarity + "%";
+        return gru.objects.length + " Users \n Similarity: " + gru.similarity*100 + "%";
       })
 
     var edgelabels = svg.selectAll(".edgelabel")

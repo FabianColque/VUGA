@@ -117,6 +117,10 @@ def normalizing(data, details, dataViz, indices):
 def myscale(old_min, old_max, new_min, new_max, old_value):
     return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 
 
+def myformat_dec_2(x):
+  hh = ('%.2f' % x).rstrip('0').rstrip('.')
+  return float(hh)
+
 def myformat_dec(x):
   hh = ('%.5f' % x).rstrip('0').rstrip('.')
   return float(hh)
@@ -133,6 +137,14 @@ def process_similarity(data_heatmap, newGroups, data_ori):
   
   n_dimen = len(data_heatmap[0])
   
+  pre = {"cluster": [], "content": []}
+  for ii in xrange(0, len(newGroups)):
+    if len(newGroups["content"][ii]["objects"]) > 0:
+      pre["content"].append(newGroups["content"][ii])
+      pre["cluster"].append(0)
+
+  newGroups = pre
+
   ori = np.zeros(n_dimen)
   for do in data_ori:
     for i in xrange(0, n_dimen):
@@ -144,7 +156,12 @@ def process_similarity(data_heatmap, newGroups, data_ori):
     aux = np.zeros(n_dimen)
     for cc in ng["objects"]:
       for i in xrange(0, n_dimen):
-        aux[i] += data_heatmap[cc][i]
+        fab = data_heatmap[cc][i]
+        if fab < 0.0:
+          fab = 0.0
+        if fab > 1.0:
+          fab  = 1.0
+        aux[i] += fab
     aux = aux / float(len(ng["objects"]))
     histograms.append(aux)
 
@@ -157,29 +174,29 @@ def process_similarity(data_heatmap, newGroups, data_ori):
 
 def kl_divergence(histo_1, histo_2):
 
+  P = []
+  Q = []
 
-  print ("alma", histo_1, histo_2)
+  for i in xrange(0, len(histo_1)):
+    pp = float(histo_1[i])
+    qq = float(histo_2[i])
+    if pp != 0.0 and qq != 0:
+      P.append(pp)
+      Q.append(qq)
 
-  n = len(histo_1)
-  eps = np.finfo(float).eps
+  P = np.array(P)
+  Q = np.array(Q)
+
+  sumP = P.sum()
+  sumQ = Q.sum()
+
+  P = P * (1 / sumP)
+  Q = Q * (1 / sumQ)
+
+  print ("alma", P, Q)
+
+  n = len(P)
+  #eps = np.finfo(float).eps
   res = 0
-  for i in xrange(0, n):
-    print ("botella", histo_1[i], histo_2[i])
-    p = float(histo_1[i]) 
-    if p < 0.0:
-      p = 0.0
-    if p > 1.0:
-      p = 1.0
-    #p += eps
-
-    q = float(histo_2[i])
-    if q < 0.0:
-      q = 0.0
-    if q > 1.0:
-      q = 1.0    
-    q += eps
-    
-    aux   = p / q
-    aux2  = math.log10(aux) 
-    res += (p * aux2)
-  return res
+  res = (P * np.log10(P/Q)).sum()
+  return myformat_dec_2(1 - res)
