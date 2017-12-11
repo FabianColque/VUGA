@@ -2,7 +2,7 @@ import numpy as np
 # K - Means
 
 LIMITS = 2
-MAX_ITERATIONS = 100
+MAX_ITERATIONS = 10
 
 def kmeans(dataset, k, number_features):
   dataset = np.array(dataset)

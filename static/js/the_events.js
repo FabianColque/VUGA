@@ -1,3 +1,20 @@
+/*Visualize the data original*/
+d3.select("#btn_back_Projection")
+	.on("click", function(){
+		fn_loading(true);
+		setTimeout(function(){
+			//var_save_area.getData_idx();
+
+	        var datahisto = post_to_server_global({"data_selected": original_save, "dbname": name_dataset}, "getData_Viz")
+	        
+	        viz_proj.setDataSelected(original_save)
+	        viz_proj.draw_only_selected()
+	        histograms_obj1.refresh_All_Data(datahisto.instances)
+			
+			fn_loading(false)
+		})
+	})
+
 
 
 /*Explore new group since the save area*/

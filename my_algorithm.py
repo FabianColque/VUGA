@@ -199,4 +199,14 @@ def kl_divergence(histo_1, histo_2):
   #eps = np.finfo(float).eps
   res = 0
   res = (P * np.log10(P/Q)).sum()
-  return myformat_dec_2(1 - res)
+
+  res = myformat_dec_2(1 - res)
+
+  if math.isnan(res):
+    res = 0.12345
+  elif res < 0.0:
+    res = 0.01
+  elif res > 1.0:
+    res = 0.9998
+
+  return res
