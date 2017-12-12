@@ -97,15 +97,15 @@ def normalizing(data, details, dataViz, indices):
           val_heat = -1
         else:
           val_heat = val
-      if val < 0 or val > 1:
-        print ("new grupos errors", det_details[i], da[i+1], i)
+      #if val < 0 or val > 1:
+        #print ("new grupos errors", det_details[i], da[i+1], i)
       #print ("special", da, da[i+1])
       
       val = myformat_dec(val)
       aux.append(val)
     arr_tsne.append(aux)
     ii += 1        
-  print ("det_details", det_details)
+  #print ("det_details", det_details)
   #arr_tsne = arr_tsne[1:6000]
   arr_tsne2 = np.array(arr_tsne)
   arr_tsne2 = arr_tsne2.tolist()
@@ -137,26 +137,37 @@ def process_similarity(data_heatmap, newGroups, data_ori):
   
   n_dimen = len(data_heatmap[0])
   
-  pre = {"cluster": [], "content": []}
-  for ii in xrange(0, len(newGroups)):
+  pre = {"cluster": [], "content": [], "histo_ori": []}
+  indice = 0;
+  for ii in xrange(0, len(newGroups["content"])):
     if len(newGroups["content"][ii]["objects"]) > 0:
+      newGroups["content"][ii]["id"] = indice
       pre["content"].append(newGroups["content"][ii])
       pre["cluster"].append(0)
+      indice += 1
 
   newGroups = pre
 
   ori = np.zeros(n_dimen)
   for do in data_ori:
     for i in xrange(0, n_dimen):
-      ori[i] += data_heatmap[do][i]
-    ori = ori / float(len(data_ori))
+      fab = float(data_heatmap[do][i])
+      if fab < 0.0:
+        fab = 0.0
+      if fab > 1.0:
+        fab  = 1.0
+      ori[i] += fab
+  ori = ori / float(len(data_ori))
+
+  
+  newGroups["histo_ori"] = ori.tolist()
 
   histograms = []
   for ng in newGroups["content"]:
     aux = np.zeros(n_dimen)
     for cc in ng["objects"]:
       for i in xrange(0, n_dimen):
-        fab = data_heatmap[cc][i]
+        fab = float(data_heatmap[cc][i])
         if fab < 0.0:
           fab = 0.0
         if fab > 1.0:
@@ -166,10 +177,15 @@ def process_similarity(data_heatmap, newGroups, data_ori):
     histograms.append(aux)
 
   res_kl = []
+  holis = 0 
   for hi in histograms:
     res_kl.append(kl_divergence(ori, hi))
+    newGroups["content"][holis]["histo"] = hi.tolist()
+    holis += 1
   for rr in xrange(0, len(res_kl)):
     newGroups["content"][rr]["similarity"] = res_kl[rr]
+
+  print ("carambaaaa", newGroups)
   return newGroups
 
 def kl_divergence(histo_1, histo_2):
@@ -190,10 +206,13 @@ def kl_divergence(histo_1, histo_2):
   sumP = P.sum()
   sumQ = Q.sum()
 
+  #print ("alma", P, Q)
+
+
   P = P * (1 / sumP)
   Q = Q * (1 / sumQ)
 
-  print ("alma", P, Q)
+  
 
   n = len(P)
   #eps = np.finfo(float).eps
@@ -201,7 +220,6 @@ def kl_divergence(histo_1, histo_2):
   res = (P * np.log10(P/Q)).sum()
 
   res = myformat_dec_2(1 - res)
-
   if math.isnan(res):
     res = 0.12345
   elif res < 0.0:

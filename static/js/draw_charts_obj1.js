@@ -10,6 +10,9 @@ function drawing_histo_obj1(){
   /*variable with dimensions allowed*/
   data_dimensions = null;
   data_instances = null;
+  
+  var data_set_positions = {}
+
   /*variable for searching by text*/
   var text_search_chart = null;
   
@@ -41,6 +44,11 @@ function drawing_histo_obj1(){
     
     data_dimensions = data.dimensions;
     data_instances = data.instances;
+
+    /*data positions*/
+    for(var i = 0; i < data.instances.length; i++){
+      data_set_positions["" + data.instances[i]["idx"]] = data.instances[i]["id"];
+    }
 
     prepare_divs_obj1(data.dimensions.length)
 
@@ -76,6 +84,31 @@ function drawing_histo_obj1(){
     var data_selected = evt.top(Infinity).map(function(d){return d.idx})
     data_dim = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "get_heatmap")
     
+
+    /*histo start*/
+    if(flag_comparison == false){
+      
+      var ori = new Array(data_dim["headers"].length).fill(0.0);
+      for(var i = 0; i < data_selected.length; i++){
+        for(var j = 0; j < data_dim["headers"].length; j++){
+          var fab = parseFloat(data_dim["body"][i][j])
+          if(fab < 0.0)fab = 0.0
+          if(fab > 1.0)fab = 1.0
+          ori[j] += fab
+        }
+      }
+      oriori = []
+      for(var i = 0 ; i < ori.length; i++){
+        oriori.push({"di": headers_data[i].name, "val": ori[i] / data_dim["body"].length, "nada": Math.random()})
+      }
+      console.log("a mi alrededor", oriori)
+      
+      comparison_matrices.update_comparison(oriori)  
+    }
+    
+    /*histo end*/
+
+
     var margin = {top: 140, right: 0, bottom: 10, left: 0},
     width = 400,
     height = 720;
@@ -166,7 +199,7 @@ function drawing_histo_obj1(){
     .attr("dy", ".32em")
     .attr("text-anchor", "end")
     .style("font-size", "12px")
-    .text(function(d, i){return data_selected[i]}) 
+    .text(function(d, i){return data_set_positions["" + data_selected[i]]}) 
 
 
     var column = svg.selectAll(".column")
@@ -391,6 +424,13 @@ function drawing_histo_obj1(){
   function refresh_all_data(data){
 
     data_instances = data
+
+
+    /*data positions*/
+    data_set_positions = {}
+    for(var i = 0; i < data.length; i++){
+      data_set_positions["" + data[i]["idx"]] = data[i]["id"]
+    }
 
     //var textfilter  = text_search_chart.filters()
     var countfilter = count.filters();

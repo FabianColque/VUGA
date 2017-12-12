@@ -440,13 +440,13 @@ class getNewGroups(tornado.web.RequestHandler):
 
     #My algorithm
     time0 = time()
-    res = my_algorithm.generate(dataset, data_selected, 10, dimensionsFull, features, dataViz)#I want 5 new groups
+    res = my_algorithm.generate(dataset, data_selected, 5, dimensionsFull, features, dataViz)#I want 5 new groups
     time1 = time()
     print_message("algorithm vexus2", time1 - time0)
 
-    print ("que nuevos grupos", res)
+    #print ("que nuevos grupos", res)
     res = my_algorithm.process_similarity(dataset, res, data_selected)
-    print ("termino similitud", res)
+    #print ("termino similitud", res)
     self.write(json.dumps(res))
 
 ####  END  #### MY CLASSES ###################

@@ -188,6 +188,14 @@ var draw_groups = function(){
         viz_proj.draw_only_selected()
         histograms_obj1.refresh_All_Data(datahisto.instances)
 
+        histos = [];
+        for(var i = 0; i < dataGroups["histo_ori"].length; i++){
+          histos.push({"val": dataGroups.content[selectionDataGroups[0]].histo[i], "di": headers_data[i].name, "nada": Math.random()})
+          histos.push({"val": dataGroups["histo_ori"][i], "di": headers_data[i].name, "nada": Math.random()})
+        }
+        flag_comparison = true
+        comparison_matrices.update_comparison(histos, true)
+
         //drawn_newVISProjection(dataGroups.content[selectionDataGroups[0]].users);  
         /*************************************/
       });

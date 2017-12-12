@@ -76,6 +76,9 @@ function btnSave_Obj1_individuals(){
 //Click to explore the data selected in projection area
 d3.select("#explore-viz")
 	.on("click", function(d){
+		if(comparison_matrices == null)
+			comparison_matrices = new comparison_matriz()
+		flag_comparison = false
 		fn_loading(true);
 		setTimeout(function(){
 			var data_selected = viz_proj.getDataSelected();
@@ -90,6 +93,9 @@ d3.select("#explore-viz")
 			}
 
 			viz_proj.draw_only_selected();		
+
+
+
 			fn_loading(false);
 		}, 0)
 	});

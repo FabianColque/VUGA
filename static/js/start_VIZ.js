@@ -13,11 +13,18 @@ var mylegend = null;
 var var_save_area = new draw_saveArea();
 var original_save = []
 
+/*variable to display the histograms of the heatmap*/
+var comparison_matrices = null;
+var flag_comparison = false;
+
 //colors allowed
 var colorsArray2 = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 
 //variable to groups
 var mynewGroups = null;
+
+//headers of the viz
+var headers_data = null;
 
 function start(){
   
@@ -34,6 +41,7 @@ function start(){
 
   /*otro que no se*/
   var data_options = post_to_server_global({"dbname": name_dataset}, "get_Details_options");
+  headers_data = data_options
   draw_colors_dimensions_selectors(data_options)
 }
 
