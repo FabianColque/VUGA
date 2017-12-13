@@ -1,10 +1,23 @@
+
+/*Select type of projection by dimension*/
+d3.select(".select_proj")
+	.on("change", function(d, i){
+		console.log("holis ", d, i)
+		var opt_se = d3.select(".select_proj").property('selectedIndex');
+		opt_se -= 1;
+		var new_dim_proj = post_to_server_global({"dim": opt_se, "dbname": name_dataset}, "getOtherProj")
+		viz_proj.update_data_proj(new_dim_proj)
+	})
+
+
+
 /*Visualize the data original*/
 d3.select("#btn_back_Projection")
 	.on("click", function(){
 		fn_loading(true);
 		setTimeout(function(){
 			//var_save_area.getData_idx();
-
+			flag_comparison = false
 	        var datahisto = post_to_server_global({"data_selected": original_save, "dbname": name_dataset}, "getData_Viz")
 	        
 	        viz_proj.setDataSelected(original_save)
@@ -23,8 +36,9 @@ d3.select("#btn_ExploreGroups")
 		fn_loading(true);
 		setTimeout(function(){
 			var data_selected = var_save_area.getData_idx();
+			var iK_groups = parseInt(d3.select("#iK_groups").property("value"))
 			original_save = data_selected
-			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "getNewGroups")
+			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups}, "getNewGroups")
 			console.log("mis nuevos grupos", groups)
 			if(!mynewGroups)
 				mynewGroups = new draw_groups();

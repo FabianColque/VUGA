@@ -110,7 +110,7 @@ function drawing_histo_obj1(){
 
 
     var margin = {top: 140, right: 0, bottom: 10, left: 0},
-    width = 400,
+    width = 650,
     height = 720;
 
     var heat_headers = data_dim["headers"];
@@ -133,7 +133,7 @@ function drawing_histo_obj1(){
      sums_y.push(auxsum)
     }
 
-    width = 15*heat_headers.length;
+    //width = 15*heat_headers.length;
     height = 15*data_selected.length;
 
     var xw = d3.scale.ordinal().rangeBands([0, width]),

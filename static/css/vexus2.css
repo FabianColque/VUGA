@@ -1,3 +1,17 @@
+
+/*CSS for comparison matrix*/
+#comparison-matrix{
+  font: 10px sans-serif;
+}
+
+#comparison-matrix path,
+#comparison-matrix line {
+  fill: none;
+  stroke: #000;
+}
+
+
+
 /** CSS for loading **/
 .loader {
   border: 16px solid #f3f3f3;

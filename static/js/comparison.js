@@ -7,14 +7,14 @@ function comparison_matriz(){
   */
 
 
-  var margin = {top: 20, right: 20, bottom: 95, left: 50};
-  var width = 800;
+  var margin = {top: 20, right: 20, bottom: 120, left: 50};
+  var width = 650;
   var height = 200;
 
   var chart = d3.select("#comparison-matrix")
           .append("svg")
           .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
+          .attr("height", height + margin.top + margin.bottom + 70)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -57,7 +57,9 @@ function comparison_matriz(){
 
   this.update_comparison = function(data){
 
-    console.log("rulesss", data, flag_comparison)
+    draw_legend();
+
+    
     xChart.domain(data.map(function(d){return d.di;}))
     yChart.domain([0, d3.max(data, function(d){return +d.val;})])
 
@@ -73,7 +75,7 @@ function comparison_matriz(){
     bars.enter()
       .append("rect")
       .attr("class", "bar")
-      .attr("x", function(d, i){console.log("tuuu", d, i);return i*barWidth + 1})
+      .attr("x", function(d, i){return i*barWidth + 1})
       .attr("y", function(d){return yChart( d.val); })
       .attr("height", function(d){return height - yChart(d.val)})
       .attr("width", barWidth - 1)
@@ -99,5 +101,46 @@ function comparison_matriz(){
         .attr("transform", function(d){
           return "rotate(-65)";
         })
+  }
+
+  function draw_legend(){
+    d3.selectAll("#comparison-legend *").remove();
+    var lado = 25;
+
+    var svg = d3.select("#comparison-legend")
+      .append("svg")
+      .attr("width", 300)
+      .attr("height", 100)
+      .append("g")
+      .attr("transform", "translate(30,30)")
+
+    svg.append("text")
+    .text("Original")
+    .attr("x", 1)
+    .attr("y", 16)
+
+    svg.append("rect")
+    .attr("class", "cell-comparison")
+    .attr("x", 55)
+    .attr("width", lado*2)
+    .attr("height", lado)
+    .style("fill", "rgb(179,205,227)")
+
+
+    if(flag_comparison){
+      svg.append("text")
+      .text("New group")
+      .attr("x", 111)
+      .attr("y", 16)
+
+      svg.append("rect")
+        .attr("class", "cell-comparison")
+        .attr("x", 182)
+        .attr("width", lado*2)
+        .attr("height", lado)
+        .style("fill", "rgb(251,180,174)")
+    }
+
+
   }
 }

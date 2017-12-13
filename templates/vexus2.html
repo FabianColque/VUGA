@@ -155,7 +155,16 @@
               </div>
               <div class="chart-notes">
                 <!--<input type="text" name="Title" id="title-save" value="Title" style="width:100%"><br>-->
-                <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" style="display:block">
+                <div class="row">
+                  <div class="col-sm-5">
+                    <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" >
+                  </div>
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-5">
+                    Max. Groups
+                    <input type="number" id="iK_groups" name="quantity" min="2" value="5" style="width: 50px">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -224,6 +233,7 @@
               <div class="chart-wrapper">
                 <div class="chart-title"> Comparison Matrix</div>
                 <div class="chart-stage">
+                  <div id="comparison-legend"></div>
                   <div id="comparison-matrix"></div>
                 </div>
               </div>

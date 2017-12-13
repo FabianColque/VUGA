@@ -250,6 +250,25 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     
     print ("pretending", arr_tsne2)
 
+    #Here i will try get the projection by each dimension
+    print ("starting the tsne by each dimensions")
+    for i in xrange(0, len(arr_tsne2[0])):
+      time0 = time()
+      model = TSNE(n_components = 2, random_state = 0)
+      np.set_printoptions(suppress=True)
+      pp = model.fit_transform(arr_tsne2[:,[i]])
+      ptt = np.matrix(pp)
+      ptt = ptt.tolist()
+      for iii in xrange(0, len(ptt)):
+        ptt[iii].append(dimensionsData["body"][iii][0])
+      time1 = time()
+      nadass = "time proj dim_" + str(i)
+      print_message(nadass, time1 - time0)
+      save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  ptt)
+
+
+
+
     print ("aqui acaba")
     self.write(json.dumps(""))
 
@@ -410,7 +429,7 @@ class getNewGroups(tornado.web.RequestHandler):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
     data_selected = mydata.get("data_selected")
-    
+    k = mydata.get("K")
     
     #dataset = heatmap with the complete matrix normalized
     time0 = time()
@@ -440,13 +459,30 @@ class getNewGroups(tornado.web.RequestHandler):
 
     #My algorithm
     time0 = time()
-    res = my_algorithm.generate(dataset, data_selected, 5, dimensionsFull, features, dataViz)#I want 5 new groups
+    res = my_algorithm.generate(dataset, data_selected, k, dimensionsFull, features, dataViz)#I want 5 new groups
     time1 = time()
     print_message("algorithm vexus2", time1 - time0)
 
     #print ("que nuevos grupos", res)
     res = my_algorithm.process_similarity(dataset, res, data_selected)
     #print ("termino similitud", res)
+    self.write(json.dumps(res))
+
+
+class getOtherProj(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    idx = mydata.get("dim")
+    res = []
+    time0 = time()
+    if idx == -1:
+      res = load_json(getpath_db(dbname) +  "projection.json")
+    else:
+      res = load_json(getpath_db(dbname) +  "proj_" + str(idx) + ".json")
+    time1 = time()
+    print_message("get_data_projection_by_dim", time1 - time0)
+
     self.write(json.dumps(res))
 
 ####  END  #### MY CLASSES ###################
@@ -533,6 +569,7 @@ application = tornado.web.Application([
   (r"/get_Details_options", get_Details_options),
   (r"/getNewGroups", getNewGroups),
   (r"/save_and_generate_newData", save_and_generate_newData),
+  (r"/getOtherProj", getOtherProj),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
   ], **settings)
 

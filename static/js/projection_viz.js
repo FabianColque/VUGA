@@ -139,6 +139,30 @@ var vis_projection = function(){
     });  
   }
 
+  this.update_data_proj = function(data){
+    xScale.domain(d3.extent(data.map(function(d){return d[0]})));
+    yScale.domain(d3.extent(data.map(function(d){return d[1]})));
+    data_proj = data.map(function(d,i){
+      var f = [];
+      f.push(xScale(d[0]));
+      f.push(yScale(d[1]));
+      f.push(i)
+      f.push(d[2]);
+      return f;
+    });
+
+    var circle = d3.select("#chart_visUsers"+ id + " svg")
+      .selectAll("rect")
+      .data(data_proj)
+
+    circle.exit().remove();
+    circle.enter().append("rect")
+
+    circle.transition()
+    .duration(3200)
+    .attr("transform", function(d) { return "translate(" + d[0] + "," + d[1] + ")"; })
+  }
+
 /*
   this.draw_points = function(){
     d3.select("#chart_visUsers"+id)
