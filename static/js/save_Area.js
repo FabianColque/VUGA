@@ -13,6 +13,11 @@ function draw_saveArea(){
     return dat;
   }
 
+  this.clearAll = function(){
+    data_selected_save = []
+    updating([])
+  }
+
   function updating(newData){
     var data_idx = []
     for(nd in newData){

@@ -44,9 +44,7 @@ var draw_groups = function(){
       }
     })*/
 
-    console.log("data", data)
-    //console.log("dataGroups", dataGroups)
-
+    
     dataGroups = data;
 
     d3.select(selector)
@@ -75,8 +73,7 @@ var draw_groups = function(){
 
   function draw(data){
     
-    console.log("holis draw", data)
-
+    
     var as = d3.extent(dataGroups.content, function(d){return d.objects.length});
     tamCircleScaleGroup.domain(as);
 
@@ -150,7 +147,7 @@ var draw_groups = function(){
 
     node.append("circle")
       .attr("class", "pointGroup")
-      .attr("id", function(d){console.log("holis id");return 'pointGroup' + d.name})
+      .attr("id", function(d){return 'pointGroup' + d.name})
       .attr("r", function(d){return tamCircleScaleGroup(dataGroups.content[parseInt(d.name)].objects.length)})
       .style("stroke", "black")
       .style("stroke-width", "0.3px")
@@ -181,9 +178,8 @@ var draw_groups = function(){
 
 
         /*************Update are projection and histograms*************************/
-        console.log("selectionDataGroups", selectionDataGroups)
+        histograms_obj1.resetAllBtn()
         var datahisto = post_to_server_global({"data_selected": dataGroups.content[selectionDataGroups[0]].objects, "dbname": name_dataset, "original_group": original_save}, "getData_Viz")
-        console.log("momentos", datahisto)
         viz_proj.setDataSelected(dataGroups.content[selectionDataGroups[0]].objects)
         viz_proj.draw_only_selected()
         histograms_obj1.refresh_All_Data(datahisto.instances)

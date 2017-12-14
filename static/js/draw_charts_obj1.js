@@ -82,6 +82,7 @@ function drawing_histo_obj1(){
     draw_legend_table(cores);
 
     var data_selected = evt.top(Infinity).map(function(d){return d.idx})
+
     data_dim = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "get_heatmap")
     
 
@@ -101,13 +102,14 @@ function drawing_histo_obj1(){
       for(var i = 0 ; i < ori.length; i++){
         oriori.push({"di": headers_data[i].name, "val": ori[i] / data_dim["body"].length, "nada": Math.random()})
       }
-      console.log("a mi alrededor", oriori)
       
       comparison_matrices.update_comparison(oriori)  
     }
     
     /*histo end*/
 
+    data_selected = data_selected.slice(0, 100)
+    data_dim["body"] = data_dim["body"].slice(0, 100)
 
     var margin = {top: 140, right: 0, bottom: 10, left: 0},
     width = 650,
@@ -473,7 +475,7 @@ function drawing_histo_obj1(){
     
 
     count.on("renderlet.resetall", function(c){
-      
+      console.log("RENDELET RESETALL");
       mouse_wait(true)
 
       setTimeout(function(){
@@ -503,14 +505,22 @@ function drawing_histo_obj1(){
 
   function button_resetAll_dcjs(){
     $(".resetall").click(function() {
-      text_search_chart.filter(null);
-      evt.filter(function(d){return d;})
-      dc.filterAll();
-      dc.renderAll();
-      $("#search-input").val("");
-      $(".resetall").attr("disabled",true);
-
+      resetfn();
     });
+  }
+
+  function resetfn(){
+    console.log("RESETALL");
+    text_search_chart.filter(null);
+    evt.filter(function(d){return d;})
+    dc.filterAll();
+    dc.renderAll();
+    $("#search-input").val("");
+    $(".resetall").attr("disabled",true);
+  }
+
+  this.resetAllBtn = function(){
+    resetfn();
   }
 
   function drawing_chartText(data){

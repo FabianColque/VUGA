@@ -28,14 +28,21 @@ d3.select("#btn_back_Projection")
 		})
 	})
 
-
+/*Clear All save area*/
+d3.select("#btn_clearAll")
+	.on("click", function(){
+		var_save_area.clearAll()
+	})
 
 /*Explore new group since the save area*/
 d3.select("#btn_ExploreGroups")
 	.on("click", function(){
 		fn_loading(true);
+
 		setTimeout(function(){
+			histograms_obj1.resetAllBtn();
 			var data_selected = var_save_area.getData_idx();
+			//if(data_selected.length == 0)return;	
 			var iK_groups = parseInt(d3.select("#iK_groups").property("value"))
 			original_save = data_selected
 			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups}, "getNewGroups")

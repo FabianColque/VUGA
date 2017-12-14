@@ -142,7 +142,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
             if k == 0 and int(dimensionsData["body"][i][jj]) < int(details["Dimensions_charts"][j]["dom"][k]):
               aux["values"].append(0)
             elif k == (len(details["Dimensions_charts"][j]["dom"])-1) and int(dimensionsData["body"][i][jj]) >= int(details["Dimensions_charts"][j]["dom"][k]):
-              aux["values"].append(k)
+              aux["values"].append(k+1)
             elif int(dimensionsData["body"][i][jj]) >= int(details["Dimensions_charts"][j]["dom"][k-1]) and int(dimensionsData["body"][i][jj]) < int(details["Dimensions_charts"][j]["dom"][k]):
               aux["values"].append(k)
       dataViz["instances"].append(aux) 
