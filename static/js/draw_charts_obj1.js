@@ -347,13 +347,14 @@ function drawing_histo_obj1(){
       "bPaginate": true,
       "bLengthChange": true,
       "bFilter": true,
-      "order": [[ 0, "desc" ]],
+      "order": [[ 2, "desc" ]],
       "bSort": true,
-      "bInfo": false,
+      "bInfo": true,
       "bAutoWidth": false,
       "bDeferRender": true,
       "aaData": data_util,
       "bDestroy": true,
+
     });
 
     dataTable_obj2.DataTable().on( 'order.dt search.dt page.dt draw.dt', function () {
@@ -625,7 +626,7 @@ function drawing_histo_obj1(){
       "bFilter": true,
       "order": [[ 1, "desc" ]],
       "bSort": true,
-      "bInfo": false,
+      "bInfo": true,
       "bAutoWidth": false,
       "bDeferRender": true,
       "aaData": text_search_chart.top(Infinity),

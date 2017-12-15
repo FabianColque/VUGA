@@ -5,7 +5,8 @@ function comparison_matriz(){
 
   data = [{val: val1, di: di1}, ...]
   */
-
+  var data_normal = []
+  var data_simi = []
 
   var margin = {top: 20, right: 20, bottom: 120, left: 50};
   var width = 650;
@@ -48,18 +49,30 @@ function comparison_matriz(){
   chart
     .append("text")
     .attr("transform", "translate(-35," +  (height+margin.bottom)/2 + ") rotate(-90)")
-    .text("% Ocurrence");
+    .text("% Similarity");
       
   chart
     .append("text")
     .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")")
     .text("Dimensions");
 
+  draw_legend();  
+
   this.update_comparison = function(data){
+    update_(data);
+  }
 
-    draw_legend();
+  function update_(data){
 
+    data_normal = data
+    console.log("oh my", data)
+
+    d3.select("#rectNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})
+    d3.select("#textNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})    
+    d3.select("#selectModeComparison").style("visibility", function(){if(flag_comparison)return "visible";return "hidden";})
+      .property("value", "Default")
     
+
     xChart.domain(data.map(function(d){return d.di;}))
     yChart.domain([0, d3.max(data, function(d){return +d.val;})])
 
@@ -115,32 +128,120 @@ function comparison_matriz(){
       .attr("transform", "translate(30,30)")
 
     svg.append("text")
+    .attr("id", "textOriginal")
     .text("Original")
     .attr("x", 1)
     .attr("y", 16)
 
     svg.append("rect")
     .attr("class", "cell-comparison")
+    .attr("id", "rectOriginal")
     .attr("x", 55)
     .attr("width", lado*2)
     .attr("height", lado)
     .style("fill", "rgb(179,205,227)")
 
 
-    if(flag_comparison){
-      svg.append("text")
+    svg.append("text")
+      .attr("id", "textNewgroup")
       .text("New group")
       .attr("x", 111)
       .attr("y", 16)
+      .style("visibility", false)
 
-      svg.append("rect")
+    svg.append("rect")
         .attr("class", "cell-comparison")
+        .attr("id", "rectNewgroup")
         .attr("x", 182)
         .attr("width", lado*2)
         .attr("height", lado)
         .style("fill", "rgb(251,180,174)")
-    }
+        .style("visibility", true)
+
+    var comparison_options = ["Default", "Similarity"]
+    d3.select("#comparison-legend")
+      .append("select")
+      .attr("id", "selectModeComparison")
+      .on("change", function(){
+        console.log("cambbio", this.value)
+        change_visComparison(this.value)
+      })
+      .selectAll("option")
+      .data(comparison_options)
+      .enter()
+      .append("option")
+      .attr("value", function(d){return d})
+      .text(function(d){return d})
 
 
   }
+
+  function change_visComparison(type){
+    
+    if(type == "Default"){
+      update_(data_normal)
+    }else{
+      var newViz = {}
+      for(var i = 0; i < data_normal.length; i++){
+        if(data_normal[i]["di"] in newViz){
+          newViz[data_normal[i]["di"]] = 1 - Math.abs(newViz[data_normal[i]["di"]] - data_normal[i]["val"])
+        }else{
+          newViz[data_normal[i]["di"]] = data_normal[i]["val"];
+        }
+      }
+
+      var res = []
+      for(var g in newViz){
+        res.push({"di": g, "val": newViz[g]})
+      }
+      update_similarity(res)
+    }
+
+  }
+
+
+  function update_similarity(data){
+
+    
+
+    xChart.domain(data.map(function(d){return d.di;}))
+    yChart.domain([0, d3.max(data, function(d){return +d.val;})])
+
+    var barWidth = width / data.length;
+
+    chart.selectAll(".bar").remove();
+
+    var bars = chart.selectAll(".bar")
+      .data(data)
+
+    //bars.exit().remove();  
+
+    bars.enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d, i){return i*barWidth + 1})
+      .attr("y", function(d){return yChart( d.val); })
+      .attr("height", function(d){return height - yChart(d.val)})
+      .attr("width", barWidth - 1)
+      .attr("fill", function(d, i){
+        return "rgb(190,174,212)"
+      })
+
+    
+
+    chart.select(".y")
+      .call(yAxis)
+
+    chart.select(".xAxis")
+      .attr("transform", "translate(0, " + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", function(d){
+          return "rotate(-65)";
+        })
+  }
+
 }
