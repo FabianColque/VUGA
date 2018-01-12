@@ -26,6 +26,9 @@ var mynewGroups = null;
 //headers of the viz
 var headers_data = null;
 
+//borrar
+var all_values_rev = []
+
 function start(){
   
   

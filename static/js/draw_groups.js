@@ -207,7 +207,21 @@ var draw_groups = function(){
     node.append("title")
       .text(function(d) { 
         gru = dataGroups.content[parseInt(d.name)];
-        return gru.objects.length + " Users \n Similarity: " + gru.similarity*100 + "%";
+
+        var ar1 = gru.objects;
+        var ar2 = []
+
+        for(ds in data_selected_save)
+          ar2.push(parseInt(ds))
+        var ggg  = ar1.filter((n) => ar2.includes(n))
+        ggg = ggg.length;
+        ggg = ggg/gru.objects.length
+        ggg = ggg*100;
+        ggg = parseFloat(ggg).toFixed(3);
+        console.log("ivanov", dataGroups);
+
+
+        return gru.objects.length + " Users \n Similarity: " + gru.similarity*100 + "% \n Intersection: " + ggg + "%";
       })
 
     var edgelabels = svg.selectAll(".edgelabel")

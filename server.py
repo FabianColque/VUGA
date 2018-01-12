@@ -402,7 +402,7 @@ class getDimension_legend(tornado.web.RequestHandler):
     else:
       res["mode"] = "dynamic"
       res["names"] = ["0", "1"]
-      res["colors"] = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']
+      res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']#['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']
 
     if select == "all":
       for dd in data["body"]:

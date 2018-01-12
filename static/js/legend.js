@@ -70,11 +70,21 @@ var legend = function(){
       var eu = d3.range(sol+1).map(function(d){return d * 1/sol})
       scaleColor.domain(eu).range(get_array_consecutives(data.names.length))
     }else{
-      scaleColor.domain([0, 0.25, 0.5, 0.75, 1]).range(get_array_consecutives(5))
+      scaleColor.domain([0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]).range(get_array_consecutives(5))
     }  
+    all_values_rev = []
     d3.selectAll(data.selector + " .pointDots")
       .style("fill", function(d, i){
-        return data.colors[Math.round(scaleColor(data.body[d[2]]))]
+        
+        all_values_rev.push(data.body[d[2]])
+        var  aux = 0;
+        if(data.body[d[2]] > 0.125)
+          aux = 1
+        else
+          aux = 8 * data.body[d[2]]
+        //return "#081d58"
+        return data.colors[Math.round(scaleColor(aux))]
+        //return data.colors[Math.round(scaleColor(data.body[d[2]]))]
     })
   }
 
@@ -105,8 +115,43 @@ var legend = function(){
         .attr("stop-opacity", 1);
 
     gradient.append("stop")
+        .attr("offset", "12.5%")
+        .attr("stop-color", data.colors[1])
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "25%")
+        .attr("stop-color", data.colors[2])
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "37.5%")
+        .attr("stop-color", data.colors[3])
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "50%")
+        .attr("stop-color", data.colors[4])
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "62.5%")
+        .attr("stop-color", data.colors[5])
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "75%")
+        .attr("stop-color", data.colors[6])
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "87.5%")
+        .attr("stop-color", data.colors[7])
+        .attr("stop-opacity", 1);    
+
+    gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", data.colors[data.colors.length-1])
+        .attr("stop-color", data.colors[8])
         .attr("stop-opacity", 1);
 
     svg.append("rect")
