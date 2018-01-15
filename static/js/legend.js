@@ -36,6 +36,9 @@ var legend = function(){
   }
 
   this.start = function(){
+
+    console.log("datastart legend", data)
+
     d3.selectAll(data.selector + " #" + id + " *").remove();
     var midiv = d3.select(data.selector + " #" + id);
     if(data.mode == "dynamic"){
