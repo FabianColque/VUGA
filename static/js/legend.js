@@ -67,26 +67,51 @@ var legend = function(){
   }
 
   function update_points(){
+    var liminf = 0;
+    var limsup = 0;
     var scaleColor = d3.scale.linear();
     if(data.mode == "static"){
       var sol = data.names.length-1;
       var eu = d3.range(sol+1).map(function(d){return d * 1/sol})
       scaleColor.domain(eu).range(get_array_consecutives(data.names.length))
     }else{
-      scaleColor.domain([0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]).range(get_array_consecutives(5))
+      newdom = []
+      limsup = data.outlier[0] + data.outlier[3]
+      liminf = data.outlier[0] - data.outlier[3]
+      if(liminf < 0)liminf = 0
+      hdelta = (limsup - liminf)/8;//9-1
+      newdom = d3.range(9).map(function(d, i){return liminf + hdelta*i})
+      //scaleColor.domain([0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]).range(get_array_consecutives(5))
+      scaleColor.domain(newdom).range(get_array_consecutives(9))
     }  
+    console.log("outlier", data.outlier)
+    //res["outlier"] = [med, q1, q3, lim]
+    
+
     all_values_rev = []
     d3.selectAll(data.selector + " .pointDots")
       .style("fill", function(d, i){
-        
-        all_values_rev.push(data.body[d[2]])
-        var  aux = 0;
+        if(i == 4463){
+          console.log("4463 -> ", data.body[d[2]], scaleColor.domain(), scaleColor.range(), data.outlier)
+        }
+        val_aux = data.body[d[2]]
+        all_values_rev.push(val_aux)
+        var aux = data.body[d[2]];
+        if(data.mode == 'dynamic'){
+          if(val_aux >= data.outlier[0]){
+            if(val_aux > limsup)aux = limsup
+          }else{
+            if(val_aux < liminf)aux = liminf
+          }
+        }
+        return data.colors[Math.round(scaleColor(aux))]
+        /*var  aux = 0;
         if(data.body[d[2]] > 0.125)
           aux = 1
         else
           aux = 8 * data.body[d[2]]
         //return "#081d58"
-        return data.colors[Math.round(scaleColor(aux))]
+        return data.colors[Math.round(scaleColor(aux))]*/
         //return data.colors[Math.round(scaleColor(data.body[d[2]]))]
     })
   }

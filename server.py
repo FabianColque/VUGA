@@ -11,6 +11,7 @@ import random
 import glob
 import operator
 from sets import Set
+import math
 
 from time import time
 import numpy as np
@@ -410,6 +411,18 @@ class getDimension_legend(tornado.web.RequestHandler):
     else:
       for ss in select:
         res["body"].append(data["body"][ss][dim_num])
+
+    hh = res["body"][:]
+    hh = sorted(hh)
+    sz = len(hh)
+    med = math.floor(sz/2)
+    medd = hh[int(med)]
+    q1 = hh[int(med - math.floor(med/2))]
+    q3 = hh[int(med + math.floor(med/2))]    
+    iqr = q3 - q1
+    lim = iqr * 1.5
+
+    res["outlier"] = [medd, q1, q3, lim]
 
     time1 = time()
     print_message("getDimension_legend", time1 - time0)
