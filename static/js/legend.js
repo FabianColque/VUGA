@@ -37,8 +37,7 @@ var legend = function(){
 
   this.start = function(){
 
-    console.log("datastart legend", data)
-
+    
     d3.selectAll(data.selector + " #" + id + " *").remove();
     var midiv = d3.select(data.selector + " #" + id);
     if(data.mode == "dynamic"){
@@ -79,24 +78,24 @@ var legend = function(){
       limsup = data.outlier[0] + data.outlier[3]
       liminf = data.outlier[0] - data.outlier[3]
       if(liminf < 0)liminf = 0
+      if(limsup > 1)limsup = 1
       hdelta = (limsup - liminf)/8;//9-1
       newdom = d3.range(9).map(function(d, i){return liminf + hdelta*i})
       //scaleColor.domain([0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]).range(get_array_consecutives(5))
       scaleColor.domain(newdom).range(get_array_consecutives(9))
     }  
-    console.log("outlier", data.outlier)
+    //console.log("outlier", data.outlier)
     //res["outlier"] = [med, q1, q3, lim]
     
 
     all_values_rev = []
     d3.selectAll(data.selector + " .pointDots")
       .style("fill", function(d, i){
-        if(i == 4463){
-          console.log("4463 -> ", data.body[d[2]], scaleColor.domain(), scaleColor.range(), data.outlier)
-        }
+        
         val_aux = data.body[d[2]]
         all_values_rev.push(val_aux)
         var aux = data.body[d[2]];
+        
         if(data.mode == 'dynamic'){
           if(val_aux >= data.outlier[0]){
             if(val_aux > limsup)aux = limsup
@@ -196,7 +195,7 @@ var legend = function(){
     svg.append("text")
       .text(data.names[1])
       .attr("y", "20%")
-      .attr("x", "90%")  
+      .attr("x", "84%")  
   }
 
   function get_divFormatToolTip(){

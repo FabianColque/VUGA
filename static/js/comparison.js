@@ -65,8 +65,7 @@ function comparison_matriz(){
   function update_(data){
 
     data_normal = data
-    console.log("oh my", data)
-
+    
     d3.select("#rectNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})
     d3.select("#textNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})    
     d3.select("#selectModeComparison").style("visibility", function(){if(flag_comparison)return "visible";return "hidden";})
@@ -163,7 +162,6 @@ function comparison_matriz(){
       .append("select")
       .attr("id", "selectModeComparison")
       .on("change", function(){
-        console.log("cambbio", this.value)
         change_visComparison(this.value)
       })
       .selectAll("option")

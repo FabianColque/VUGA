@@ -3,8 +3,7 @@ var dimensions_headers = [];
 
 d3.select("#btn_generate")
   .on("click", function(){
-    console.log("noche")
-
+    
     generate_all_data();
 })
 
@@ -31,10 +30,9 @@ function generate_all_data(){
       setDimensions_selected[i.toString()] = true;
     }
   })
-  console.log("ella", dimensions_selected)
   for(var i = 0; i < dimensions_selected.length; i++){
     res_dimensions["Dimensions_total"].push({"name": dimensions_headers[dimensions_selected[i]]})
-    //console.log("recontra mierda", res_dimensions)
+    
   }
 
 
@@ -109,7 +107,6 @@ function generate_all_data(){
   res_dimensions["Dimensions_charts"] = dimensions_charts;
   res_dimensions["features"] = features
   res_dimensions["dbname"] = $("#nameDB").val()
-  console.log("respuesta", res_dimensions)
 
   post_to_server_global(res_dimensions, "save_and_generate_newData")
 
@@ -130,7 +127,6 @@ d3.select('#btn_load_existing_file')
   .on("click", function(d){
     //dataname = {"dbname": d3.select("#tagselect_Existing_dataset").property("value")}
     dataname = d3.select("#tagselect_Existing_dataset").property("value")
-    console.log("dataajnsdf", dataname)
     window.open("/vexus2?g=" + dataname);
     //post_to_server_global(data, "start_new_template_Viz");
     //$.get("/vexus2?g=" + dataname);
@@ -183,7 +179,6 @@ document.getElementById('fileUploadDims').addEventListener('change', upload_dime
 function upload_object1(evt){
 
   if($("#nameDB").val() == ""){
-    console.log("que pasas");
     alert("Dataset name missed");
     return;
   }
@@ -220,8 +215,7 @@ function upload_object1(evt){
 
 function upload_object2(evt){
 
-  console.log("estoy aqui obj2");
-
+  
   if(!browserSupportFileUpload()){
     console.log('The File APIs are not fully supported in this browser!');
   }else{
@@ -300,7 +294,6 @@ function upload_dimensions(evt){
     reader.onload = function(event){
       var csvData = event.target.result;
       data = $.csv.toArrays(csvData);
-      console.log("aqui data pls", data)
       if(data && data.length > 0){
         console.log('Imported - ' + data.length + ' - rows successfully!');
       }else{
@@ -308,7 +301,6 @@ function upload_dimensions(evt){
       }
 
       //sending to server
-      console.log("dimensions", data)
       var jsondata = {"dbname": $("#nameDB").val(), "filename": "dimensions", "data": data};
       send_to_server_files_configuration(JSON.stringify(jsondata));
       dimensions_headers = data[0];

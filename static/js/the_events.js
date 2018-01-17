@@ -2,7 +2,6 @@
 /*Select type of projection by dimension*/
 d3.select(".select_proj")
 	.on("change", function(d, i){
-		console.log("holis ", d, i)
 		var opt_se = d3.select(".select_proj").property('selectedIndex');
 		opt_se -= 1;
 		var new_dim_proj = post_to_server_global({"dim": opt_se, "dbname": name_dataset}, "getOtherProj")
@@ -46,7 +45,6 @@ d3.select("#btn_ExploreGroups")
 			var iK_groups = parseInt(d3.select("#iK_groups").property("value"))
 			original_save = data_selected
 			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups}, "getNewGroups")
-			console.log("mis nuevos grupos", groups)
 			if(!mynewGroups)
 				mynewGroups = new draw_groups();
 			mynewGroups.init(groups)

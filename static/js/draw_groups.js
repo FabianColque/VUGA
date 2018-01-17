@@ -84,8 +84,8 @@ var draw_groups = function(){
     var auxx = d3.extent(force.nodes(), function(d){return d.x});
     var auxy = d3.extent(force.nodes(), function(d){return d.y});
 
-    new_scale_x.domain(auxx).range([60, width-80]);
-    new_scale_y.domain(auxy).range([60, height-80]);
+    new_scale_x.domain(auxx).range([50, width-150]);
+    new_scale_y.domain(auxy).range([50, height-150]);
 
     var links = [];
     var flink = force.links();
@@ -151,7 +151,7 @@ var draw_groups = function(){
       .attr("r", function(d){return tamCircleScaleGroup(dataGroups.content[parseInt(d.name)].objects.length)})
       .style("stroke", "black")
       .style("stroke-width", "0.3px")
-      .style("fill", "#bdbdbd")
+      .style("fill", "#e2e1e1")
       .on("click", function(d){
         ra = d3.select("#pointGroup"+d.name).attr("r")
         
@@ -171,7 +171,7 @@ var draw_groups = function(){
           .style("stroke-width", "0.3px");
         lastCircle = parseInt(d.name);
         d3.select("#pointGroup"+lastCircle)
-          .style("stroke", "black")
+          .style("stroke", "#20b3b3")
           .style("stroke-width", "5px");
         selectionDataGroups = [];
         selectionDataGroups.push(parseInt(d.name));
@@ -204,6 +204,57 @@ var draw_groups = function(){
       mylastCircle = -1;      
     }
 
+    
+    node.selectAll("g")
+      .data(function(d){return [d.name]})
+      .enter()
+      .append("g")
+      //.attr("stroke", "black")
+      .attr("transform", function(d){return "translate("+0+", "+0+")"})
+      .style("pointer-events", "none")
+    .selectAll("text")
+      .data(function(d){
+        console.log("gruuuuuu", d)
+        gru = dataGroups.content[parseInt(d)];
+
+        var ar1 = gru.objects;
+        var ar2 = []
+
+        for(ds in data_selected_save)
+          ar2.push(parseInt(ds))
+        var ggg  = ar1.filter((n) => ar2.includes(n))
+        ggg = ggg.length;
+        ggg = ggg/gru.objects.length
+        ggg = ggg*100;
+        ggg = parseFloat(ggg).toFixed(1);
+        var fc = gru.similarity*100
+        fc = parseFloat(fc).toFixed(1)
+
+        return [gru.objects.length + " Users", "Similarity: " + fc, "Intersection: " + ggg + "%"]
+      })
+      .enter()
+      .append("text")
+      .text(function(d){return d})
+      .attr("x", "-40px")
+      .attr("y", function(d, i){return (-24 + i*12) + "px"})
+    node.selectAll("g")
+      .append("rect")
+      .attr("width", "120px")
+      .attr("height", "50px")
+      .attr("x", "-45")
+      .attr("y", "-40px")
+      .style("stroke", 'black')
+      .style("fill", "transparent")
+    /*node.append("rect")
+      .attr("x", "0px")
+      .attr("y", "")
+      .attr("width", "100px")
+      .attr("height", "100px")
+      .attr("stroke", "red")
+      .attr("fill", "white")
+      .append("text")
+      .text("lsdfnlas")
+*/
     node.append("title")
       .text(function(d) { 
         gru = dataGroups.content[parseInt(d.name)];
@@ -218,7 +269,7 @@ var draw_groups = function(){
         ggg = ggg/gru.objects.length
         ggg = ggg*100;
         ggg = parseFloat(ggg).toFixed(3);
-        console.log("ivanov", dataGroups);
+        //console.log("ivanov", dataGroups);
 
 
         return gru.objects.length + " Users \n Similarity: " + gru.similarity*100 + "% \n Intersection: " + ggg + "%";
@@ -263,7 +314,7 @@ var draw_groups = function(){
       .nodes(d3.values(nodes))
       .links(links)
       .size([width, height])
-      .linkDistance(350)
+      .linkDistance(300)
       .start();
 
     interval = setInterval(draw, 800)

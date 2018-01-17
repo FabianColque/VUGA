@@ -36,6 +36,8 @@ function start(){
   viz_proj = new vis_projection();
   viz_proj.init(data_projection);
 
+  d3.select(".totalPoints").text("Total: " + data_projection.length + " users")
+
   /*aun no se si legend deba ir aqui o por ejemplo dentro de draw_charts*/
   mylegend = new legend();
   var da = post_to_server_global({"dbname": name_dataset, "dimension_num": 0, "select": "all"}, "getDimension_legend")

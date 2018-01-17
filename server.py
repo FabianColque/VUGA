@@ -402,7 +402,7 @@ class getDimension_legend(tornado.web.RequestHandler):
       res["colors"] = colors[0:len(details["Dimensions_charts"][dim_num]["titles"])]
     else:
       res["mode"] = "dynamic"
-      res["names"] = ["0", "1"]
+      res["names"] = ["Min", "Max"]
       res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']#['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']
 
     if select == "all":
@@ -420,7 +420,7 @@ class getDimension_legend(tornado.web.RequestHandler):
     q1 = hh[int(med - math.floor(med/2))]
     q3 = hh[int(med + math.floor(med/2))]    
     iqr = q3 - q1
-    lim = iqr * 1.5
+    lim = iqr * 0.9
 
     res["outlier"] = [medd, q1, q3, lim]
 

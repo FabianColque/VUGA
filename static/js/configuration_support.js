@@ -73,7 +73,6 @@ function configuration_obj_1(headers){
       })
       .style("cursor", "pointer")
       .on("click", function(d, i){
-        console.log("aqui function")
         if(i == 0){
           d3.select("#li-tab-obj1-" + d + " #tab-obj1-remove").style("color", "#bdbdbd");         
           $("#tab-obj1-"+d + " *").enable()
@@ -494,7 +493,6 @@ function configuration_dimensions(headers){
       })
       .style("cursor", "pointer")
       .on("click", function(d, i){
-        console.log("aqui function")
         if(i == 0){
           d3.select("#li-tab-dims-" + d + " #tab-dims-remove").style("color", "#bdbdbd");         
           $("#tab-dims-"+d + " *").enable()
