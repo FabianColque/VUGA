@@ -1,6 +1,12 @@
+/*font to table of obj2*/
+#id_tabla_obj2_wrapper{
+  font-size: 11px
+}
+
 /**CSS to Matrix Obj1**/
 #dataTable_obj1{
-  padding: 12px
+  padding: 12px;
+  font-size: 11px
 }
 
 

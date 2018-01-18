@@ -80,11 +80,20 @@ var vis_projection = function(){
 
   /**Drawing only the points selected after the exploration in projection**/
   this.draw_only_selected = function(){
+    console.log("HHHHHHOOOOOOOLLLLLLAAAAA")
     this.setVisibilityAll(false);
     var auz = getdataselected();
     for (var i = 0; i < auz.length; i++) {
       d3.select("#chart_visUserssvg_projection"+" #pointDots"+auz[i]).style("visibility", "visible");
     };
+  }
+
+  this.draw_only_selected_aux = function(){
+    this.setVisibilityAll(false);
+    var auz = getdataselected();
+    for (var i = 0; i < auz.length; i++) {
+      d3.select("#chart_visUserssvg_projection"+" #pointDots"+auz[i]).style("visibility", "visible");
+    };  
   }
 
   this.setVisibilityAll = function(flag){

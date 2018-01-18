@@ -125,7 +125,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     dataObj1 = load_json(getpath_db(dbname) + "object_1.json")
 
-    dataViz = {"dimensions": detailsjson["Dimensions_charts"], "instances": []}
+    """dataViz = {"dimensions": detailsjson["Dimensions_charts"], "instances": []}
     for i in xrange(0, len(dimensionsData["body"])):
       #aux = {"idx": i, "id": dimensionsData["body"][i][0], "name": dimensionsData["headers"][i], "values": []}
       aux = {}
@@ -150,7 +150,8 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     
     save_json(getpath_db(dbname) + "dataViz.json", dataViz)
-
+    """
+    dataViz = load_json(getpath_db(dbname) + "dataViz.json")
     #now generate the heatmap and projection
 
     det_details = []
@@ -159,35 +160,39 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     len_charts = len(detailsjson["Dimensions_charts"])
 
     for det in detailsjson["features"]:
-      if iii < len_charts:
+      """if iii < len_charts:
         det_details.append([0, len(detailsjson["Dimensions_charts"][iii]["titles"])-1])
       elif det["type"] == "String":
         det_details.append([100000, -1000000])
+      else:"""
+      if det["detail"] == []:
+        det_details.append([100000, -1000000])
       else:
-        if det["detail"] == []:
-          det_details.append([100000, -1000000])
-        else:
-          det_details.append(det["detail"])
+        det_details.append(det["detail"])
       iii += 1
 
     
-
+    len_charts = -1 
     for da in dimensionsData["body"]:
       for j in xrange(0, len(details["features"])):
         if j < len_charts:
-          continue
+          #continue
+          algoasd = 0
         elif det["type"] == "String":
-          continue
+          #continue
+          algoasd = 0
         else:
           if details["features"][j]["detail"] == []:
             det_details[j][0] = min(det_details[j][0], float(da[j+1]))
             det_details[j][1] = max(det_details[j][1], float(da[j+1]))
 
-    
+    #print("featuressssssssssssss", details["features"], len(details["features"]))
+    #print("noooooooooooooooooooo", det_details, len(det_details))
     #here begin the t-sne algorithm with python
     arr_tsne = []
     heat_tsne = []
     ii = 0
+    len_charts = -1
     for da in dimensionsData["body"]:
       aux = []
       aux_heat = []
@@ -195,22 +200,26 @@ class save_and_generate_newData(tornado.web.RequestHandler):
         val = 0.0
         val_heat = 0.0
         if i < len_charts:
+          print("if i<len_charts")
           ind = dataViz["instances"][ii]["values"][i]
           val = myscale(det_details[i][0], det_details[i][1], 0.0, 1.0, float(ind))
           val_heat = val
         elif detailsjson["features"][i]["type"] == "String":
+          print("if string")
           ind = detailsjson["Dimensions_charts"][i]["titles"].index(da[i+1])
           val = myscale(det_details[i][0], det_details[i][1], 0.0, 1.0, float(ind))    
           val_heat = val
         else:
-          #print ("nilaedad", da[i+1], det_details[i])
+          #print ("nilaedad", da[i+1])
+          #print ("asd", det_details[i], i)
+
           val = myscale(float(det_details[i][0]), float(det_details[i][1]), 0.0, 1.0, float(da[i+1]))    
           if float(da[i+1]) < float(det_details[i][0]):
             val_heat = -1
           else:
             val_heat = val
         if val < 0 or val > 1:
-          print ("error limites tsne", det_details[i], da[i+1])
+          print ("error limites tsne", det_details[i], da[i+1], ii, i)
         #print ("special", da, da[i+1])
         
         val = myformat_dec5(val)
@@ -230,7 +239,9 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     heatmap = {"headers": dimensionsData["headers"][1:], "body": heat_tsne2}
     save_json(getpath_db(dbname)+ "heatmap.json", heatmap)
 
+    print("holisssssssssssssssss", arr_tsne2)
     
+
     #comentado por que demora mucho hacer la projection
     time0 = time()
     model = TSNE(n_components=2, random_state=0)
@@ -252,7 +263,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     print ("pretending", arr_tsne2)
 
     #Here i will try get the projection by each dimension
-    print ("starting the tsne by each dimensions")
+    """print ("starting the tsne by each dimensions")
     for i in xrange(0, len(arr_tsne2[0])):
       time0 = time()
       model = TSNE(n_components = 2, random_state = 0)
@@ -266,7 +277,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       nadass = "time proj dim_" + str(i)
       print_message(nadass, time1 - time0)
       save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  ptt)
-
+    """
 
 
 
@@ -312,7 +323,7 @@ class getData_Viz(tornado.web.RequestHandler):
     time1 = time()
 
 
-    print ("mydata", mydata)
+    #print ("mydata", mydata)
     # if original_group exist => we are going to calculate the KL-divergence between the two heatmaps
     if "original_group" in mydata:
       print ("existe original_group")
@@ -359,6 +370,7 @@ class getDataObj2_table(tornado.web.RequestHandler):
 
     for oo in obj2["body"]:
       obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/obj2["body"][oo]["len"])
+      #obj2["body"][oo]["dat"].append(obj2["body"][oo]["len"])
     time1 = time()
     print_message("getDataObj2_table", time1 - time0)
 
@@ -388,30 +400,63 @@ class getDimension_legend(tornado.web.RequestHandler):
     dbname = mydata.get("dbname")
     dim_num = mydata.get("dimension_num")
     select = mydata.get("select")
-
+    print ("ssss", select, dim_num)
     colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 
     time0 = time()
 
     data = load_json(getpath_db(dbname) + "heatmap.json")
     details = load_json(getpath_db(dbname) + "details.json")
+    obj1 = load_json(getpath_db(dbname) + "object_1.json")
     res = {"selector": "#areaMainsvg_projection", "title": data["headers"][dim_num], "hasChecks": 1, "body": []}
+    dddd = []
     if len(details["Dimensions_charts"]) > dim_num:
       res["mode"] = "static"
       res["names"] = details["Dimensions_charts"][dim_num]["titles"]
       res["colors"] = colors[0:len(details["Dimensions_charts"][dim_num]["titles"])]
+      
+      if dim_num == 0:#gender
+        for i in xrange(0, len(obj1["body"])):
+          if obj1["body"][i][2] == "F":
+            dddd.append(0)
+          else:
+            dddd.append(1)
+      elif dim_num == 1:
+        for i in xrange(0, len(obj1["body"])):
+          if obj1["body"][i][3] == "1":
+            dddd.append(0)
+          elif obj1["body"][i][3] == "18":
+            dddd.append(1/6.0)
+          elif obj1["body"][i][3] == "25":
+            dddd.append(2/6.0)
+          elif obj1["body"][i][3] == "35":
+            dddd.append(3/6.0)
+          elif obj1["body"][i][3] == "45":
+            dddd.append(4/6.0)
+          elif obj1["body"][i][3] == "50":
+            dddd.append(5/6.0)
+          elif obj1["body"][i][3] == "56":
+            dddd.append(6/6.0)
+      elif dim_num == 2:
+        for i in xrange(0, len(obj1["body"])):
+          ggg = int(obj1["body"][i][4]) * (1/20.0)
+          dddd.append(ggg)
+
     else:
       res["mode"] = "dynamic"
       res["names"] = ["Min", "Max"]
       res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']#['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']
+      for dd in data["body"]:
+        dddd.append(dd[dim_num-3])  
 
-    if select == "all":
+    res["body"] = dddd
+    """if select == "all":
       for dd in data["body"]:
         res["body"].append(dd[dim_num])  
     else:
       for ss in select:
         res["body"].append(data["body"][ss][dim_num])
-
+    """
     hh = res["body"][:]
     hh = sorted(hh)
     sz = len(hh)

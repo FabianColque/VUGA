@@ -310,12 +310,15 @@ function drawing_histo_obj1(){
 
     var data_obj2 = getDataViz_obj2();
     data_obj2.headers[0]= "ID"
+    data_obj2.headers.push("# Reviews")
 
     draw_TableHtml_obj2(data_obj2.headers);
     data_util = []
     for(var i in data_obj2["body"]){
       data_util.push(data_obj2["body"][i].dat)
+      data_util[data_util.length - 1].push(data_obj2["body"][i].len)
     }
+
     var count2 = 0;
     var my_columns_obj2 = [
       {
@@ -412,6 +415,7 @@ function drawing_histo_obj1(){
       var data_util = []
       for(var i in alldata2["body"]){
         data_util.push(alldata2["body"][i].dat)
+        data_util[data_util.length - 1].push(alldata2["body"][i].len)
       }
 
       dataTable_obj2.fnClearTable();
@@ -492,8 +496,9 @@ function drawing_histo_obj1(){
 
         tabla_refresh = true;
         
-        //var sub_data = evt.top(Infinity).map(function(d){return d.idx})
-        //viz_proj.drawn_color_subselected(sub_data);
+        var sub_data = evt.top(Infinity).map(function(d){return d.idx})
+        viz_proj.setDataSelected(sub_data)
+        viz_proj.draw_only_selected_aux(sub_data);
         draw_table_heatmap();     
         mouse_wait(false) 
       }, 0)

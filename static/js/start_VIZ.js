@@ -53,10 +53,11 @@ function start(){
 
 
 function draw_colors_dimensions_selectors(data){
+  data2 = [{"name": "Gender"},{"name": "Age"},{"name": "Occupation"}].concat(data);
   d3.select(".select_color")
     .on("change", onchange_bycolor)
     .selectAll(".options_color")
-    .data(data)
+    .data(data2)
     .enter()
     .append("option")
       .text(function(d){return d.name})
