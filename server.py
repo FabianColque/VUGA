@@ -408,20 +408,23 @@ class getDimension_legend(tornado.web.RequestHandler):
     data = load_json(getpath_db(dbname) + "heatmap.json")
     details = load_json(getpath_db(dbname) + "details.json")
     obj1 = load_json(getpath_db(dbname) + "object_1.json")
-    res = {"selector": "#areaMainsvg_projection", "title": data["headers"][dim_num], "hasChecks": 1, "body": []}
+    res = {"selector": "#areaMainsvg_projection", "title": "", "hasChecks": 1, "body": []}
     dddd = []
     if len(details["Dimensions_charts"]) > dim_num:
       res["mode"] = "static"
       res["names"] = details["Dimensions_charts"][dim_num]["titles"]
       res["colors"] = colors[0:len(details["Dimensions_charts"][dim_num]["titles"])]
+
       
       if dim_num == 0:#gender
+        res["title"] = "Gender"
         for i in xrange(0, len(obj1["body"])):
           if obj1["body"][i][2] == "F":
             dddd.append(0)
           else:
             dddd.append(1)
       elif dim_num == 1:
+        res["title"] = "Age"
         for i in xrange(0, len(obj1["body"])):
           if obj1["body"][i][3] == "1":
             dddd.append(0)
@@ -438,11 +441,13 @@ class getDimension_legend(tornado.web.RequestHandler):
           elif obj1["body"][i][3] == "56":
             dddd.append(6/6.0)
       elif dim_num == 2:
+        res["title"] = "Occupation"
         for i in xrange(0, len(obj1["body"])):
           ggg = int(obj1["body"][i][4]) * (1/20.0)
           dddd.append(ggg)
 
     else:
+      res["title"] = data["headers"][dim_num-3]
       res["mode"] = "dynamic"
       res["names"] = ["Min", "Max"]
       res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']#['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']

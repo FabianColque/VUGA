@@ -3,8 +3,9 @@
 */
 
 var legend = function(){
-  var width = 185;
-  var height = 130;
+  var width = 160;
+  var height = 330;
+  var multiplicador = 15.5
   var data;
   var id = "mylegend"
 
@@ -12,7 +13,8 @@ var legend = function(){
 
     
     data = data_;
-
+    console.log("abraco", data)
+    height = multiplicador * data.colors.length + 16;
     d3.select(data.selector + " #" + id).remove();
     d3.select(data.selector)
       .append("div")
@@ -22,16 +24,16 @@ var legend = function(){
       .style("width", width + "px")
       .style("height", height + "px")
       .style("padding","2px")
-      .style("font","12px sans-serif")
+      .style("font","10px sans-serif")
       .style("background","#fff")
       .style("border","1px dashed #1b1a19")
       .style("position", "absolute")
       .style("top", "8px")
       .style("left", "8px")
 
-      if(data.colors.length > 7)
-        d3.select(data.selector + " .container")
-          .style("overflow-y", "scroll")      
+      //if(data.colors.length > 7)
+        //d3.select(data.selector + " .container")
+          //.style("overflow-y", "scroll")      
       
   }
 
@@ -124,8 +126,8 @@ var legend = function(){
   function legend_dynamic(){
     var svg = d3.select(data.selector + " #" + id)
       .append("svg")
-      .attr("width", 160)
-      .attr("height", 100);
+      .attr("width", 150)
+      .attr("height", 90);
 
     var gradient = svg.append("defs")
       .append("linearGradient")
