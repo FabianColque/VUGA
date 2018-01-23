@@ -149,7 +149,20 @@ function configuration_obj_1(headers){
           .data(["", "Bar Chart", "Row Chart", "Pie Chart"])
           .enter()
           .append("option")
-          .text(function(d){return d}) 
+          .text(function(d){return d})
+
+        //agregando la opcion de ser o no ser una dimension de projection
+        d3.select(this)
+          .append("label")
+          .attr("class", "control-label")
+          .attr("for", "name")
+          .text("Projection? y/n")   
+
+        d3.select(this)
+          .append("input")
+          .attr("type", "checkbox")
+          .attr("id", function(d){return "conf-obj1-" + d + "isProj";})
+          
 
       })
 

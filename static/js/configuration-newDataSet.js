@@ -56,6 +56,10 @@ function generate_all_data(){
         var name = d3.select(d).select("#name_obj1").attr("value")
         var t_var = d3.select(d).select("#conf-obj1-"+ name +"-typeV").property("value")
         var t_chart = d3.select(d).select("#conf-obj1-"+ name +"-typeC").property("value")
+        var isproj = "0";//0 si no es proj, 1 si es que es proj
+        if(d3.select(d).select("#conf-obj1-"+ name + "isProj").property("checked"))
+          isproj = "1"
+
         var dom = []
         var ran = []
         if(t_var == "Numerical"){
@@ -72,7 +76,7 @@ function generate_all_data(){
             ran = ran.split(",")
         }
 
-        dimensions_charts.push({"name": name, "type_chart": t_chart, "t_var": t_var, "dom": dom, "ran": ran, "idx": i+1})
+        dimensions_charts.push({"name": name, "type_chart": t_chart, "t_var": t_var, "dom": dom, "ran": ran, "idx": i+1, "isproj": isproj})
       }
       //console.log("holis", d, i)
     }

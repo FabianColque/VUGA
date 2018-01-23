@@ -25,6 +25,8 @@ from sklearn import cluster
 import scipy.cluster.hierarchy as hier
 import scipy.spatial.distance as dist
 
+from scipy.stats import scoreatpercentile
+
 import my_algorithm
 
  
@@ -98,6 +100,193 @@ class recover_name_datasets(tornado.web.RequestHandler):
 
 #This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(tornado.web.RequestHandler):
+  def post(self):
+    details = json.loads(self.request.body)
+    dbname = str(details.get("dbname"))
+    
+    #Genering the details.json
+    detailsjson = {"Dimensions_total": details["Dimensions_total"], "Dimensions_charts": [], "features": details["features"], "dim_toProj": []}     
+    dimensionsData = load_json(getpath_db(dbname) + "dimensions.json")
+
+    dataObj1 = load_json(getpath_db(dbname) + "object_1.json")
+
+    dimen_proj = []
+    ite = -1
+
+    for dc in details["Dimensions_charts"]:
+      ite += 1
+      if dc["isproj"] == "1":
+        #if this dimension is a projection dimension
+        dimen_proj.append(ite)
+      if dc["t_var"] == "Categorical":
+        #busqueda de todas las posibles categorias
+        auxset = set()
+        for di in dataObj1["body"]:
+          auxset.add(di[ite+2])
+        detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": list(auxset), "type_chart": dc["type_chart"]})
+      else:
+        if len(dc["dom"]) == 0:
+          detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": [], "type_chart": dc["type_chart"]})     
+        else:
+          detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": dc["ran"], "type_chart": dc["type_chart"]})
+      
+
+    detailsjson["dim_toProj"] = dimen_proj
+    save_json(getpath_db(dbname) + "details.json", detailsjson)
+
+    print ("detailsjson", detailsjson["Dimensions_charts"])
+    
+    dataViz = {"dimensions": detailsjson["Dimensions_charts"], "instances": []}
+    for i_body in xrange(0, len(dataObj1["body"])):
+      aux = {}
+      aux["idx"] = i_body
+      aux["id"] = dataObj1["body"][i_body][0]
+      aux["n"] = dataObj1["body"][i_body][1]
+      aux["values"] = []
+      for i_dim in xrange(0, len(dataViz["dimensions"])):
+        i_dim_obj = details["Dimensions_charts"][i_dim]["idx"] + 1
+        if details["Dimensions_charts"][i_dim]["t_var"] == "Categorical":
+          #print ("donde esyou", i_body, i_dim_obj, dataViz["dimensions"][i_dim]["titles"])
+          i_aux = dataViz["dimensions"][i_dim]["titles"].index(dataObj1["body"][i_body][i_dim_obj])
+          aux["values"].append(i_aux)
+        else:
+          for i_dom in xrange(0, len(details["Dimensions_charts"][i_dim]["dom"])):
+            if i_dom == 0 and int(dataObj1["body"][i_body][i_dim+2]) < int(details["Dimensions_charts"][i_dim]["dom"][i_dom]):
+              aux["values"].append(0)
+            elif i_dom == (len(details["Dimensions_charts"][i_dim]["dom"])-1) and int(dataObj1["body"][i_body][i_dim+2]) >= int(details["Dimensions_charts"][i_dim]["dom"][i_dom]):
+              aux["values"].append(i_dom+1)
+            elif int(dataObj1["body"][i_body][i_dim+2]) >= int(details["Dimensions_charts"][i_dim]["dom"][i_dom-1]) and int(dataObj1["body"][i_body][i_dim+2]) < int(details["Dimensions_charts"][i_dim]["dom"][i_dom]):
+              aux["values"].append(i_dom)
+      dataViz["instances"].append(aux)
+    save_json(getpath_db(dbname) + "dataViz.json", dataViz)       
+
+    #Generate the heatmap and projection
+
+    details_limits = []
+    i_aux = 0
+    len_charts_proj = len(dimen_proj)
+
+    for ftr in detailsjson["features"]:
+      if i_aux < len_charts_proj:
+        #if we have some chart Dimension as projection dimension 
+        details_limits.append([0, len(detailsjson["Dimensions_charts"][dimen_proj[i_aux]]["titles"])-1])
+      elif ftr["type"] == "String":
+        details_limits.append([100000, -100000])
+      else:
+        if ftr["detail"] == []:
+          details_limits.append([100000, -100000])
+        else:
+          details_limits.append(ftr["detail"])
+      i_aux += 1
+
+    for d_d in dimensionsData["body"]:
+      for i_ftr in xrange(0, len(details["features"])):
+        if i_ftr > len_charts_proj and details["features"][i_ftr]["detail"] == []:
+          d_d[i_ftr + 1] = float(d_d[i_ftr + 1])
+          details_limits[i_ftr][0] = min(details_limits[i_ftr][0], d_d[i_ftr+1])
+          details_limits[i_ftr][1] = max(details_limits[i_ftr][1], d_d[i_ftr+1])
+
+    #comvert the matrix in numpy matrix
+    dimensionsData["body"] = np.array(dimensionsData["body"])
+
+    #calculating the percentiles for the normalization
+    for i_ftr in xrange(0, len(details["features"])):
+      arraynp_aux = np.array(dimensionsData["body"][:, i_ftr+1], dtype=float)
+      if i_ftr > len_charts_proj and details["features"][i_ftr]["detail"] != []:
+        details_limits[i_ftr][0] = np.min(arraynp_aux)
+        details_limits[i_ftr][1] = np.max(arraynp_aux)
+      if i_ftr > len_charts_proj and details["features"][i_ftr]["detail"] == []:
+        q1 = scoreatpercentile(arraynp_aux, 25)
+        q3 = scoreatpercentile(arraynp_aux, 75)
+        iqd = q3 - q1
+        md = np.median(arraynp_aux)
+        whisker = 1.5*iqd
+        details_limits[i_ftr] = [md - whisker, md + whisker]
+
+    #here we are going to use the t-sne to project the data
+    arr_tsne = []
+    heatmap_tsne = []
+
+    i_body = 0
+    for body in dimensionsData["body"]:
+      aux = []
+      aux_heat = []
+      for i_ftr in xrange(0, len(details["features"])):
+        val = 0.0
+        val_heat = 0.0
+        if i_ftr < len_charts_proj:
+          val_aux = dataViz["instances"][i_body]["values"][dimen_proj[i_ftr]]
+          val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
+          val_heat = val
+        elif detailsjson["features"][i_ftr]["type"] == "String":
+          val_aux = detailsjson["Dimensions_charts"][i_ftr]["titles"].index(body[i+1])
+          val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
+          val_heat = val
+        else:
+          if details["features"][i_ftr]["detail"] == []:
+            val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), True)
+            if float(body[i_ftr+1]) < float(details_limits[i_ftr][0]):
+              val_heat = 0.0
+            elif float(body[i_ftr+1]) > float(details_limits[i_ftr][1]):
+              val_heat = 1.0
+            else:
+              val_heat = val
+          else:
+            val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
+            if float(body[i_ftr+1]) < float(details["features"][i_ftr]["detail"][0]) or float(body[i_ftr+1]) > float(details["features"][i_ftr]["detail"][1]):
+              val_heat = -1
+            else:
+              val_heat = myscale(float(details["features"][i_ftr]["detail"][0]), float(details["features"][i_ftr]["detail"][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
+        aux.append(val)
+        aux_heat.append(val_heat)
+      arr_tsne.append(aux)
+      heatmap_tsne.append(aux_heat)
+      i_body += 1
+
+    arr_tsne = np.array(arr_tsne)
+    heatmap_tsne = np.array(heatmap_tsne)
+    heatmap_tsne = heatmap_tsne.tolist()
+
+    heatmap = {"header": dimensionsData["headers"][1:], "body": heatmap_tsne}
+    save_json(getpath_db(dbname) + "heatmap.json", heatmap)
+    print ("starting projection...")
+    #Now the projection of All data
+    time0 = time()
+    model = TSNE(n_components = 2, random_state=0)
+    np.set_printoptions(suppress=True)
+    points = model.fit_transform(arr_tsne)
+    points = np.matrix(points)
+    points = points.tolist()
+    time1 = time()
+    print ("tsne-principal time", time1 - time0)
+    for poi in xrange(0, len(points)):
+      points[poi].append(dimensionsData["body"][poi][0])
+
+    save_json(getpath_db(dbname) + "projection.json", points)
+
+    #procesing the projection by each dimension
+    for i in xrange(0, len(arr_tsne[0])):
+      time0 = time()
+      model = TSNE(n_components = 2, random_state = 0)
+      np.set_printoptions(suppress=True)
+      pp = model.fit_transform(arr_tsne[:,[i]])
+      pp = np.matrix(pp)
+      pp = pp.tolist()
+      for iii in xrange(0, len(pp)):
+        pp[iii].append(dimensionsData["body"][iii][0])
+      time1 = time()
+      nadass = "time proj dim_" + str(i)
+      print_message(nadass, time1 - time0)
+      save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  pp)
+
+    self.write(json.dumps(""))
+
+
+
+
+
+
+class save_and_generate_newData_buckup(tornado.web.RequestHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = str(mydata.get("dbname"))
@@ -578,7 +767,16 @@ def myformat_dec5(x):
   hh = ('%.2f' % x).rstrip('0').rstrip('.')
   return float(hh)
 
-def myscale(old_min, old_max, new_min, new_max, old_value):
+def myscale2(old_min, old_max, new_min, new_max, old_value):
+  return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 
+
+def myscale(old_min, old_max, new_min, new_max, old_value, sin_detail):  
+  if sin_detail:
+    if old_value > old_max:
+      old_value = old_max
+    if old_value < old_min:
+      old_value = old_min
+    return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 
   return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 
 
 def getpath_db(dbname):
