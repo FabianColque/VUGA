@@ -109,7 +109,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     dimensionsData = load_json(getpath_db(dbname) + "dimensions.json")
 
     dataObj1 = load_json(getpath_db(dbname) + "object_1.json")
-
+    print ("headers", dimensionsData["headers"])
     dimen_proj = []
     ite = -1
 
@@ -165,18 +165,26 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     details_limits = []
     i_aux = 0
     len_charts_proj = len(dimen_proj)
+    if len_charts_proj == 0:
+      len_charts_proj = -1
 
     for ftr in detailsjson["features"]:
       if i_aux < len_charts_proj:
         #if we have some chart Dimension as projection dimension 
+        print ("\n\n\n\n")     
+        print ("chart 10000")
+        print ("\n\n\n\n")     
         details_limits.append([0, len(detailsjson["Dimensions_charts"][dimen_proj[i_aux]]["titles"])-1])
       elif ftr["type"] == "String":
+        print ("\n\n\n\n")     
+        print ("string 10000")
+        print ("\n\n\n\n")   
         details_limits.append([100000, -100000])
       else:
         if ftr["detail"] == []:
           details_limits.append([100000, -100000])
         else:
-          details_limits.append(ftr["detail"])
+          details_limits.append(np.copy(ftr["detail"]))
       i_aux += 1
 
     for d_d in dimensionsData["body"]:
@@ -188,7 +196,9 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     #comvert the matrix in numpy matrix
     dimensionsData["body"] = np.array(dimensionsData["body"])
-
+    print ("impresion de auxilio1", details["features"])
+    print ("\n\n\n\n")     
+    print ("limits1", details_limits) 
     #calculating the percentiles for the normalization
     for i_ftr in xrange(0, len(details["features"])):
       arraynp_aux = np.array(dimensionsData["body"][:, i_ftr+1], dtype=float)
@@ -201,8 +211,14 @@ class save_and_generate_newData(tornado.web.RequestHandler):
         iqd = q3 - q1
         md = np.median(arraynp_aux)
         whisker = 1.5*iqd
-        details_limits[i_ftr] = [md - whisker, md + whisker]
-
+        minwhisker = md - whisker
+        if minwhisker < 0.0:
+          minwhisker = 0.0
+        details_limits[i_ftr] = [minwhisker, md + whisker]
+    print ("\n\n\n\n")     
+    print ("impresion de auxilio2", details["features"])          
+    print ("\n\n\n\n")     
+    print ("limits1", details_limits) 
     #here we are going to use the t-sne to project the data
     arr_tsne = []
     heatmap_tsne = []
@@ -215,15 +231,18 @@ class save_and_generate_newData(tornado.web.RequestHandler):
         val = 0.0
         val_heat = 0.0
         if i_ftr < len_charts_proj:
+          print ("chart ...")
           val_aux = dataViz["instances"][i_body]["values"][dimen_proj[i_ftr]]
           val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
           val_heat = val
         elif detailsjson["features"][i_ftr]["type"] == "String":
+          print ("String ...")
           val_aux = detailsjson["Dimensions_charts"][i_ftr]["titles"].index(body[i+1])
           val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
           val_heat = val
         else:
           if details["features"][i_ftr]["detail"] == []:
+            #print ("vacio ...")
             val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), True)
             if float(body[i_ftr+1]) < float(details_limits[i_ftr][0]):
               val_heat = 0.0
@@ -231,12 +250,18 @@ class save_and_generate_newData(tornado.web.RequestHandler):
               val_heat = 1.0
             else:
               val_heat = val
+            
           else:
+            #print ("lleno ...")
             val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
+            
             if float(body[i_ftr+1]) < float(details["features"][i_ftr]["detail"][0]) or float(body[i_ftr+1]) > float(details["features"][i_ftr]["detail"][1]):
+              #print ("-1 ...")
               val_heat = -1
+              
             else:
               val_heat = myscale(float(details["features"][i_ftr]["detail"][0]), float(details["features"][i_ftr]["detail"][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
+              
         aux.append(val)
         aux_heat.append(val_heat)
       arr_tsne.append(aux)
@@ -246,7 +271,11 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     arr_tsne = np.array(arr_tsne)
     heatmap_tsne = np.array(heatmap_tsne)
     heatmap_tsne = heatmap_tsne.tolist()
-
+    """
+    fabian = arr_tsne.tolist()
+    hois = {"body": fabian}
+    save_json(getpath_db(dbname) + "normalization_projection.json", hois)
+    """
     heatmap = {"header": dimensionsData["headers"][1:], "body": heatmap_tsne}
     save_json(getpath_db(dbname) + "heatmap.json", heatmap)
     print ("starting projection...")
@@ -278,7 +307,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       nadass = "time proj dim_" + str(i)
       print_message(nadass, time1 - time0)
       save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  pp)
-
+    
     self.write(json.dumps(""))
 
 
@@ -584,6 +613,55 @@ class get_heatmap(tornado.web.RequestHandler):
 
 
 class getDimension_legend(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    
+    #the dim_num begin with zero( 0 ) 
+    dim_num = mydata.get("dimension_num")
+    dim_num = int(dim_num)
+
+
+    colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
+
+    time0 = time()
+
+    data_heatmap = load_json(getpath_db(dbname) + "heatmap.json")
+    details = load_json(getpath_db(dbname) + "details.json")
+    dataViz = load_json(getpath_db(dbname) + "dataViz.json")
+
+    res = {"selector": "#areaMainsvg_projection", "title": "", "hasChecks": 1, "body": []}
+    #Charts Dimensions
+    aux_body = []
+
+    if dim_num < len(details["Dimensions_charts"]):
+      res["mode"] = "static"
+      res["names"] = details["Dimensions_charts"][dim_num]["titles"]
+      res["colors"] = colors[0:len(details["Dimensions_charts"][dim_num]["titles"])]
+      res["title"] = details["Dimensions_charts"][dim_num]["name"]
+
+      sz_dim = float(len(details["Dimensions_charts"][dim_num]["titles"]) - 1.0)
+      for i_dataviz in xrange(0, len(dataViz["instances"])):
+        aux_body.append(dataViz["instances"][i_dataviz]["values"][dim_num]/sz_dim)
+    else:
+      dim_num_heat = dim_num - len(details["Dimensions_charts"]) + len(details["dim_toProj"])
+      res["title"] = data_heatmap["header"][dim_num_heat]
+      res["mode"] = "dynamic"
+      res["names"] = ["Min", "Max"]     
+      res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']
+
+      for d_body in data_heatmap["body"]:
+        aux_body.append(d_body[dim_num_heat])
+
+    res["body"] = aux_body
+
+    time1 = time()
+    print_message("getDimension_legend", time1 - time0)
+
+    self.write(json.dumps(res))
+
+
+class getDimension_legend_buckup(tornado.web.RequestHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")

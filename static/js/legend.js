@@ -67,8 +67,16 @@ var legend = function(){
     midiv.html(info)
   }
 
+  function gerar_ranges(num){
+    var res = []
+    num = num - 1
+    for(var i = 0; i < num+1; i++)
+      res.push(parseFloat(i/num))
+    return res
+  }
+
   function update_points(){
-    var liminf = 0;
+    /*var liminf = 0;
     var limsup = 0;
     var scaleColor = d3.scale.linear();
     if(data.mode == "static"){
@@ -88,24 +96,16 @@ var legend = function(){
     }  
     //console.log("outlier", data.outlier)
     //res["outlier"] = [med, q1, q3, lim]
-    
-
+    */
+    var scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
     all_values_rev = []
     d3.selectAll(data.selector + " .pointDots")
       .style("fill", function(d, i){
         
-        val_aux = data.body[d[2]]
-        all_values_rev.push(val_aux)
-        var aux = data.body[d[2]];
-        
-        if(data.mode == 'dynamic'){
-          if(val_aux >= data.outlier[0]){
-            if(val_aux > limsup)aux = limsup
-          }else{
-            if(val_aux < liminf)aux = liminf
-          }
-        }
-        return data.colors[Math.round(scaleColor(aux))]
+        if(data.body[d[2]] < 0 || data.body[d[2]] > 1)
+          return null
+        return scaleColor(data.body[d[2]])
+        //return data.colors[Math.round(scaleColor(aux))]
         /*var  aux = 0;
         if(data.body[d[2]] > 0.125)
           aux = 1
