@@ -78,7 +78,8 @@ function drawing_histo_obj1(){
 
     d3.selectAll("#heatmap *").remove();
 
-    var cores = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026'];
+    //var cores = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026'];
+    var cores = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'];
     draw_legend_table(cores);
 
     var data_selected = evt.top(Infinity).map(function(d){return d.idx})
@@ -118,11 +119,12 @@ function drawing_histo_obj1(){
     var heat_headers = data_dim["headers"];
 
     matrix = [];
-    var sums_x = new Array(heat_headers.length).fill(0);
+    var sums_x = new Array(heat_headers.length).fill(0.0);
     var sums_y = [];
 
     var i_i = 0;
-    for(var ds in data_selected){
+    //for(var ds in data_selected){
+    for(var i_i; i_i < data_selected.length; i_i++){
 
       var auxsum = 0;
 
@@ -131,16 +133,18 @@ function drawing_histo_obj1(){
         sums_x[d] += data_dim["body"][i_i][d];
         return {x: d, y: i_i, z: data_dim["body"][i_i][d]};
       })
-     i_i += 1; 
+     //i_i += 1; 
      sums_y.push(auxsum)
     }
 
     //width = 15*heat_headers.length;
     height = 15*data_selected.length;
 
+    var divs_scales = d3.range(cores.length).map(function(d){return d/(cores.length - 1)})
+
     var xw = d3.scale.ordinal().rangeBands([0, width]),
     xh = d3.scale.ordinal().rangeBands([0, height]),
-    c = d3.scale.linear().domain([0, 0.25, 0.5, 0.75, 1]).range(cores); 
+    c = d3.scale.linear().domain(divs_scales).range(cores); 
 
     var orders = {
       nameA: d3.range(data_selected.length).sort(function(a,b){return d3.ascending(data_selected[a], data_selected[b])}),
@@ -224,7 +228,7 @@ function drawing_histo_obj1(){
 
     function row(row){
       var cell = d3.select(this).selectAll(".cell")
-      .data(row.filter(function(d){return d.z > -1}))
+      .data(row.filter(function(d){return d.z >= 0.0 && d.z <= 1.0}))
       .enter()
       .append("rect")
       .attr("class", "cell")
@@ -273,7 +277,7 @@ function drawing_histo_obj1(){
 
       var svg = d3.select("#legend-heatmap")
       .append("svg")
-      .attr("width", 300)
+      .attr("width", 500)
       .attr("height", 100)
       .append("g")
       .attr("transform", "translate(30,30)")
@@ -289,7 +293,7 @@ function drawing_histo_obj1(){
       .append("text")
       .attr("class", "textlegend")
       .attr("x", function(d, i){return lado*i*2 + 63})
-      .text(function(d,i){return i/4})  
+      .text(function(d,i){return i/(cores.length - 1)})  
 
       svg.selectAll(".cell-legend")
       .data(cores)

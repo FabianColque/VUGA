@@ -145,18 +145,35 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       aux["values"] = []
       for i_dim in xrange(0, len(dataViz["dimensions"])):
         i_dim_obj = details["Dimensions_charts"][i_dim]["idx"] + 1
+
+        #verificar si es una dimension para proyectar y cambiar su valor a numero
+        ind_proj = -1
+        flag_proj = False
+        if details["Dimensions_charts"][i_dim]["isproj"] == "1":
+          flag_proj = True
+          ind_proj = dimen_proj.index(i_dim)
+
+
         if details["Dimensions_charts"][i_dim]["t_var"] == "Categorical":
           #print ("donde esyou", i_body, i_dim_obj, dataViz["dimensions"][i_dim]["titles"])
           i_aux = dataViz["dimensions"][i_dim]["titles"].index(dataObj1["body"][i_body][i_dim_obj])
           aux["values"].append(i_aux)
+          if flag_proj:
+            dimensionsData["body"][i_body][ind_proj] = i_aux
         else:
           for i_dom in xrange(0, len(details["Dimensions_charts"][i_dim]["dom"])):
             if i_dom == 0 and int(dataObj1["body"][i_body][i_dim+2]) < int(details["Dimensions_charts"][i_dim]["dom"][i_dom]):
               aux["values"].append(0)
+              if flag_proj:
+                dimensionsData["body"][i_body][ind_proj] = 0.0 
             elif i_dom == (len(details["Dimensions_charts"][i_dim]["dom"])-1) and int(dataObj1["body"][i_body][i_dim+2]) >= int(details["Dimensions_charts"][i_dim]["dom"][i_dom]):
               aux["values"].append(i_dom+1)
+              if flag_proj:
+                dimensionsData["body"][i_body][ind_proj] = i_dom + 1.0
             elif int(dataObj1["body"][i_body][i_dim+2]) >= int(details["Dimensions_charts"][i_dim]["dom"][i_dom-1]) and int(dataObj1["body"][i_body][i_dim+2]) < int(details["Dimensions_charts"][i_dim]["dom"][i_dom]):
               aux["values"].append(i_dom)
+              if flag_proj:
+                dimensionsData["body"][i_body][ind_proj] = i_dom
       dataViz["instances"].append(aux)
     save_json(getpath_db(dbname) + "dataViz.json", dataViz)       
 
@@ -189,7 +206,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     for d_d in dimensionsData["body"]:
       for i_ftr in xrange(0, len(details["features"])):
-        if i_ftr > len_charts_proj and details["features"][i_ftr]["detail"] == []:
+        if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] == []:
           d_d[i_ftr + 1] = float(d_d[i_ftr + 1])
           details_limits[i_ftr][0] = min(details_limits[i_ftr][0], d_d[i_ftr+1])
           details_limits[i_ftr][1] = max(details_limits[i_ftr][1], d_d[i_ftr+1])
@@ -201,11 +218,13 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     print ("limits1", details_limits) 
     #calculating the percentiles for the normalization
     for i_ftr in xrange(0, len(details["features"])):
-      arraynp_aux = np.array(dimensionsData["body"][:, i_ftr+1], dtype=float)
-      if i_ftr > len_charts_proj and details["features"][i_ftr]["detail"] != []:
+      arraynp_aux = []
+      if isNumber(dimensionsData["body"][0][i_ftr+1]):
+        arraynp_aux = np.array(dimensionsData["body"][:, i_ftr+1], dtype=float)
+      if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] != []:
         details_limits[i_ftr][0] = np.min(arraynp_aux)
         details_limits[i_ftr][1] = np.max(arraynp_aux)
-      if i_ftr > len_charts_proj and details["features"][i_ftr]["detail"] == []:
+      if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] == []:
         q1 = scoreatpercentile(arraynp_aux, 25)
         q3 = scoreatpercentile(arraynp_aux, 75)
         iqd = q3 - q1
@@ -231,12 +250,12 @@ class save_and_generate_newData(tornado.web.RequestHandler):
         val = 0.0
         val_heat = 0.0
         if i_ftr < len_charts_proj:
-          print ("chart ...")
+          #print ("chart ...")
           val_aux = dataViz["instances"][i_body]["values"][dimen_proj[i_ftr]]
           val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
           val_heat = val
         elif detailsjson["features"][i_ftr]["type"] == "String":
-          print ("String ...")
+          #print ("String ...")
           val_aux = detailsjson["Dimensions_charts"][i_ftr]["titles"].index(body[i+1])
           val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
           val_heat = val
@@ -751,7 +770,14 @@ class get_Details_options(tornado.web.RequestHandler):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
     data_details = load_json(getpath_db(dbname) + "details.json")
-    res = data_details["Dimensions_total"]
+    res = {"charts": [], "dimensions": [], "intersection": []}
+    for dc in data_details["Dimensions_charts"]:
+      res["charts"].append({"name": dc["name"]})
+    for i in xrange(0, len(data_details["dim_toProj"])):
+      res["intersection"].append({"name": data_details["Dimensions_total"][i]["name"]})
+    for i in xrange(len(data_details["dim_toProj"]), len(data_details["Dimensions_total"])):
+      res["dimensions"].append({"name": data_details["Dimensions_total"][i]["name"]})
+    
     self.write(json.dumps(res))
 
 class getNewGroups(tornado.web.RequestHandler):
@@ -818,6 +844,15 @@ class getOtherProj(tornado.web.RequestHandler):
 ####  END  #### MY CLASSES ###################
 
 ### functions for support START ###############
+def isNumber(str):
+  res = 0
+  for d in str:
+    if (d >= 'a' and d <= 'z') or (d >= 'A' and d <= 'Z'):
+      return False
+    if d >= '0' and d <= '9':
+      res += 1
+  return res >= (len(str)-1)
+
 
 def kl_divergence(histo_1, histo_2):
   n = len(histo_1)

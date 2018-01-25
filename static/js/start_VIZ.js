@@ -46,27 +46,28 @@ function start(){
 
   /*otro que no se*/
   var data_options = post_to_server_global({"dbname": name_dataset}, "get_Details_options");
-  headers_data = data_options
+  headers_data = data_options["intersection"].concat(data_options["dimensions"])
   draw_colors_dimensions_selectors(data_options)
 }
 
 
 
 function draw_colors_dimensions_selectors(data){
-  data2 = [{"name": "Gender"},{"name": "Age"},{"name": "Occupation"}].concat(data);
+  //data2 = [{"name": "Gender"},{"name": "Age"},{"name": "Occupation"}].concat(data);
   d3.select(".select_color")
     .on("change", onchange_bycolor)
     .selectAll(".options_color")
-    .data(data2)
+    .data(data["charts"].concat(data["dimensions"]))
     .enter()
     .append("option")
       .text(function(d){return d.name})
 
-  data = [{"name": "All"}].concat(data);
+  //data = [{"name": "All"}].concat(data);
+  console.log("poa", [{"name": "All"}].concat(data["intersection"]).concat(data["dimensions"]))
   d3.select(".select_proj")
     //.on("change", onchange_byProj)
     .selectAll(".options_proj")
-    .data(data)
+    .data([{"name": "All"}].concat(data["intersection"]).concat(data["dimensions"]))
     .enter()
     .append("option")
     .text(function(d){return d.name})

@@ -138,50 +138,15 @@ var legend = function(){
         .attr("y2", "0%")
         .attr("spreadMethod", "pad");
 
-    gradient.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", data.colors[0])
-        .attr("stop-opacity", 1);
+    
 
-    gradient.append("stop")
-        .attr("offset", "12.5%")
-        .attr("stop-color", data.colors[1])
-        .attr("stop-opacity", 1);
-
-    gradient.append("stop")
-        .attr("offset", "25%")
-        .attr("stop-color", data.colors[2])
-        .attr("stop-opacity", 1);
-
-    gradient.append("stop")
-        .attr("offset", "37.5%")
-        .attr("stop-color", data.colors[3])
-        .attr("stop-opacity", 1);
-
-    gradient.append("stop")
-        .attr("offset", "50%")
-        .attr("stop-color", data.colors[4])
-        .attr("stop-opacity", 1);
-
-    gradient.append("stop")
-        .attr("offset", "62.5%")
-        .attr("stop-color", data.colors[5])
-        .attr("stop-opacity", 1);
-
-    gradient.append("stop")
-        .attr("offset", "75%")
-        .attr("stop-color", data.colors[6])
-        .attr("stop-opacity", 1);
-
-    gradient.append("stop")
-        .attr("offset", "87.5%")
-        .attr("stop-color", data.colors[7])
-        .attr("stop-opacity", 1);    
-
-    gradient.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", data.colors[8])
-        .attr("stop-opacity", 1);
+    gradient.selectAll("stop")
+      .data(data.colors)
+      .enter()
+      .append("stop")
+      .attr("offset", function(d, i){return ((i/(data.colors.length - 1))*100.0) + "%"})
+      .attr("stop-color", function(d){return d})
+      .attr("stop-opacity", 1)
 
     svg.append("rect")
         .attr("width", 160)
