@@ -276,7 +276,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     hois = {"body": fabian}
     save_json(getpath_db(dbname) + "normalization_projection.json", hois)
     """
-    heatmap = {"header": dimensionsData["headers"][1:], "body": heatmap_tsne}
+    heatmap = {"headers": dimensionsData["headers"][1:], "body": heatmap_tsne}
     save_json(getpath_db(dbname) + "heatmap.json", heatmap)
     print ("starting projection...")
     #Now the projection of All data
@@ -645,7 +645,7 @@ class getDimension_legend(tornado.web.RequestHandler):
         aux_body.append(dataViz["instances"][i_dataviz]["values"][dim_num]/sz_dim)
     else:
       dim_num_heat = dim_num - len(details["Dimensions_charts"]) + len(details["dim_toProj"])
-      res["title"] = data_heatmap["header"][dim_num_heat]
+      res["title"] = data_heatmap["headers"][dim_num_heat]
       res["mode"] = "dynamic"
       res["names"] = ["Min", "Max"]     
       res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']
