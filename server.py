@@ -297,6 +297,16 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     """
     heatmap = {"headers": dimensionsData["headers"][1:], "body": heatmap_tsne}
     save_json(getpath_db(dbname) + "heatmap.json", heatmap)
+
+    #this I added just to extract the List of dimension vectors
+    lista = arr_tsne.tolist()
+    nombres = np.array(dimensionsData["body"])
+    nombres = nombres[:,0]
+    nombres = nombres.tolist()
+    lista_save = {"body": lista, "names": nombres}
+    save_json(getpath_db(dbname) + "dimension_vector.json", lista_save)
+
+
     print ("starting projection...")
     #Now the projection of All data
     time0 = time()
@@ -312,6 +322,8 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     save_json(getpath_db(dbname) + "projection.json", points)
 
+    #no deberia estar comentado, solo para generar el dimension vector
+    """
     #procesing the projection by each dimension
     for i in xrange(0, len(arr_tsne[0])):
       time0 = time()
@@ -326,7 +338,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       nadass = "time proj dim_" + str(i)
       print_message(nadass, time1 - time0)
       save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  pp)
-    
+    """
     self.write(json.dumps(""))
 
 
