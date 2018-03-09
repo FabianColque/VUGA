@@ -1,18 +1,26 @@
-function comparison_matriz(){
+function comparison_matriz(name_, div){
 
   /*
   Example of data
 
   data = [{val: val1, di: di1}, ...]
   */
+
+  var nameChart = name_;
+  var divChart = div;
+  var divFather = "";
+
   var data_normal = []
   var data_simi = []
 
   var margin = {top: 20, right: 20, bottom: 120, left: 50};
-  var width = 650;
+  var width = 450;
   var height = 200;
+  //hasta aqui bien
+  var colores_movielens = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
 
-  var chart = d3.select("#comparison-matrix")
+
+  var chart = d3.select(divChart)
           .append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom + 70)
@@ -60,17 +68,21 @@ function comparison_matriz(){
 
   this.update_comparison = function(data){
     update_(data);
+
+    /*d3.select("#comparison-matrix").select(".y.axis")
+      .selectAll("text")
+      .*/
   }
 
   function update_(data){
 
     data_normal = data
     
-    d3.select("#rectNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})
-    d3.select("#textNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})    
-    d3.select("#selectModeComparison").style("visibility", function(){if(flag_comparison)return "visible";return "hidden";})
-      .property("value", "Default")
-    
+    //d3.select("#rectNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})
+    //d3.select("#textNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})    
+    //d3.select("#selectModeComparison").style("visibility", function(){if(flag_comparison)return "visible";return "hidden";})
+      //.property("value", "Default")
+    d3.select("#selectModeComparison").style("visibility", "hidden")
 
     xChart.domain(data.map(function(d){return d.di;}))
     yChart.domain([0, d3.max(data, function(d){return +d.val;})])
@@ -92,10 +104,15 @@ function comparison_matriz(){
       .attr("height", function(d){return height - yChart(d.val)})
       .attr("width", barWidth - 1)
       .attr("fill", function(d, i){
-        if(flag_comparison)
-          if(i % 2 == 1)
-            return "rgb(251,180,174)"
-        return "rgb(179,205,227)"
+        //if(flag_comparison)
+          //if(i % 2 == 1)
+            //return "rgb(251,180,174)"
+        //return "rgb(179,205,227)"
+        return colores_movielens[i];
+      })
+      .append("title")
+      .text(function(d){
+        return parseFloat(d.val).toFixed(3);
       })
 
     

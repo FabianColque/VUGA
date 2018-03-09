@@ -64,7 +64,7 @@ def getLabels(dataset, centroids):
 
 def shouldStop(oldCentroids, centroids, iterations):
   if iterations > MAX_ITERATIONS:
-    print "maximum of iterations" 
+    #print "maximum of iterations" 
     return True
   return np.array_equal(oldCentroids, centroids)
 

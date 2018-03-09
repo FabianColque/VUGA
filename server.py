@@ -27,9 +27,13 @@ import scipy.spatial.distance as dist
 
 from scipy.stats import scoreatpercentile
 
+from copy import deepcopy
+import copy
+
 import my_algorithm
 
- 
+heatmap_movielens = [] 
+ratings_movielens = []
 
 class MyError(Exception):
   def __init__(self, value):
@@ -96,6 +100,112 @@ class recover_name_datasets(tornado.web.RequestHandler):
     path = "static/data/"
     dir_list = os.listdir(path)
     self.write(json.dumps(dir_list))    
+
+
+#adicional function to test the next option
+#normalization by each user with each genre
+#by example: user1 only has the drama and comedy genre, then
+#the vector will be: [% , %, 0 , 0, 0, ...], % for the percentage of reviews in this dimension over the total reviews by user
+def modiying_movielens_dimensions(arr_tsne, dimensionsData):
+  print ('test arr_tsne: ', arr_tsne)
+  print ('len arr_tsne', len(arr_tsne), len(arr_tsne[0]))
+  print ('dimensionsData', dimensionsData)
+  print ('len dimensionsData', len(dimensionsData["body"]), len(dimensionsData["body"][0]))
+
+  modi = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  totales_by_user = len(arr_tsne) * [0.0]
+  for i in xrange(0, len(dimensionsData["body"])):
+    for m in modi:
+      totales_by_user[i] = totales_by_user[i] + float(dimensionsData["body"][i][m])
+  for i in xrange(0, len(arr_tsne)):
+    for m in modi:
+      arr_tsne[i][m-1] = float(dimensionsData["body"][i][m])/totales_by_user[i]
+
+
+  arr_tsne = np.delete(arr_tsne, 0, 1)
+  #arr_tsne = np.delete(arr_tsne, 14, 1)
+
+  for i in xrange(0,18):
+    arr_tsne = np.delete(arr_tsne, i+1, 1)
+
+  print ('test arr_tsne 2: ', arr_tsne)
+  print ('len arr_tsne 2', len(arr_tsne), len(arr_tsne[0]))
+
+  return arr_tsne
+
+
+#Adicional like modiying_movielens_dimensions, but it is for Movielens with only #reviews, without AVG and #totalReviews
+def modiying_movielens_only_Num_rating(arr_tsne, dimensionsData, heatmap):
+  print ('test arr_tsne: ', arr_tsne)
+  print ('len arr_tsne', len(arr_tsne), len(arr_tsne[0]))
+  print ('dimensionsData', dimensionsData)
+  print ('len dimensionsData', len(dimensionsData["body"]), len(dimensionsData["body"][0]))
+  rangos = []
+  totales_by_user = len(arr_tsne) * [0.0]
+  for i in xrange(0, len(dimensionsData["body"])):
+    for j in xrange(1, len(dimensionsData["body"][0])):
+      totales_by_user[i] = totales_by_user[i] + float(dimensionsData["body"][i][j])
+    rangos.append([2.0,-2.0])  
+  
+
+  #rangos = len(arr_tsne) * [[2,-2]]
+
+  mayores = [0]*len(arr_tsne)
+  brillo = [0]*len(arr_tsne)
+  for i in xrange(0, len(arr_tsne)):
+    for j in xrange(1, len(dimensionsData["body"][0])):
+      arr_tsne[i][j-1] = float(dimensionsData["body"][i][j])/totales_by_user[i]
+      if i == 0:
+        print ('QQQQ: ', arr_tsne[i][j-1])
+      if arr_tsne[i][j-1] != 0.0:
+        rangos[i][0] = min(rangos[i][0], arr_tsne[i][j-1])
+        rangos[i][1] = max(rangos[i][1], arr_tsne[i][j-1])
+
+  heatmap["body"] = deepcopy(arr_tsne)
+
+
+
+  #myscale2(old_min, old_max, new_min, new_max, old_value):
+  #variable p_neighbor, min distance between two points
+  p_neighbor = 0.02
+  for i in xrange(0, len(heatmap["body"])):
+    poss = 0
+    aux_sort = []
+    for j in xrange(0, len(heatmap["body"][0])):
+      aux_sort.append(heatmap["body"][i][j])
+      if heatmap["body"][i][j] == 0.0:
+        heatmap["body"][i][j] = -1#bien aqui
+      else:
+        if j > 0:
+          if heatmap["body"][i][j] > heatmap["body"][i][poss]:
+            poss = j
+      """if i == 0 and j == 0:
+        print ("AAAAAAAAAA ", rangos[i][0], rangos[i][1], 0.0, 1.0, heatmap["body"][i][j])
+        if heatmap["body"][i][j] == 0.0:
+          heatmap["body"][i][j] = -1;
+        else:
+          heatmap["body"][i][j] = myscale2(rangos[i][0], rangos[i][1], 0.0, 1.0, heatmap["body"][i][j])
+
+        if i == 0 and j == 0:
+          print ("BBBBBBBBBB ", heatmap["body"][i][j])"""
+    pass
+    #mayores[i] = new_orders_ind[poss]
+    mayores[i] = poss
+    aux_sort.sort()
+    #if aux_sort[len(aux_sort)-1]  - aux_sort[len(aux_sort)-2] <= p_neighbor:
+      #mayores[i] = len(heatmap["body"][0]) + 1
+    #brillo[i] = 1.0 - (aux_sort[len(aux_sort)-2]/aux_sort[len(aux_sort)-1])
+    mean = np.mean(aux_sort)
+    brillo[i] = 1.0 - ((aux_sort[len(aux_sort)-2]-mean)/(aux_sort[len(aux_sort)-1])-mean)
+
+  print ("atencion", heatmap["body"][5848], mayores[5848])    
+
+  print ('rangos [0]', rangos[0])
+  print ('test arr_tsne 2: ', arr_tsne)
+  print ('test arr[0] tsne2: ', arr_tsne[0])
+  print ('len arr_tsne 2', len(arr_tsne), len(arr_tsne[0]))    
+
+  return arr_tsne, heatmap, mayores, brillo
 
 
 #This class save and generate the new files as dataViz and details .json
@@ -238,7 +348,11 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     print ("impresion de auxilio2", details["features"])          
     print ("\n\n\n\n")     
     print ("limits1", details_limits) 
+    
+
     #here we are going to use the t-sne to project the data
+
+
     arr_tsne = []
     heatmap_tsne = []
 
@@ -296,7 +410,31 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     save_json(getpath_db(dbname) + "normalization_projection.json", hois)
     """
     heatmap = {"headers": dimensionsData["headers"][1:], "body": heatmap_tsne}
-    save_json(getpath_db(dbname) + "heatmap.json", heatmap)
+    
+
+    data_viz = load_json(getpath_db(dbname) + "dataViz.json")
+
+    
+    if dbname == "Movielens Test":
+      arr_tsne = modiying_movielens_dimensions(arr_tsne, dimensionsData)
+
+    mayores = []  
+    if dbname == "Movielens only Rating":
+      #new_orders_ind = [2, 6, 11, 10, 1, 7, 17, 0, 14, 15, 9, 13, 12, 5, 4, 3, 6, 16]
+      new_order_names = ["Drama", "Comedy", "Action", "Thriller", "Sci-Fi", "Romance", "Adventure", "Crime", "War", "Horror", "Children", "Animation", "Mystery", "Musical", "Fantasy", "Film-Noir", "Western", "Documentary"]
+      arr_tsne, heatmap, mayores, brillo = modiying_movielens_only_Num_rating(arr_tsne, dimensionsData, heatmap)
+      for i in xrange(0, len(heatmap["body"])):
+        dataViz["instances"][i]["values"].append(mayores[i])
+      dataViz["brillo"] = brillo
+      data_deta = load_json(getpath_db(dbname) + "details.json")
+      data_deta["Dimensions_charts"].append({"type_chart": "", "titles": new_order_names, "name": "Genre"})
+      #["n_RevAction", "n_RevAdventure", "n_RevAnimation", "n_RevChildrens", "n_RevComedy", "n_RevCrime", "n_RevDocumentary", "n_RevDrama", "n_RevFantasy", "n_RevFilm-Noir", "n_RevHorror", "n_RevMusical", "n_RevMystery", "n_RevRomance", "n_RevSci-Fi", "n_RevThriller", "n_RevWar", "n_RevWestern"]
+      save_json(getpath_db(dbname) + "dataViz.json", dataViz)
+      save_json(getpath_db(dbname) + "details.json", data_deta)
+
+    
+
+
 
     #this I added just to extract the List of dimension vectors
     lista = arr_tsne.tolist()
@@ -306,8 +444,12 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     lista_save = {"body": lista, "names": nombres}
     save_json(getpath_db(dbname) + "dimension_vector.json", lista_save)
 
+    heatmap["body"] = heatmap["body"].tolist()
+    save_json(getpath_db(dbname) + "heatmap.json", heatmap)
 
     print ("starting projection...")
+
+    
     #Now the projection of All data
     time0 = time()
     model = TSNE(n_components = 2, random_state=0)
@@ -563,7 +705,7 @@ class getData_Viz(tornado.web.RequestHandler):
     time0 = time()
     data_viz = load_json(path)
     time1 = time()
-    print_message("loading dataViz.json", time1 - time0)
+    #print_message("getData_Viz", time1 - time0)
     time0 = time()
     res = {"dimensions": data_viz["dimensions"], "instances": []}
     data_selected = mydata.get("data_selected")
@@ -589,7 +731,12 @@ class getDataObj2_table(tornado.web.RequestHandler):
     
     path = "static/data/" + dbname + "/"
     time0 = time()
-    data_ratings = load_json(path + "ratings.json")
+    
+    data_ratings = []
+    if dbname == "Movielens only Rating":
+      data_ratings = copy.copy(ratings_movielens)
+    else:
+      data_ratings = load_json(path + "ratings.json")
     time1 = time()
     print_message("load ratings.json", time1 - time0)
 
@@ -633,12 +780,20 @@ class get_heatmap(tornado.web.RequestHandler):
     data_selected = mydata.get("data_selected")
 
     time0 = time()
-    data_dim = load_json(getpath_db(dbname) + "heatmap.json")
-    res = {"headers": data_dim["headers"], "body": []}
+    data_dim = []
+    if dbname == "Movielens only Rating":
+      data_dim = copy.copy(heatmap_movielens)
+    else:
+      data_dim = load_json(getpath_db(dbname) + "heatmap.json")
+
+    data_ori_dim = load_json(getpath_db(dbname) + "dimensions.json")
+
+    res = {"headers": data_dim["headers"], "body": [], "ori": []}
     for uu in data_selected:
       res["body"].append(data_dim["body"][uu])
+      res["ori"].append(data_ori_dim["body"][uu])
     time1 = time()
-    print_message("get heatmap", time1 - time0)
+    print_message("get_heatmap", time1 - time0)
 
     self.write(json.dumps(res))
 
@@ -656,15 +811,18 @@ class getDimension_legend(tornado.web.RequestHandler):
     colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 
     time0 = time()
-
-    data_heatmap = load_json(getpath_db(dbname) + "heatmap.json")
+    data_heatmap = []
+    if dbname == "Movielens only Rating":
+      data_heatmap = copy.copy(heatmap_movielens)
+    else:
+      data_heatmap = load_json(getpath_db(dbname) + "heatmap.json")
     details = load_json(getpath_db(dbname) + "details.json")
     dataViz = load_json(getpath_db(dbname) + "dataViz.json")
 
     res = {"selector": "#areaMainsvg_projection", "title": "", "hasChecks": 1, "body": []}
     #Charts Dimensions
     aux_body = []
-
+    
     if dim_num < len(details["Dimensions_charts"]):
       res["mode"] = "static"
       res["names"] = details["Dimensions_charts"][dim_num]["titles"]
@@ -683,8 +841,12 @@ class getDimension_legend(tornado.web.RequestHandler):
 
       for d_body in data_heatmap["body"]:
         aux_body.append(d_body[dim_num_heat])
+      
+    if dbname == "Movielens only Rating" and dim_num == 4:
+      res["brightness"] = dataViz["brillo"]
 
     res["body"] = aux_body
+
 
     time1 = time()
     print_message("getDimension_legend", time1 - time0)
@@ -798,14 +960,23 @@ class getNewGroups(tornado.web.RequestHandler):
     dbname = mydata.get("dbname")
     data_selected = mydata.get("data_selected")
     k = mydata.get("K")
+    P = mydata.get("P")
     
     #dataset = heatmap with the complete matrix normalized
     time0 = time()
-    dataset = load_json(getpath_db(dbname) + "heatmap.json")
+    
+    dataset = []
+    if dbname == "Movielens only Rating":
+      dataset = copy.copy(heatmap_movielens)
+    else:
+      dataset = load_json(getpath_db(dbname) + "heatmap.json")
+
     dataset = dataset["body"]
     time1 = time()
     print_message("load heatmap.json", time1 - time0)
-
+    #comentado porque se esta usando el algoritmo con escolha aleatoria para grupos
+    #del mismo tamanho
+    """
     #dimensionFull = File with dimensions not normalized, brute state
     time0 = time()
     dimensionsFull = load_json(getpath_db(dbname) + "dimensions.json")
@@ -824,16 +995,17 @@ class getNewGroups(tornado.web.RequestHandler):
     dataViz = load_json(getpath_db(dbname) + "dataViz.json")
     time1 = time()
     print_message("load dataViz.json", time1 - time0)
-
+    """
     #My algorithm
     time0 = time()
-    res = my_algorithm.generate(dataset, data_selected, k, dimensionsFull, features, dataViz)#I want 5 new groups
+    #res = my_algorithm.generate(dataset, data_selected, k, dimensionsFull, features, dataViz)#I want 5 new groups
+    res = my_algorithm.generate_groups(dataset, data_selected, k, P)
     time1 = time()
-    print_message("algorithm vexus2", time1 - time0)
+    print_message("getNewGroups", time1 - time0)
 
     #print ("que nuevos grupos", res)
     res = my_algorithm.process_similarity(dataset, res, data_selected)
-    #print ("termino similitud", res)
+    #print ("\n\n\ntermino similitud", res)
     self.write(json.dumps(res))
 
 
@@ -849,7 +1021,7 @@ class getOtherProj(tornado.web.RequestHandler):
     else:
       res = load_json(getpath_db(dbname) +  "proj_" + str(idx) + ".json")
     time1 = time()
-    print_message("get_data_projection_by_dim", time1 - time0)
+    print_message("getOtherProj", time1 - time0)
 
     self.write(json.dumps(res))
 
@@ -961,6 +1133,12 @@ application = tornado.web.Application([
 
 
 if __name__ == "__main__":
+  print "Starting ..."
+  global heatmap_movielens
+  heatmap_movielens = load_json("static/data/Movielens only Rating/heatmap.json")
+  global ratings_movielens
+  ratings_movielens = load_json("static/data/Movielens only Rating/ratings.json")
   print "Server running ..."
+
   application.listen(8888)
   tornado.ioloop.IOLoop.instance().start()

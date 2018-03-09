@@ -9,13 +9,27 @@ var histograms_obj1 = ""
 //variable visualization of Legend
 var mylegend = null;
 
+//names of users selected
+var data_set_positions = {}
+
 //variable to save obj1
 var var_save_area = new draw_saveArea();
 var original_save = []
 
 /*variable to display the histograms of the heatmap*/
-var comparison_matrices = null;
 var flag_comparison = false;
+var load_aux_original = false;
+/*var comparison_matrices = null;
+var resume_comparison = null;
+var stack_heatmap = null;
+var mipiechart = null;
+
+var comparison_matrices2 = null;
+var resume_comparison2 = null;
+var stack_heatmap2 = null;
+var mipiechart2 = null;*/
+var comparison_original = null;
+var comparison_groups = null;
 
 //colors allowed
 var colorsArray2 = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
@@ -40,7 +54,8 @@ function start(){
 
   /*aun no se si legend deba ir aqui o por ejemplo dentro de draw_charts*/
   mylegend = new legend();
-  var da = post_to_server_global({"dbname": name_dataset, "dimension_num": 0, "select": "all"}, "getDimension_legend")
+  var da = post_to_server_global({"dbname": name_dataset, "dimension_num": 4, "select": "all"}, "getDimension_legend")
+
   mylegend.init(da);
   mylegend.start();
 
@@ -48,6 +63,8 @@ function start(){
   var data_options = post_to_server_global({"dbname": name_dataset}, "get_Details_options");
   headers_data = data_options["intersection"].concat(data_options["dimensions"])
   draw_colors_dimensions_selectors(data_options)
+
+   document.getElementsByClassName("select_color")[0].selectedIndex = 4;
 }
 
 
@@ -63,7 +80,7 @@ function draw_colors_dimensions_selectors(data){
       .text(function(d){return d.name})
 
   //data = [{"name": "All"}].concat(data);
-  console.log("poa", [{"name": "All"}].concat(data["intersection"]).concat(data["dimensions"]))
+  //console.log("poa", [{"name": "All"}].concat(data["intersection"]).concat(data["dimensions"]))
   d3.select(".select_proj")
     //.on("change", onchange_byProj)
     .selectAll(".options_proj")

@@ -1,3 +1,21 @@
+/*css barchart*/
+/*.bar .deselected{
+  fill: #0082c8;
+}*/
+
+/*path para los enlaces entre grupos*/
+#vizArea_Groups path.link {
+  /*fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;*/
+  fill: none;
+  stroke: #8dd3c7;
+  /*stroke-width: 1.5px;*/
+  opacity: 0.7;
+
+
+}
+
 /*font to table of obj2*/
 #id_tabla_obj2_wrapper{
   font-size: 11px
@@ -17,6 +35,16 @@
 
 #comparison-matrix path,
 #comparison-matrix line {
+  fill: none;
+  stroke: #000;
+}
+
+#comparison-matrix2{
+  font: 10px sans-serif;
+}
+
+#comparison-matrix2 path,
+#comparison-matrix2 line {
   fill: none;
   stroke: #000;
 }

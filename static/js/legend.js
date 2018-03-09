@@ -7,14 +7,21 @@ var legend = function(){
   var height = 330;
   var multiplicador = 15.5
   var data;
-  var id = "mylegend"
+  var id = "mylegend";
+  var scaleColor;
+
+  var caso_genre = false;
 
   this.init = function(data_){
 
-    
     data = data_;
+    if("brightness" in data){
+      caso_genre = true;
+    }else{
+      caso_genre = false
+    }
     console.log("abraco", data)
-    height = multiplicador * data.colors.length + 16;
+    height = multiplicador * data.colors.length + 50;
     d3.select(data.selector + " #" + id).remove();
     d3.select(data.selector)
       .append("div")
@@ -61,6 +68,7 @@ var legend = function(){
 
   this.updateAll = function(data_){
     data = data_;
+    
     d3.selectAll(data.selector + " #" + id + " *").remove();
     var midiv = d3.select(data.selector + " #" + id);
     var info = get_divFormatToolTip()
@@ -97,13 +105,22 @@ var legend = function(){
     //console.log("outlier", data.outlier)
     //res["outlier"] = [med, q1, q3, lim]
     */
-    var scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
+    scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
     all_values_rev = []
     d3.selectAll(data.selector + " .pointDots")
       .style("fill", function(d, i){
         
+        if(caso_genre){
+          var color_aux = scaleColor(data.body[d[2]]);
+          color_aux = tinycolor(color_aux)
+          color_aux = color_aux.toHsv()
+          color_aux.v = data["brightness"][i]*100
+          color_aux = tinycolor(color_aux)
+          return color_aux.toRgbString()
+        }
+
         if(data.body[d[2]] < 0 || data.body[d[2]] > 1)
-          return null
+          return "white"
         return scaleColor(data.body[d[2]])
         //return data.colors[Math.round(scaleColor(aux))]
         /*var  aux = 0;
@@ -170,25 +187,35 @@ var legend = function(){
     //explore_clicked = mychartNew.getExplore_Clicked();
     explore_clicked = false;
     var str = "";
-    str += "<strong>";
+    str += "<div class=\"row\"><strong>";
     str += "<u>";
     str += data.title;
     str += "</u>";
-    str += "</strong>";
+    str += "</strong></div>";
     
-    str += "<div class=\"col-sm-12\">";
-
+    //str += "<div class=\"row\"><div class=\"col-sm-12\">";
+   // str += "<div class=\"row\">";
 
     var visi = "visible";
     if(!data.hasChecks)visi = "hidden";
     
+    //selectAll and deselectAll
+    str += "<div class=\"row\">"
+    str += "<div class=\"col-sm-6\">"
+    str += "<span class=\"selectAllBtn\">selectAll</span>"
+    str += "</div>"
+    str += "<div class=\"col-sm-6\">"
+    str += "<span class=\"deselectAllBtn\">deselectAll</span>"
+    str += "</div>"
+    str += "</div>"
+
     for (var i = 0; i < data.names.length; i++) {
     
-        str += "<div class=\"row\">"
+        str += "<div class=\"row\"><div class=\"col-sm-12\">"
         
-        str += "<input class=\"col-sm-1\" id = \"check"+i+"\" style=\"width:11px;height:11px;visibility:" + visi + "\" type=\"checkbox\" name=\"mycheckbox\" value=\""+i+"\" checked>";
+        str += "<div class=\"col-sm-2\"><input class=\"checks_leg\" id = \"check"+i+"\" style=\"width:11px;height:11px;visibility:" + visi + "\" type=\"checkbox\" name=\"mycheckbox\" value=\""+i+"\" checked></div>";
         
-        str += "<div id = \"nom"+i+"\" class=\"col-sm-9\" style=\"top:4px\">";
+        str += "<div id = \"nom"+i+"\" class=\"col-sm-8\" style=\"top:4px\">";
         str += data.names[i];
         str += "</div>";
 
@@ -196,10 +223,11 @@ var legend = function(){
         str += "</div>";
 
 
-        str += "</div>";            
+        str += "</div></div>";            
     };
 
-    str += "</div>";
+    //str += "</div></div>";
+    //str += "</div>";
 
     
 
@@ -219,21 +247,50 @@ var legend = function(){
                     d3.selectAll(data.selector + " .pointDots")
                         .style("visibility", function(d, u){
                             
-                            if(this.style.fill == rec_color){
+                            /*if(this.style.fill == rec_color){
                                 
                                 return "visible";
                             }
-                            return this.style.visibility;
+                            return this.style.visibility;*/
+                            //if(u < 10)console.log("noooooo", d, scaleColor(data["body"][d[2]]), rec_color)
+                            if(scaleColor(data["body"][d[2]]) == rec_color || scaleColor(data["body"][d[2]]) == tinycolor(rec_color).toHexString())return "visible"
+                            return this.style.visibility;                              
                         })
                 }else{
                     d3.selectAll(data.selector + " .pointDots")
                         .style("visibility", function(d, u){
-                            if(this.style.fill == rec_color){
+                            //if(i < 10)console.log("coloressss" , d)
+                            /*if(this.style.fill == rec_color){
                                 return "hidden";
                             }
-                            return this.style.visibility;
+                            return this.style.visibility;*/
+                          if(scaleColor(data["body"][d[2]]) == rec_color || scaleColor(data["body"][d[2]]) == tinycolor(rec_color).toHexString())return "hidden"
+                          return this.style.visibility;                                
                         })
                 }
             })
+
+      d3.select(data.selector + " .selectAllBtn")
+        .style("cursor", "pointer")
+        .style("color", "#005580")
+        .on("click", function(){
+          d3.selectAll(data.selector + " .pointDots")
+            .style("visibility", "visible")
+          d3.selectAll(".checks_leg").property("checked", true)
+        })
+      d3.select(data.selector + " .deselectAllBtn")
+      .style("cursor", "pointer")
+      .style("color", "red")
+        .on("click", function(){
+          d3.selectAll(data.selector + " .pointDots")
+            .style("visibility", "hidden")
+          d3.selectAll(".checks_leg").property("checked", false)
+        })
+
+      d3.select("#mylegend")
+        .style("overflow-y", function(){
+            if(data.colors.length > 18)return "scroll"
+            return "initial"
+        })
     }
 }

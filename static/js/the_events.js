@@ -37,14 +37,27 @@ d3.select("#btn_clearAll")
 d3.select("#btn_ExploreGroups")
 	.on("click", function(){
 		fn_loading(true);
-
+		var pro = comparison_original.getOrderbyPriority()
+		var data_selected = [];
+		data_selected = var_save_area.getData_idx();
+		console.log("iniiiiiiiiiiiiiiiiiiii")
+		comparison_original.update(data_selected)
+		console.log("fiinnnnnnnnnnnnnnnnnnnnnn")
 		setTimeout(function(){
-			histograms_obj1.resetAllBtn();
-			var data_selected = var_save_area.getData_idx();
+			//histograms_obj1.resetAllBtn();
+			
+			load_aux_original = true;
+			
 			//if(data_selected.length == 0)return;	
 			var iK_groups = parseInt(d3.select("#iK_groups").property("value"))
+			var iP_groups = parseInt(d3.select("#iP_groups").property("value"))
+			
+			var sz  =  pro.length;
+
+			var porcentage = Math.round((iP_groups*sz)/100.0)
+
 			original_save = data_selected
-			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups}, "getNewGroups")
+			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups, "P": pro.slice(0, porcentage+1)}, "getNewGroups")
 			if(!mynewGroups)
 				mynewGroups = new draw_groups();
 			mynewGroups.init(groups)
@@ -58,6 +71,8 @@ d3.select("#Save_All_obj1")
 	.on("click", function(d){
 		btnSave_Obj1_All();
 	})
+
+
 
 function btnSave_Obj1_All(){
 	var data_save = []
@@ -95,9 +110,36 @@ function btnSave_Obj1_individuals(){
 //Click to explore the data selected in projection area
 d3.select("#explore-viz")
 	.on("click", function(d){
-		if(comparison_matrices == null)
-			comparison_matrices = new comparison_matriz()
-		flag_comparison = false
+		/*if(comparison_matrices == null)
+			comparison_matrices = new comparison_matriz("original", "#comparison-matrix", ".originalComparison")
+		if(resume_comparison == null){
+			resume_comparison = new stackBarVis();
+			resume_comparison.setDimensionsChart(700, 10)
+			resume_comparison.init("stack_resume_comparison")
+		}
+		if(stack_heatmap == null){
+			stack_heatmap = new stackBarVis();
+			stack_heatmap.init("stack-heatmap")
+		}
+
+		if(mipiechart == null){
+			mipiechart = new pieChartVis();
+			mipiechart.init("piechartmio")
+		}*/
+
+		if(comparison_original == null){
+			comparison_original = new drawComparison("#originalComparison");
+			comparison_original.init();
+			comparison_original.change_name("Original Group")
+		}
+		
+
+
+
+
+		flag_comparison = false;
+		load_aux_original = false;
+
 		fn_loading(true);
 		setTimeout(function(){
 			var data_selected = viz_proj.getDataSelected();

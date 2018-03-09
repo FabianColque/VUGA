@@ -6,35 +6,35 @@ g = [[1,2,3,4,5,6,7], [2,3,4,5,3,2,6], [9,7,5,3,7,5,2], [5,9,1,4,8,2,6], [1,2,3,
 res = []
 aux_arr = []
 
-def my_knn(idx, data, K = 50):
+def my_knn(idx, data, pTop, K = 50):
   #format of data is a matriz normalized: objects_1 by dimensions 
   global aux_arr
   global res
   aux_arr = range(len(data))
-  res = findK_NN(idx, data)
+  res = findK_NN(idx, data, pTop)
   vec = sorted(aux_arr, cmp = myFn)
 
   return vec[0:K]
 
 
 
-def findK_NN(idx, data):
-
+def findK_NN(idx, data, pTop):
+  print ("esdatacorrecta", data[idx])
   similarity = []
   for i in xrange(0, len(data)):
     if idx != i:
-      sim = euclideanSimilarity(data[idx], data[i])
+      sim = euclideanSimilarity(data[idx], data[i], pTop)
       similarity.append(sim)
     else:
       similarity.append(-1)
   return similarity  
 
-def euclideanSimilarity(point1,  point2):
+def euclideanSimilarity(point1,  point2, pTop):
   squareSums = 0
-  n_dims = len(point2)
+  n_dims = len(pTop)
   for i in xrange(0, n_dims):
-    a = point1[i]
-    b = point2[i]
+    a = point1[pTop[i]]
+    b = point2[pTop[i]]
     if a == -1:
       a = 0
     if b == -1:

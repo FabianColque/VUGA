@@ -4,6 +4,37 @@ import my_cluster as mycluster
 import my_knn as myknn
 
 import math
+import random
+
+#pTop es un array con las dimensiones top segun la eleccion del usuario
+def generate_groups(dataset, data_selected, k_groups, pTop):
+  print ("pTop", pTop)
+  print ("data_selected", data_selected)
+  
+  n_random = 1
+  lis_knn = []
+  for i in xrange(0,len(data_selected)):
+    lis_knn.append(myknn.my_knn(data_selected[i], dataset, pTop))
+  newgroups = []
+  for i in xrange(0, k_groups):
+    newgroups.append([])
+
+  for ite in xrange(0, len(data_selected)*n_random):
+    for i in xrange(0, k_groups):
+      nrand = random.randint(0, len(lis_knn[0]))
+      newgroups[i].append(nrand)
+
+  res = {"cluster": [0]*k_groups, "content": []}    
+  for i in xrange(0, k_groups):
+    res["content"].append({"objects": newgroups[i], "id": i})
+
+  return res
+
+
+
+
+
+
 
 """
 data_selected   : It is the data selected in save area interface
@@ -125,10 +156,21 @@ def myformat_dec(x):
   hh = ('%.5f' % x).rstrip('0').rstrip('.')
   return float(hh)
 
+#este extrae una lista de vecinos mas proximos por cada usuario
+def get_array_list_K_neighbors(dataset, data_selected):
+  res = []
+  for i in xrange(0,len(data_selected)):
+    res.apppend(myknn.my_knn(data_selected[i], dataset))
+  return res
+
+#extrae un solo arreglo con los usuarios similares
 def get_array_K_neighbors(dataset, data_selected):
   res = set()    
   for i in xrange(0,len(data_selected)):
     data = myknn.my_knn(data_selected[i], dataset)
+    print "dataKNN--------------------------"
+    print data
+    print "dataKNN--------------------------"
     res |= set(data)
   return res
 
@@ -185,7 +227,7 @@ def process_similarity(data_heatmap, newGroups, data_ori):
   for rr in xrange(0, len(res_kl)):
     newGroups["content"][rr]["similarity"] = res_kl[rr]
 
-  print ("carambaaaa", newGroups)
+  #print ("carambaaaa", newGroups)
   return newGroups
 
 def kl_divergence(histo_1, histo_2):

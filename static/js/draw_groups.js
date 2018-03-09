@@ -19,7 +19,7 @@ var draw_groups = function(){
 
   /*Scales*/
   var tamCircleScaleGroup = d3.scale.linear()
-    .range([20, 100]);
+    .range([20, 60]);
   var new_scale_x = d3.scale.linear();
   var new_scale_y = d3.scale.linear();  
 
@@ -71,11 +71,36 @@ var draw_groups = function(){
     dataGroups = null;
   }
 
+  function ini_var_comparison_newgroups()
+  {
+    if(comparison_groups == null){
+      comparison_groups = new drawComparison("#groupComparison");
+      comparison_groups.init();
+    }
+
+    /*if(comparison_matrices2 == null)
+        comparison_matrices2 = new comparison_matriz("New Group", "#comparison-matrix2", ".groupComparison")
+      if(resume_comparison2 == null){
+        resume_comparison2 = new stackBarVis();
+        resume_comparison2.setDimensionsChart(700, 10)
+        resume_comparison2.init("stack_resume_comparison2")
+      }
+      if(stack_heatmap2 == null){
+        stack_heatmap2 = new stackBarVis();
+        stack_heatmap2.init("stack-heatmap2")
+      }
+
+      if(mipiechart2 == null){
+        mipiechart2 = new pieChartVis();
+        mipiechart2.init("piechartmio2")
+      }*/
+  }
+
   function draw(data){
     
     
     var as = d3.extent(dataGroups.content, function(d){return d.objects.length});
-    tamCircleScaleGroup.domain(as);
+    tamCircleScaleGroup.domain([0, as[0]]);
 
     force.on("tick", tick)
 
@@ -152,7 +177,11 @@ var draw_groups = function(){
       .style("stroke", "black")
       .style("stroke-width", "0.3px")
       .style("fill", "#e2e1e1")
-      .on("click", function(d){
+      .on("click", function(d, i){
+        flag_comparison = true;
+        ini_var_comparison_newgroups();
+        comparison_groups.change_name("New Group " + i)
+
         ra = d3.select("#pointGroup"+d.name).attr("r")
         
         
@@ -184,14 +213,14 @@ var draw_groups = function(){
         viz_proj.draw_only_selected()
         histograms_obj1.refresh_All_Data(datahisto.instances)
 
-        histos = [];
+        /*histos = [];
         for(var i = 0; i < dataGroups["histo_ori"].length; i++){
           histos.push({"val": dataGroups["histo_ori"][i], "di": headers_data[i].name, "nada": Math.random()})
           histos.push({"val": dataGroups.content[selectionDataGroups[0]].histo[i], "di": headers_data[i].name, "nada": Math.random()})
         }
         flag_comparison = true
         comparison_matrices.update_comparison(histos, true)
-
+        */
         //drawn_newVISProjection(dataGroups.content[selectionDataGroups[0]].users);  
         /*************************************/
       });
@@ -213,7 +242,7 @@ var draw_groups = function(){
       .attr("transform", function(d){return "translate("+0+", "+0+")"})
       .style("pointer-events", "none")
     .selectAll("text")
-      .data(function(d){
+      .data(function(d, i){
         console.log("gruuuuuu", d)
         gru = dataGroups.content[parseInt(d)];
 
@@ -230,7 +259,7 @@ var draw_groups = function(){
         var fc = gru.similarity*100
         fc = parseFloat(fc).toFixed(1)
 
-        return [gru.objects.length + " Users", "Similarity: " + fc, "Intersection: " + ggg + "%"]
+        return ["New Group "+i, gru.objects.length + " Users", "Similarity: " + fc, "Intersection: " + ggg + "%"]
       })
       .enter()
       .append("text")
@@ -240,7 +269,7 @@ var draw_groups = function(){
     node.selectAll("g")
       .append("rect")
       .attr("width", "120px")
-      .attr("height", "50px")
+      .attr("height", "60px")
       .attr("x", "-45")
       .attr("y", "-40px")
       .style("stroke", 'black')

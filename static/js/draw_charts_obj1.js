@@ -11,7 +11,7 @@ function drawing_histo_obj1(){
   data_dimensions = null;
   data_instances = null;
   
-  var data_set_positions = {}
+  //var data_set_positions = {}
 
   /*variable for searching by text*/
   var text_search_chart = null;
@@ -50,6 +50,8 @@ function drawing_histo_obj1(){
       data_set_positions["" + data.instances[i]["idx"]] = data.instances[i]["id"];
     }
 
+
+
     prepare_divs_obj1(data.dimensions.length)
 
     ndx = crossfilter(data.instances);
@@ -76,18 +78,34 @@ function drawing_histo_obj1(){
   /****START****DRAW THE HEATMAP***********/
   function draw_table_heatmap(){
 
+    if(flag_comparison == false){//graficar solo the original charts
+      comparison_original.update();
+    }else{
+      comparison_groups.update();
+    }
+
+
+
+
+/*
     d3.selectAll("#heatmap *").remove();
+
+
+    
 
     //var cores = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026'];
     var cores = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'];
-    draw_legend_table(cores);
+    //draw_legend_table(cores);
 
     var data_selected = evt.top(Infinity).map(function(d){return d.idx})
+    console.log("data_selected ahora: ", data_selected);
 
     data_dim = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "get_heatmap")
-    
-
-    /*histo start*/
+    data_selected = data_selected.slice(0, 100)
+    data_dim["body"] = data_dim["body"].slice(0, 100)
+    data_dim["ori"] = data_dim["ori"].slice(0, 100)
+    var sorted_resume = [];
+    var sorted_rows = [];
     if(flag_comparison == false){
       
       var ori = new Array(data_dim["headers"].length).fill(0.0);
@@ -104,16 +122,68 @@ function drawing_histo_obj1(){
         oriori.push({"di": headers_data[i].name, "val": ori[i] / data_dim["body"].length, "nada": Math.random()})
       }
       
-      comparison_matrices.update_comparison(oriori)  
+
+      comparison_matrices.update_comparison(oriori)
+      resume = [];
+      for(var i = 0; i < oriori.length; i++){
+        resume.push(oriori[i].val)
+      }
+      resume = [resume]
+      sorted_resume = d3.range(resume[0].length).sort(function(a, b){return resume[0][b] - resume[0][a]});  
+      sorted_rows = d3.range(data_dim["body"].length).sort(function(a, b){return data_dim["body"][b][sorted_resume[0]] - data_dim["body"][a][sorted_resume[0]]})
+      console.log("teletubi", sorted_rows)
+      console.log("sorted_resume ini", resume, sorted_resume)
+      resume_comparison.update(resume, ["histogram"], sorted_resume)  
+      mipiechart.update(resume);
+    }else{
+      var ori = new Array(data_dim["headers"].length).fill(0.0);
+      for(var i = 0; i < data_selected.length; i++){
+        for(var j = 0; j < data_dim["headers"].length; j++){
+          var fab = parseFloat(data_dim["body"][i][j])
+          if(fab < 0.0)fab = 0.0
+          if(fab > 1.0)fab = 1.0
+          ori[j] += fab
+        }
+      }
+      oriori = []
+      for(var i = 0 ; i < ori.length; i++){
+        oriori.push({"di": headers_data[i].name, "val": ori[i] / data_dim["body"].length, "nada": Math.random()})
+      }
+      
+
+      comparison_matrices2.update_comparison(oriori)
+      resume = [];
+      for(var i = 0; i < oriori.length; i++){
+        resume.push(oriori[i].val)
+      }
+      resume = [resume]
+      sorted_resume = d3.range(resume[0].length).sort(function(a, b){return resume[0][b] - resume[0][a]});  
+      sorted_rows = d3.range(data_dim["body"].length).sort(function(a, b){return data_dim["body"][b][sorted_resume[0]] - data_dim["body"][a][sorted_resume[0]]})
+      console.log("teletubi2", sorted_rows)
+      console.log("sorted_resume ini2", resume, sorted_resume)
+      resume_comparison2.update(resume, ["histogram"], sorted_resume)  
+      mipiechart2.update(resume);
     }
+
+
     
-    /*histo end*/
+    
+    
+    new_names_o = data_selected.map(function(d){return data_set_positions[d]})
 
-    data_selected = data_selected.slice(0, 100)
-    data_dim["body"] = data_dim["body"].slice(0, 100)
+    var new_names = sorted_rows.map(function(d){return new_names_o[d]});
+    var data_sorted = sorted_rows.map(function(d){return data_dim["body"][d]})
+    
+    if(flag_comparison == false)
+      stack_heatmap.update(data_sorted, new_names, sorted_resume)
+    else
+      stack_heatmap2.update(data_sorted, new_names, sorted_resume)
 
+
+    */
+/*
     var margin = {top: 140, right: 0, bottom: 10, left: 0},
-    width = 650,
+    width = 800,
     height = 720;
 
     var heat_headers = data_dim["headers"];
@@ -127,18 +197,21 @@ function drawing_histo_obj1(){
     for(var i_i; i_i < data_selected.length; i_i++){
 
       var auxsum = 0;
-
+      var sumTotal_ori = 0;
+      for(var fa = 0; fa < data_dim["ori"][i_i].length-1; fa++){
+        sumTotal_ori += parseInt(data_dim["ori"][i_i][fa+1]);
+      }
       matrix[i_i] = d3.range(heat_headers.length).map(function(d){
         auxsum += data_dim["body"][i_i][d];
         sums_x[d] += data_dim["body"][i_i][d];
-        return {x: d, y: i_i, z: data_dim["body"][i_i][d]};
+        return {x: d, y: i_i, z: data_dim["body"][i_i][d], o: parseInt(data_dim["ori"][i_i][d+1])/parseFloat(sumTotal_ori)};
       })
      //i_i += 1; 
      sums_y.push(auxsum)
     }
 
     //width = 15*heat_headers.length;
-    height = 15*data_selected.length;
+    height = 20*data_selected.length;
 
     var divs_scales = d3.range(cores.length).map(function(d){return d/(cores.length - 1)})
 
@@ -227,18 +300,48 @@ function drawing_histo_obj1(){
     .text(function(d, i){return heat_headers[i];});
 
     function row(row){
-      var cell = d3.select(this).selectAll(".cell")
-      .data(row.filter(function(d){return d.z >= 0.0 && d.z <= 1.0}))
-      .enter()
-      .append("rect")
-      .attr("class", "cell")
-      .attr("x", function(d){return xw(d.x);})
-      .attr("width", xw.rangeBand())
-      .attr("height", xh.rangeBand())
-      .style("fill", function(d){
-          return c(d.z)
-        })
+      //var cell = d3.select(this).selectAll(".cell")
+      //.data(row.filter(function(d){return d.z >= 0.0 && d.z <= 1.0}))
+      //.enter()
+      //.append("rect")
+      //.attr("class", "cell")
+      //.attr("x", function(d){return xw(d.x);})
+      //.attr("width", xw.rangeBand())
+      //.attr("height", xh.rangeBand())
+      //.style("fill", function(d){
+       //   return c(d.z)
+        //})
+      //.append("title")
+       // .text(function(d){
+          //console.log("hola", d);
+        //  return d.z;
+        //})
 
+      var cell2 = d3.select(this).selectAll(".cell")
+        .data(row.filter(function(d){return d.z >= 0.0 && d.z <= 1.0}))
+        .enter()
+        .append("g")
+        .attr("class", "cell")
+        .attr("transform", function(d){return "translate(" + xw(d.x) + ", 0)"})
+          .selectAll(".rectcell")
+          .data(function(d){return [d]})
+          .enter()
+          .append('rect')
+            .attr("class", "rectcell")
+            .attr("width", function(d){return xw.rangeBand()})
+            .attr("height", function(d){return xh.rangeBand()})
+            .style("fill", function(d){
+              return c(d.z);
+            })
+
+        d3.select(this).selectAll(".cell")
+          .append("g")
+          .attr("transform", function(d){return "translate(0,0)"})
+          .append("text")
+          .text(function(d){return parseFloat(d.z).toFixed(3);})
+          .attr("y", "12px")
+          .attr("x", "3px")
+          .style("fill", function(d){if(d.z >= 0.8)return "white";return "black"})
     }
 
 
@@ -257,7 +360,8 @@ function drawing_histo_obj1(){
         .attr("transform", function(d, i){return "translate(0, " + xh(i) + ")";})
         .selectAll(".cell")
           .delay(function(d){return xw(d.x) * 4})
-          .attr("x", function(d){return xw(d.x); });
+          .attr("transform", function(d){return "translate(" + xw(d.x) + ", 0)";})
+          //.attr("x", function(d){return xw(d.x); });
 
       t.selectAll(".column")
         .delay(function(d, i){return xw(i) * 4})
@@ -304,7 +408,7 @@ function drawing_histo_obj1(){
       .attr("width", lado*2)
       .attr("height", lado)
       .style("fill", function(d){return d;})
-    } 
+    } */
 
   }
   /*****END*****DRAW THE HEATMAP***********/
@@ -322,6 +426,8 @@ function drawing_histo_obj1(){
       data_util.push(data_obj2["body"][i].dat)
       data_util[data_util.length - 1].push(data_obj2["body"][i].len)
     }
+
+    order_by_ind = data_obj2['headers'].length-1;
 
     var count2 = 0;
     var my_columns_obj2 = [
@@ -354,7 +460,7 @@ function drawing_histo_obj1(){
       "bPaginate": true,
       "bLengthChange": true,
       "bFilter": true,
-      "order": [[ 2, "desc" ]],
+      "order": [[ order_by_ind, "desc" ]],
       "bSort": true,
       "bInfo": true,
       "bAutoWidth": false,
@@ -442,6 +548,8 @@ function drawing_histo_obj1(){
     for(var i = 0; i < data.length; i++){
       data_set_positions["" + data[i]["idx"]] = data[i]["id"]
     }
+
+    console.log("primera obs", data_set_positions)
 
     //var textfilter  = text_search_chart.filters()
     var countfilter = count.filters();
@@ -768,6 +876,7 @@ function drawing_histo_obj1(){
   }
 
   function draw_barChart(id_dim, data){
+    var colores_generales = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
     array_charts[id_dim]
       .width(600)
       .height(180)
@@ -785,6 +894,14 @@ function drawing_histo_obj1(){
       .xUnits(dc.units.ordinal)
       .renderHorizontalGridLines(true)
       .xAxisLabel(data[id_dim].name)
+      .renderlet(function(chart){
+        var colors =d3.scale.ordinal().domain(data[id_dim].titles)
+            .range(colores_generales.slice(0, data[id_dim].titles.length));
+        chart.selectAll('rect.bar').each(function(d, i){
+             //console.log("miraadsadasd", d, colors(d.key), d.key)
+             d3.select(this).attr("fill", colors(d.data.key)); // use key accessor if you are using a custom accessor
+        });
+      });
   }
 
   function draw_rowChart(id_dim){

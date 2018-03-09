@@ -18,6 +18,7 @@
   <!--
   Here we are adding the libraries that the app needs
   -->
+  <script src="../static/js/global/tinycolor.js"></script>
   <script src="../static/js/global/d3.js"></script>
   <script src="../static/js/global/crossfilter.min.js"></script>
   <script src="../static/js/global/dc.min.js"></script>
@@ -177,6 +178,13 @@
                     <input type="number" id="iK_groups" name="quantity" min="2" value="5" style="width: 50px">
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    Top Dimensions
+                    <input type="number" id="iP_groups" name="quantity" min="1" value="100" style="width: 50px">
+                    %
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -232,8 +240,77 @@
             <div class="chart-wrapper">
               <div class="chart-title"> Comparison Matrix</div>
               <div class="chart-stage">
-                <div id="comparison-legend"></div>
-                <div id="comparison-matrix"></div>
+
+                <div class="col-sm-12">
+                  <div class="row">
+                    
+                    <div class="col-sm-6">
+                      <div class="row" id="originalComparison">
+                        <div class="row"><div id="name_block" style="font-weight: bolder; left:34%; position:relative"></div></div>
+                        <div class="row"><div id="piechartmio"></div></div>
+                        <div class="row"><div id="comparison-matrix"></div></div>
+                        <div class="row"><div id="stack_resume_comparison"></div></div>
+                        <div class="row"><div id="stack-heatmap"></div></div>
+
+                      </div>  
+                    </div>
+
+
+                    <div class="col-sm-6">
+                      <div class="row" id="groupComparison">
+                        <div class="row"><div id="name_block" style="font-weight: bolder; left:34%; position:relative"></div></div>
+                        <div class="row"><div id="piechartmio"></div></div>
+                        <div class="row"><div id="comparison-matrix"></div></div>
+                        <div class="row"><div id="stack_resume_comparison"></div></div>
+                        <div class="row"><div id="stack-heatmap"></div></div>                      
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+                <!--
+                <div class="row">
+                    <div class="originalComparison">
+                      <div class="row">
+                        <div id="comparison-legend"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div id="stack_resume_comparison"></div>    
+                          <div id="comparison-matrix"></div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div id="piechartmio"></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div id="stack-heatmap"></div>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="groupComparison">
+                      <div class="row">
+                        <div id="comparison-legend"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div id="stack_resume_comparison"></div>    
+                          <div id="comparison-matrix"></div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div id="piechartmio"></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div id="stack-heatmap"></div>
+                      </div>
+                    </div>
+                </div>-->
+                <!--<div id="piechartmio"></div>-->
               </div>
             </div>
           </div>
@@ -244,6 +321,7 @@
             <div class="chart-wrapper">
               <div class="chart-title"> Matriz Rating</div>
               <div class="chart-stage">
+                <!--<div id="stack-heatmap"></div>>-->
                 <div id="legend-heatmap"></div>
                 <div id="heatmap" class="newchart">
                   <div class="title"></div>
@@ -265,6 +343,9 @@
 
   </div>
   <!--End of main div Body-->
+  <script src="../static/js/drawComparisonGroups.js"></script>
+  <script src="../static/js/pieChartVis.js"></script>
+  <script src="../static/js/stackBarVis.js"></script>
   <script src="../static/js/comparison.js"></script>
   <script src="../static/js/save_Area.js"></script>
   <script src="../static/js/start_VIZ.js"></script>
