@@ -34,13 +34,18 @@ function pieChartVis(){
         .innerRadius(radius - 40);
     }
 
+
+    this.clearAll = function(){
+        remove();
+    }
+
     function remove(){
         d3.select(divChart+" svg g").selectAll("*").remove()
     }
 
     this.update = function(dat){
         remove();
-        console.log("dataPIE", dat)
+        
         data = transform_data(dat);
         var arc = d3.select(divChart+" svg g").selectAll(".arc")
             .data(pie(data))

@@ -45,13 +45,19 @@ function stackBarVis(){
     return res;
   }
 
+  this.clearAll= function(){
+    d3.select(divClass).selectAll("#idStack" + " *").remove();
+  }
+
   this.update = function(dat, names, sorted_resume){
+
     if(dat.length > 3){
       height = (h_cell+1) * dat.length+50;
       d3.select(divClass).select("svg").attr("height", height + margin.top + margin.bottom+80)
     }
     
     dataori = transform_data(dat, sorted_resume)
+    
     //xw.domain(d3.range(dat[0].length).map(function(d){return d}))
     d3.select(divClass).selectAll("#idStack" + " *").remove();
     var rowStack = d3.select(divClass).select("#idStack").selectAll("#rowStack" + divClass)
@@ -98,7 +104,7 @@ function stackBarVis(){
         .style("fill", function(d){return colores_movielens[d.y]})
         .append("title")
         .text(function(d){
-          return parseFloat(d.val).toFixed(3)
+          return parseFloat(d.val*100).toFixed(2) + " %"
         })
     }
 

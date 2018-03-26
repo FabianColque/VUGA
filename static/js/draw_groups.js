@@ -60,6 +60,10 @@ var draw_groups = function(){
 
   }
 
+  this.clearAll = function(){
+    clearAll();
+  }
+
   function clearAll(){
     d3.selectAll(selector + " *").remove();
     force = null;
@@ -176,11 +180,16 @@ var draw_groups = function(){
       .attr("r", function(d){return tamCircleScaleGroup(dataGroups.content[parseInt(d.name)].objects.length)})
       .style("stroke", "black")
       .style("stroke-width", "0.3px")
-      .style("fill", "#e2e1e1")
+      .style("fill", function(d, i){
+        if(i == 0)return "#BEBADA";
+        return "#e2e1e1"
+      })
       .on("click", function(d, i){
         flag_comparison = true;
         ini_var_comparison_newgroups();
-        comparison_groups.change_name("New Group " + i)
+        var name_group = "New Group "+i;
+        if(i == 0)name_group = "Original Group";
+        comparison_groups.change_name(name_group)
 
         ra = d3.select("#pointGroup"+d.name).attr("r")
         
@@ -243,7 +252,7 @@ var draw_groups = function(){
       .style("pointer-events", "none")
     .selectAll("text")
       .data(function(d, i){
-        console.log("gruuuuuu", d)
+        
         gru = dataGroups.content[parseInt(d)];
 
         var ar1 = gru.objects;
@@ -258,8 +267,9 @@ var draw_groups = function(){
         ggg = parseFloat(ggg).toFixed(1);
         var fc = gru.similarity*100
         fc = parseFloat(fc).toFixed(1)
-
-        return ["New Group "+i, gru.objects.length + " Users", "Similarity: " + fc, "Intersection: " + ggg + "%"]
+        var name_group = "New Group "+i;
+        if(i == 0)name_group = "Original Group";
+        return [name_group, gru.objects.length + " Users", "Similarity: " + fc, "Intersection: " + ggg + "%"]
       })
       .enter()
       .append("text")

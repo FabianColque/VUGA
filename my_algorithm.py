@@ -7,23 +7,43 @@ import math
 import random
 
 #pTop es un array con las dimensiones top segun la eleccion del usuario
-def generate_groups(dataset, data_selected, k_groups, pTop):
-  print ("pTop", pTop)
-  print ("data_selected", data_selected)
-  
+def generate_groups(dataset, data_selected, k_groups, pTop, simi):
   n_random = 1
   lis_knn = []
   for i in xrange(0,len(data_selected)):
-    lis_knn.append(myknn.my_knn(data_selected[i], dataset, pTop))
+    lis_knn.append(myknn.my_knn(data_selected[i], dataset, pTop, simi))
+  print ("paso los lis_knn")
+  
   newgroups = []
   for i in xrange(0, k_groups):
     newgroups.append([])
 
-  for ite in xrange(0, len(data_selected)*n_random):
-    for i in xrange(0, k_groups):
-      nrand = random.randint(0, len(lis_knn[0]))
-      newgroups[i].append(nrand)
+  for k in xrange(0, k_groups):
+    for u in xrange(0, len(data_selected)):
+      for r in xrange(0, n_random):
+        flag = False
+        cc = 0
+        nrand = -1
+        while not flag:
+          nrand = random.randint(0, len(lis_knn[u])-1)
+          cc = cc + 1
+          if lis_knn[u][nrand] not in newgroups[k]:
+            flag = True
+          if cc > 100:
+            break
+        if flag:
+          newgroups[k].append(lis_knn[u][nrand])
+          del lis_knn[u][nrand]
+        
 
+  """for ite in xrange(0, len(data_selected)):
+    for k in xrange(0, k_groups):
+      for rr in xrange(0, n_random):
+        nrand = random.randint(0, len(lis_knn[ite])-1)
+        newgroups[k].append(lis_knn[ite][nrand])
+        del lis_knn[ite][nrand]"""
+        
+  print ("paso la asignacion")
   res = {"cluster": [0]*k_groups, "content": []}    
   for i in xrange(0, k_groups):
     res["content"].append({"objects": newgroups[i], "id": i})
@@ -32,8 +52,11 @@ def generate_groups(dataset, data_selected, k_groups, pTop):
 
 
 
-
-
+def print_data_selected(data, data_selected):
+  print "**********data_selected*****start*****"
+  for i in xrange(0, len(data_selected)):
+    print data[data_selected[i]]
+  print "**********data_selected*****end*****"
 
 
 """
@@ -149,7 +172,7 @@ def myscale(old_min, old_max, new_min, new_max, old_value):
     return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 
 
 def myformat_dec_2(x):
-  hh = ('%.2f' % x).rstrip('0').rstrip('.')
+  hh = ('%.4f' % x).rstrip('0').rstrip('.')
   return float(hh)
 
 def myformat_dec(x):
@@ -189,7 +212,7 @@ def process_similarity(data_heatmap, newGroups, data_ori):
       indice += 1
 
   newGroups = pre
-
+  sumtotal = 0.0
   ori = np.zeros(n_dimen)
   for do in data_ori:
     for i in xrange(0, n_dimen):
@@ -199,14 +222,17 @@ def process_similarity(data_heatmap, newGroups, data_ori):
       if fab > 1.0:
         fab  = 1.0
       ori[i] += fab
-  ori = ori / float(len(data_ori))
+      sumtotal += fab
+    pass
 
-  
+  ori = ori / float(sumtotal)
+
   newGroups["histo_ori"] = ori.tolist()
 
   histograms = []
   for ng in newGroups["content"]:
     aux = np.zeros(n_dimen)
+    sumtotal = 0.0
     for cc in ng["objects"]:
       for i in xrange(0, n_dimen):
         fab = float(data_heatmap[cc][i])
@@ -215,13 +241,19 @@ def process_similarity(data_heatmap, newGroups, data_ori):
         if fab > 1.0:
           fab  = 1.0
         aux[i] += fab
-    aux = aux / float(len(ng["objects"]))
+        sumtotal += fab
+      pass
+    pass
+    aux = aux / float(sumtotal)
     histograms.append(aux)
+  pass
 
   res_kl = []
   holis = 0 
   for hi in histograms:
-    res_kl.append(kl_divergence(ori, hi))
+    #simi = kl_divergence(ori, hi)
+    simi = bhattacharyya(ori, hi)
+    res_kl.append(simi)
     newGroups["content"][holis]["histo"] = hi.tolist()
     holis += 1
   for rr in xrange(0, len(res_kl)):
@@ -230,10 +262,15 @@ def process_similarity(data_heatmap, newGroups, data_ori):
   #print ("carambaaaa", newGroups)
   return newGroups
 
-def kl_divergence(histo_1, histo_2):
 
+def bhattacharyya(h1, h2):
+  return np.sum(np.sqrt(np.multiply(h1, h2)))
+
+def kl_divergence(histo_1, histo_2):
+  """
   P = []
   Q = []
+  print ("histos", histo_1, histo_2)
 
   for i in xrange(0, len(histo_1)):
     pp = float(histo_1[i])
@@ -248,7 +285,7 @@ def kl_divergence(histo_1, histo_2):
   sumP = P.sum()
   sumQ = Q.sum()
 
-  #print ("alma", P, Q)
+  print ("alma", P, Q, sumP, sumQ)
 
 
   P = P * (1 / sumP)
@@ -262,6 +299,23 @@ def kl_divergence(histo_1, histo_2):
   res = (P * np.log10(P/Q)).sum()
 
   res = myformat_dec_2(1 - res)
+  """
+  #a = np.asarray(histo_1, dtype=np.float)
+  #b = np.asarray(histo_2, dtype=np.float)
+
+  #res =  np.sum(np.where(a != 0, a * np.log(a / b), 0))
+  print ""
+  print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  print histo_1
+  print "-----------------------------"
+  print histo_2
+  print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  res1 = euclideanDis(histo_1, histo_2)
+  res1 = myscale2(0, math.sqrt(18), 0, 1, res1)
+  res = res1
+  res = myformat_dec_2(1.0 - res)
+
+  print ("TTTTTTTttttt", res)
   if math.isnan(res):
     res = 0.12345
   elif res < 0.0:
@@ -270,3 +324,25 @@ def kl_divergence(histo_1, histo_2):
     res = 0.9998
 
   return res
+
+
+def euclideanDis(point1, point2):
+  squareSums = 0
+  n_dims = len(point2)
+  for i in xrange(0, n_dims):
+    a = point1[i]
+    b = point2[i]
+    if a == -1:
+      a = 0
+    if b == -1:
+      b = 0
+    diff = a - b
+    squareSums += (diff * diff)
+  d = squareSums ** 0.5
+  return d
+  #similarity = d
+  #similarity = 1 / (1 + d)
+  #return similarity
+
+def myscale2(old_min, old_max, new_min, new_max, old_value):
+  return ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min 

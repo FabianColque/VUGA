@@ -38,12 +38,15 @@ d3.select("#btn_ExploreGroups")
 	.on("click", function(){
 		fn_loading(true);
 		var pro = comparison_original.getOrderbyPriority()
+		var perce = comparison_original.getVectorPercent()
+		var simi = d3.select(".optionSimi").property("selectedIndex");
+
 		var data_selected = [];
 		data_selected = var_save_area.getData_idx();
-		console.log("iniiiiiiiiiiiiiiiiiiii")
+		
 		comparison_original.update(data_selected)
-		console.log("fiinnnnnnnnnnnnnnnnnnnnnn")
-		setTimeout(function(){
+		
+		//setTimeout(function(){
 			//histograms_obj1.resetAllBtn();
 			
 			load_aux_original = true;
@@ -57,12 +60,17 @@ d3.select("#btn_ExploreGroups")
 			var porcentage = Math.round((iP_groups*sz)/100.0)
 
 			original_save = data_selected
-			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups, "P": pro.slice(0, porcentage+1)}, "getNewGroups")
+			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups, "P": pro.slice(0, porcentage+1), "per": perce, "type_simi": simi}, "getNewGroups")
+			groups["content"] = [{"objects": data_selected, "id": 0, "histo": perce, "similarity": 1.0}].concat(groups["content"]);
+			for(var i = 1; i < groups["content"].length; i++)
+				groups["content"][i]["id"]++;
+			groups["cluster"].push(0);
+			
 			if(!mynewGroups)
 				mynewGroups = new draw_groups();
 			mynewGroups.init(groups)
 			fn_loading(false)
-		}, 0)
+		//}, 0)
 	})
 
 
@@ -127,16 +135,17 @@ d3.select("#explore-viz")
 			mipiechart.init("piechartmio")
 		}*/
 
+		if(mynewGroups){
+			mynewGroups.clearAll();
+			comparison_groups.clearAll();
+			var_save_area.clearAll()
+		}
+
 		if(comparison_original == null){
 			comparison_original = new drawComparison("#originalComparison");
 			comparison_original.init();
 			comparison_original.change_name("Original Group")
 		}
-		
-
-
-
-
 		flag_comparison = false;
 		load_aux_original = false;
 
@@ -152,11 +161,7 @@ d3.select("#explore-viz")
 					histograms_obj1.refresh_All_Data(datahisto.instances)
 				}
 			}
-
 			viz_proj.draw_only_selected();		
-
-
-
 			fn_loading(false);
 		}, 0)
 	});

@@ -34,7 +34,10 @@ function comparison_matriz(name_, div){
           .range([height, 0]);
 
   var xAxis = d3.svg.axis().scale(xChart).orient("bottom");
-  var yAxis = d3.svg.axis().scale(yChart).orient("left");
+  var yAxis = d3.svg.axis()
+    .scale(yChart)
+    .tickFormat(function(d, i){return parseInt(d*100) + "%"})
+    .orient("left");
 
   chart.append("g")
       .attr("class", "y axis")
@@ -74,9 +77,15 @@ function comparison_matriz(name_, div){
       .*/
   }
 
+  this.clearAll = function(){
+    chart.selectAll(".bar").remove();
+    chart.style("visibility", "hidden");
+  }
+
   function update_(data){
 
     data_normal = data
+    chart.style("visibility", "visible");
     
     //d3.select("#rectNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})
     //d3.select("#textNewgroup").style("fill-opacity", function(){if(flag_comparison)return 1;return 0;})    
@@ -112,7 +121,7 @@ function comparison_matriz(name_, div){
       })
       .append("title")
       .text(function(d){
-        return parseFloat(d.val).toFixed(3);
+        return parseFloat(d.val*100).toFixed(2) + " %";
       })
 
     

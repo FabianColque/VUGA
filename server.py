@@ -765,7 +765,7 @@ class getDataObj2_table(tornado.web.RequestHandler):
           obj2["body"][str(idx)]["len"] += 1;
 
     for oo in obj2["body"]:
-      obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/obj2["body"][oo]["len"])
+      obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"]))
       #obj2["body"][oo]["dat"].append(obj2["body"][oo]["len"])
     time1 = time()
     print_message("getDataObj2_table", time1 - time0)
@@ -961,7 +961,9 @@ class getNewGroups(tornado.web.RequestHandler):
     data_selected = mydata.get("data_selected")
     k = mydata.get("K")
     P = mydata.get("P")
+    simi = mydata.get("type_simi")
     
+
     #dataset = heatmap with the complete matrix normalized
     time0 = time()
     
@@ -999,11 +1001,11 @@ class getNewGroups(tornado.web.RequestHandler):
     #My algorithm
     time0 = time()
     #res = my_algorithm.generate(dataset, data_selected, k, dimensionsFull, features, dataViz)#I want 5 new groups
-    res = my_algorithm.generate_groups(dataset, data_selected, k, P)
+    res = my_algorithm.generate_groups(dataset, data_selected, k, P, simi)
     time1 = time()
     print_message("getNewGroups", time1 - time0)
 
-    #print ("que nuevos grupos", res)
+    print ("paso el algoritmo")
     res = my_algorithm.process_similarity(dataset, res, data_selected)
     #print ("\n\n\ntermino similitud", res)
     self.write(json.dumps(res))

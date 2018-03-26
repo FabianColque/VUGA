@@ -5,6 +5,7 @@ function drawComparison(div_){
   var stack_heatmap = null;
   var mipiechart = null;
   var sorted_resume = [];
+  var dim_data_ready = [];
 
   var colores = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"];
 
@@ -27,8 +28,22 @@ function drawComparison(div_){
     }
   }
 
+
+  this.clearAll = function(){
+    comparison_matrices.clearAll();
+    resume_comparison.clearAll();
+    stack_heatmap.clearAll();
+    mipiechart.clearAll();
+    d3.select(div).select("#name_block").style("visibility", "hidden")
+  }
+
+  //todo bien hasta aqui
   this.getOrderbyPriority = function(){
     return sorted_resume;
+  }
+
+  this.getVectorPercent = function(){
+    return dim_data_ready.map(function(d){return d.val})
   }
 
   this.change_name = function(name){
@@ -38,7 +53,7 @@ function drawComparison(div_){
   
   this.update = function(data_nose){
     //primero cargamos la nueva data
-    
+    d3.select(div).select("#name_block").style("visibility", "visible")
     var data_selected = data_nose;
     if(data_nose == undefined){
       data_selected = evt.top(Infinity).map(function(d){return d.idx});
@@ -59,7 +74,7 @@ function drawComparison(div_){
       }
     }
 
-    var dim_data_ready = [];
+    dim_data_ready = []
     var resume = [];
     for(var i = 0 ; i < dim_porcen.length; i++){
       dim_data_ready.push({"di": headers_data[i].name, "val": dim_porcen[i] / totalSum, "nada": Math.random()})
@@ -75,7 +90,16 @@ function drawComparison(div_){
     resume_comparison.update(resume, ["histogram"], sorted_resume)
     mipiechart.update(resume);
 
-    
+    console.log("pasas segundo", data_set_positions)
+
+    if(div == "#originalComparison"){
+      if(data_selected_save.length != 0){
+        data_set_positions = {}
+        for(var ds in data_selected_save)
+          data_set_positions[String(ds)] = data_selected_save[ds].id;
+        console.log("tuguarida", data_set_positions)  
+      }
+    }
     var new_names = data_selected.map(function(d){return data_set_positions[d]})
     new_names = sorted_rows.map(function(d){return new_names[d]});
     var data_sorted = sorted_rows.map(function(d){return data_heatmap["body"][d]})

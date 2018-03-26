@@ -36,6 +36,7 @@ function drawing_histo_obj1(){
   a = b = c = ? => They have to be Integers, because they are indexes for titles in dimensions
 */
   this.init = function(data){
+    console.log("que pasa primero ahora")
     ndx = "";
     ndxAll = "";
     dims_groups = [];
@@ -46,6 +47,7 @@ function drawing_histo_obj1(){
     data_instances = data.instances;
 
     /*data positions*/
+    data_set_positions = {}
     for(var i = 0; i < data.instances.length; i++){
       data_set_positions["" + data.instances[i]["idx"]] = data.instances[i]["id"];
     }
@@ -539,7 +541,7 @@ function drawing_histo_obj1(){
   /***END*****TABLE OBJECT 2****/
 
   function refresh_all_data(data){
-
+    console.log("que pasa primero")
     data_instances = data
 
 
@@ -549,7 +551,7 @@ function drawing_histo_obj1(){
       data_set_positions["" + data[i]["idx"]] = data[i]["id"]
     }
 
-    console.log("primera obs", data_set_positions)
+    
 
     //var textfilter  = text_search_chart.filters()
     var countfilter = count.filters();
