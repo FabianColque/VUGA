@@ -56,7 +56,11 @@ function start(){
 
   /*aun no se si legend deba ir aqui o por ejemplo dentro de draw_charts*/
   mylegend = new legend();
-  var da = post_to_server_global({"dbname": name_dataset, "dimension_num": 4, "select": "all"}, "getDimension_legend")
+  auxdefault = 4
+  console.log("musicaaaa", name_dataset)
+  if(name_dataset == "health1")
+    auxdefault = 2
+  var da = post_to_server_global({"dbname": name_dataset, "dimension_num": auxdefault, "select": "all"}, "getDimension_legend")
 
   mylegend.init(da);
   mylegend.start();

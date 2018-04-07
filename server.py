@@ -208,6 +208,77 @@ def modiying_movielens_only_Num_rating(arr_tsne, dimensionsData, heatmap):
   return arr_tsne, heatmap, mayores, brillo
 
 
+
+def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
+  rangos = []
+  arr_tsne = []
+  sz = len(dimensionsData["body"])
+  totales_by_user = sz * [0.0]
+  for i in xrange(0, sz):
+    auxaux = []
+    for j in xrange(1, len(dimensionsData["body"][0])):
+      totales_by_user[i] = totales_by_user[i] + float(dimensionsData["body"][i][j])
+      auxaux.append(0.0)
+    rangos.append([2.0,-2.0]) 
+    arr_tsne.append(auxaux)
+
+  arr_tsne = np.array(arr_tsne)
+
+  mayores = [0]*sz
+  brillo = [0]*sz
+  for i in xrange(0, sz):
+    for j in xrange(1, len(dimensionsData["body"][0])):
+      #print ("vientooo", dimensionsData["body"][i][j], totales_by_user[i], dimensionsData["body"][i])
+      arr_tsne[i][j-1] = float(str(dimensionsData["body"][i][j]))/totales_by_user[i]
+      if i == 0:
+        print ('QQQQ: ', arr_tsne[i][j-1])
+      if arr_tsne[i][j-1] != 0.0:
+        rangos[i][0] = min(rangos[i][0], arr_tsne[i][j-1])
+        rangos[i][1] = max(rangos[i][1], arr_tsne[i][j-1])
+
+  heatmap["body"] = deepcopy(arr_tsne)  
+
+  p_neighbor = 0.02
+  for i in xrange(0, len(heatmap["body"])):
+    poss = 0
+    aux_sort = []
+    for j in xrange(0, len(heatmap["body"][0])):
+      aux_sort.append(heatmap["body"][i][j])
+      if heatmap["body"][i][j] == 0.0:
+        heatmap["body"][i][j] = -1#bien aqui
+      else:
+        if j > 0:
+          if heatmap["body"][i][j] > heatmap["body"][i][poss]:
+            poss = j
+      """if i == 0 and j == 0:
+        print ("AAAAAAAAAA ", rangos[i][0], rangos[i][1], 0.0, 1.0, heatmap["body"][i][j])
+        if heatmap["body"][i][j] == 0.0:
+          heatmap["body"][i][j] = -1;
+        else:
+          heatmap["body"][i][j] = myscale2(rangos[i][0], rangos[i][1], 0.0, 1.0, heatmap["body"][i][j])
+
+        if i == 0 and j == 0:
+          print ("BBBBBBBBBB ", heatmap["body"][i][j])"""
+    pass
+    #mayores[i] = new_orders_ind[poss]
+    mayores[i] = poss
+    aux_sort.sort()
+    #if aux_sort[len(aux_sort)-1]  - aux_sort[len(aux_sort)-2] <= p_neighbor:
+      #mayores[i] = len(heatmap["body"][0]) + 1
+    #brillo[i] = 1.0 - (aux_sort[len(aux_sort)-2]/aux_sort[len(aux_sort)-1])
+    mean = np.mean(aux_sort)
+    brillo[i] = 1.0 - ((aux_sort[len(aux_sort)-2]-mean)/(aux_sort[len(aux_sort)-1])-mean)
+
+  #print ("atencion", heatmap["body"][5848], mayores[5848])    
+
+  print ('rangos [0]', rangos[0])
+  print ('test arr_tsne 2: ', arr_tsne)
+  print ('test arr[0] tsne2: ', arr_tsne[0])
+  print ('len arr_tsne 2', len(arr_tsne), len(arr_tsne[0]))    
+
+  return arr_tsne, heatmap, mayores, brillo
+
+
 #This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(tornado.web.RequestHandler):
   def post(self):
@@ -295,111 +366,115 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     if len_charts_proj == 0:
       len_charts_proj = -1
 
-    for ftr in detailsjson["features"]:
-      if i_aux < len_charts_proj:
-        #if we have some chart Dimension as projection dimension 
-        print ("\n\n\n\n")     
-        print ("chart 10000")
-        print ("\n\n\n\n")     
-        details_limits.append([0, len(detailsjson["Dimensions_charts"][dimen_proj[i_aux]]["titles"])-1])
-      elif ftr["type"] == "String":
-        print ("\n\n\n\n")     
-        print ("string 10000")
-        print ("\n\n\n\n")   
-        details_limits.append([100000, -100000])
-      else:
-        if ftr["detail"] == []:
+    es_apto1 = True 
+    if not es_apto1: 
+      for ftr in detailsjson["features"]:
+        if i_aux < len_charts_proj:
+          #if we have some chart Dimension as projection dimension 
+          print ("\n\n\n\n")     
+          print ("chart 10000")
+          print ("\n\n\n\n")     
+          details_limits.append([0, len(detailsjson["Dimensions_charts"][dimen_proj[i_aux]]["titles"])-1])
+        elif ftr["type"] == "String":
+          print ("\n\n\n\n")     
+          print ("string 10000")
+          print ("\n\n\n\n")   
           details_limits.append([100000, -100000])
         else:
-          details_limits.append(np.copy(ftr["detail"]))
-      i_aux += 1
+          if ftr["detail"] == []:
+            details_limits.append([100000, -100000])
+          else:
+            details_limits.append(np.copy(ftr["detail"]))
+        i_aux += 1
 
-    for d_d in dimensionsData["body"]:
+      for d_d in dimensionsData["body"]:
+        for i_ftr in xrange(0, len(details["features"])):
+          if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] == []:
+            d_d[i_ftr + 1] = float(d_d[i_ftr + 1])
+            details_limits[i_ftr][0] = min(details_limits[i_ftr][0], d_d[i_ftr+1])
+            details_limits[i_ftr][1] = max(details_limits[i_ftr][1], d_d[i_ftr+1])
+
+      #comvert the matrix in numpy matrix
+      dimensionsData["body"] = np.array(dimensionsData["body"])
+      print ("impresion de auxilio1", details["features"])
+      print ("\n\n\n\n")     
+      print ("limits1", details_limits) 
+      #calculating the percentiles for the normalization
       for i_ftr in xrange(0, len(details["features"])):
+        arraynp_aux = []
+        if isNumber(dimensionsData["body"][0][i_ftr+1]):
+          arraynp_aux = np.array(dimensionsData["body"][:, i_ftr+1], dtype=float)
+        if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] != []:
+          details_limits[i_ftr][0] = np.min(arraynp_aux)
+          details_limits[i_ftr][1] = np.max(arraynp_aux)
         if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] == []:
-          d_d[i_ftr + 1] = float(d_d[i_ftr + 1])
-          details_limits[i_ftr][0] = min(details_limits[i_ftr][0], d_d[i_ftr+1])
-          details_limits[i_ftr][1] = max(details_limits[i_ftr][1], d_d[i_ftr+1])
-
-    #comvert the matrix in numpy matrix
-    dimensionsData["body"] = np.array(dimensionsData["body"])
-    print ("impresion de auxilio1", details["features"])
-    print ("\n\n\n\n")     
-    print ("limits1", details_limits) 
-    #calculating the percentiles for the normalization
-    for i_ftr in xrange(0, len(details["features"])):
-      arraynp_aux = []
-      if isNumber(dimensionsData["body"][0][i_ftr+1]):
-        arraynp_aux = np.array(dimensionsData["body"][:, i_ftr+1], dtype=float)
-      if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] != []:
-        details_limits[i_ftr][0] = np.min(arraynp_aux)
-        details_limits[i_ftr][1] = np.max(arraynp_aux)
-      if i_ftr >= len_charts_proj and details["features"][i_ftr]["detail"] == []:
-        q1 = scoreatpercentile(arraynp_aux, 25)
-        q3 = scoreatpercentile(arraynp_aux, 75)
-        iqd = q3 - q1
-        md = np.median(arraynp_aux)
-        whisker = 1.5*iqd
-        minwhisker = md - whisker
-        if minwhisker < 0.0:
-          minwhisker = 0.0
-        details_limits[i_ftr] = [minwhisker, md + whisker]
-    print ("\n\n\n\n")     
-    print ("impresion de auxilio2", details["features"])          
-    print ("\n\n\n\n")     
-    print ("limits1", details_limits) 
-    
+          q1 = scoreatpercentile(arraynp_aux, 25)
+          q3 = scoreatpercentile(arraynp_aux, 75)
+          iqd = q3 - q1
+          md = np.median(arraynp_aux)
+          whisker = 1.5*iqd
+          minwhisker = md - whisker
+          if minwhisker < 0.0:
+            minwhisker = 0.0
+          details_limits[i_ftr] = [minwhisker, md + whisker]
+      print ("\n\n\n\n")     
+      print ("impresion de auxilio2", details["features"])          
+      print ("\n\n\n\n")     
+      print ("limits1", details_limits) 
+      
 
     #here we are going to use the t-sne to project the data
 
+    dimensionsData["body"] = np.array(dimensionsData["body"])
 
     arr_tsne = []
     heatmap_tsne = []
-
-    i_body = 0
-    for body in dimensionsData["body"]:
-      aux = []
-      aux_heat = []
-      for i_ftr in xrange(0, len(details["features"])):
-        val = 0.0
-        val_heat = 0.0
-        if i_ftr < len_charts_proj:
-          #print ("chart ...")
-          val_aux = dataViz["instances"][i_body]["values"][dimen_proj[i_ftr]]
-          val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
-          val_heat = val
-        elif detailsjson["features"][i_ftr]["type"] == "String":
-          #print ("String ...")
-          val_aux = detailsjson["Dimensions_charts"][i_ftr]["titles"].index(body[i+1])
-          val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
-          val_heat = val
-        else:
-          if details["features"][i_ftr]["detail"] == []:
-            #print ("vacio ...")
-            val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), True)
-            if float(body[i_ftr+1]) < float(details_limits[i_ftr][0]):
-              val_heat = 0.0
-            elif float(body[i_ftr+1]) > float(details_limits[i_ftr][1]):
-              val_heat = 1.0
-            else:
-              val_heat = val
-            
+    es_apto2 = True
+    if not es_apto2:
+      i_body = 0
+      for body in dimensionsData["body"]:
+        aux = []
+        aux_heat = []
+        for i_ftr in xrange(0, len(details["features"])):
+          val = 0.0
+          val_heat = 0.0
+          if i_ftr < len_charts_proj:
+            #print ("chart ...")
+            val_aux = dataViz["instances"][i_body]["values"][dimen_proj[i_ftr]]
+            val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
+            val_heat = val
+          elif detailsjson["features"][i_ftr]["type"] == "String":
+            #print ("String ...")
+            val_aux = detailsjson["Dimensions_charts"][i_ftr]["titles"].index(body[i+1])
+            val = myscale(details_limits[i_ftr][0], details_limits[i_ftr][1], 0.0, 1.0, float(val_aux), False)
+            val_heat = val
           else:
-            #print ("lleno ...")
-            val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
-            
-            if float(body[i_ftr+1]) < float(details["features"][i_ftr]["detail"][0]) or float(body[i_ftr+1]) > float(details["features"][i_ftr]["detail"][1]):
-              #print ("-1 ...")
-              val_heat = -1
+            if details["features"][i_ftr]["detail"] == []:
+              print ("vacio ...", details_limits[i_ftr][0], details_limits[i_ftr][1], body[i_ftr+1])
+              val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), True)
+              if float(body[i_ftr+1]) < float(details_limits[i_ftr][0]):
+                val_heat = 0.0
+              elif float(body[i_ftr+1]) > float(details_limits[i_ftr][1]):
+                val_heat = 1.0
+              else:
+                val_heat = val
               
             else:
-              val_heat = myscale(float(details["features"][i_ftr]["detail"][0]), float(details["features"][i_ftr]["detail"][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
+              #print ("lleno ...")
+              val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
               
-        aux.append(val)
-        aux_heat.append(val_heat)
-      arr_tsne.append(aux)
-      heatmap_tsne.append(aux_heat)
-      i_body += 1
+              if float(body[i_ftr+1]) < float(details["features"][i_ftr]["detail"][0]) or float(body[i_ftr+1]) > float(details["features"][i_ftr]["detail"][1]):
+                #print ("-1 ...")
+                val_heat = -1
+                
+              else:
+                val_heat = myscale(float(details["features"][i_ftr]["detail"][0]), float(details["features"][i_ftr]["detail"][1]), 0.0, 1.0, float(body[i_ftr+1]), False)
+                
+          aux.append(val)
+          aux_heat.append(val_heat)
+        arr_tsne.append(aux)
+        heatmap_tsne.append(aux_heat)
+        i_body += 1
 
     arr_tsne = np.array(arr_tsne)
     heatmap_tsne = np.array(heatmap_tsne)
@@ -432,7 +507,19 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       save_json(getpath_db(dbname) + "dataViz.json", dataViz)
       save_json(getpath_db(dbname) + "details.json", data_deta)
 
-    
+    if dbname == "health1":
+      #modiying_health_data_dimension
+      new_order_names = ["REHABILITATION", "INSULINE", "NUTRITION", "PERFUSION", "epworth", "iah", "bmi", "RESPIRATOIRE"]
+      arr_tsne, heatmap, mayores, brillo = modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap)
+      for i in xrange(0, len(heatmap["body"])):
+        dataViz["instances"][i]["values"].append(mayores[i])
+      dataViz["brillo"] = brillo
+      data_deta = load_json(getpath_db(dbname) + "details.json")
+
+      data_deta["Dimensions_charts"].append({"type_chart": "", "titles": new_order_names, "name": "Category"})
+      #["n_RevAction", "n_RevAdventure", "n_RevAnimation", "n_RevChildrens", "n_RevComedy", "n_RevCrime", "n_RevDocumentary", "n_RevDrama", "n_RevFantasy", "n_RevFilm-Noir", "n_RevHorror", "n_RevMusical", "n_RevMystery", "n_RevRomance", "n_RevSci-Fi", "n_RevThriller", "n_RevWar", "n_RevWestern"]
+      save_json(getpath_db(dbname) + "dataViz.json", dataViz)
+      save_json(getpath_db(dbname) + "details.json", data_deta)      
 
 
 
@@ -843,6 +930,8 @@ class getDimension_legend(tornado.web.RequestHandler):
         aux_body.append(d_body[dim_num_heat])
       
     if dbname == "Movielens only Rating" and dim_num == 4:
+      res["brightness"] = dataViz["brillo"]
+    if dbname == "health1" and dim_num == 2:
       res["brightness"] = dataViz["brillo"]
 
     res["body"] = aux_body
