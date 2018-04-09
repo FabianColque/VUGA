@@ -419,9 +419,14 @@ function drawing_histo_obj1(){
   function draw_datatable_obj2(){
 
     var data_obj2 = getDataViz_obj2();
-    data_obj2.headers[0]= "ID"
-    data_obj2.headers.push("# Reviews")
 
+    data_obj2.headers[0]= "ID"
+
+    if(name_dataset == "health1")
+      data_obj2.headers.push("# Events")
+    else
+      data_obj2.headers.push("# Reviews")
+    //console.log("noooo puede serrrr", data_obj2.headers)
     draw_TableHtml_obj2(data_obj2.headers);
     data_util = []
     for(var i in data_obj2["body"]){

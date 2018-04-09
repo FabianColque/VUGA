@@ -509,7 +509,8 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     if dbname == "health1":
       #modiying_health_data_dimension
-      new_order_names = ["REHABILITATION", "INSULINE", "NUTRITION", "PERFUSION", "epworth", "iah", "bmi", "RESPIRATOIRE"]
+      new_order_names = ["RESPIRATOIRE", "bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
+      
       arr_tsne, heatmap, mayores, brillo = modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap)
       for i in xrange(0, len(heatmap["body"])):
         dataViz["instances"][i]["values"].append(mayores[i])
@@ -833,7 +834,13 @@ class getDataObj2_table(tornado.web.RequestHandler):
     print_message("load object_2.json", time1 - time0)
 
     time0 = time()
-    headers = [data_obj2["headers"][0], data_obj2["headers"][1], "Rating"]
+    
+    headers = []
+    if(dbname == "health1"):
+      headers = [data_obj2["headers"][0], data_obj2["headers"][1], "Year"]
+    else:
+      headers = [data_obj2["headers"][0], data_obj2["headers"][1], "Rating"]
+
     for x in xrange(2, len(data_obj2["headers"])):
       headers.append(data_obj2["headers"][x])
 
@@ -852,7 +859,10 @@ class getDataObj2_table(tornado.web.RequestHandler):
           obj2["body"][str(idx)]["len"] += 1;
 
     for oo in obj2["body"]:
-      obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"]))
+      if dbname == "health1":
+        obj2["body"][oo]["dat"][2] = int(round(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"])))
+      else:  
+        obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"]))
       #obj2["body"][oo]["dat"].append(obj2["body"][oo]["len"])
     time1 = time()
     print_message("getDataObj2_table", time1 - time0)
