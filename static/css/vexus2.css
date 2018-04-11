@@ -3,6 +3,55 @@
   fill: #0082c8;
 }*/
 
+/*para timeChart*/
+#timeChart .barchart {
+  z-index: 30;
+  display: block;
+  visibility: visible;
+  position: relative;
+  padding-top: 15px;
+  margin-top: 15px;
+
+}
+
+#timeChart .axis {
+  font: 10px sans-serif;
+
+}
+
+#timeChart .x.axis text {
+  text-anchor: end !important;
+  transform: rotate(-90deg);
+  font-size: 9px;
+}
+
+#timeChart .axis path,
+#timeChart .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#timeChart .x.axis path {
+  display: none;
+}
+
+#timeChart .resize path {
+  fill: #666;
+  fill-opacity: .8;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+#timeChart .brush .extent {
+  stroke: #fff;
+  stroke-opacity: .6;
+  stroke-width: 2px;
+  fill-opacity: .1;
+  shape-rendering: crispEdges;
+}
+
+
 /*path para los enlaces entre grupos*/
 #vizArea_Groups path.link {
   /*fill: none;
@@ -74,7 +123,7 @@
 }
 
 /******CSS FOR MATRIX HEATMAP***************************************************/
-#chart7{
+/*#chart7{
   overflow-x: scroll;
 }
 
@@ -85,7 +134,7 @@
 
 .x-axis-label{
   transform: translate(111px,10px);
-}
+}*/
 
 .background {
   fill: #eee;
@@ -102,12 +151,12 @@ text.active {
 
 
 /*CSS to labels charts dcjs*/
-.x.axis text {
+#div_graphs_obj1 .x.axis text {
   text-anchor: end !important;
   transform: rotate(-30deg);
 }
 
-.x-axis-label{
+#div_graphs_obj1 .x-axis-label{
   transform: translate(111px,10px);
 }
 
