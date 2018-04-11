@@ -493,6 +493,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     if dbname == "Movielens Test":
       arr_tsne = modiying_movielens_dimensions(arr_tsne, dimensionsData)
 
+#***************************************************************************************************************************************
     mayores = []  
     if dbname == "Movielens only Rating":
       #new_orders_ind = [2, 6, 11, 10, 1, 7, 17, 0, 14, 15, 9, 13, 12, 5, 4, 3, 6, 16]
@@ -507,6 +508,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       save_json(getpath_db(dbname) + "dataViz.json", dataViz)
       save_json(getpath_db(dbname) + "details.json", data_deta)
 
+#***************************************************************************************************************************************
     if dbname == "health1":
       #modiying_health_data_dimension
       new_order_names = ["RESPIRATOIRE", "bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
@@ -522,7 +524,22 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       save_json(getpath_db(dbname) + "dataViz.json", dataViz)
       save_json(getpath_db(dbname) + "details.json", data_deta)      
 
+      #generando un archivo para los anhos de health1
+      ratings_health  = load_json(getpath_db(dbname) +  "ratings.json")
+      years_health = {}
+      #{"body": {"5988": [{"r": "2014", "o2": 39}
+      for i in ratings_health["body"]:
+        #print ("PANINI", i, ratings_health["body"][i])
+        for j in xrange(0, len(ratings_health["body"][i])):
+          ye = str(ratings_health["body"][i][j]["r"])
+          if ye not in years_health:
+            years_health[ye] = {}
+          years_health[ye][i] = 1
+      years_health = {"body": years_health}
+      save_json(getpath_db(dbname) + "years.json", years_health)    
 
+
+#***************************************************************************************************************************************
 
     #this I added just to extract the List of dimension vectors
     lista = arr_tsne.tolist()
@@ -1126,6 +1143,18 @@ class getOtherProj(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
 
+
+class getUsersbyRangeYear(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    data_selected = mydata.get("data_selected")
+    years_selected = mydata.get("years_selected")
+
+    self.write(json.dumps(""))
+
+
+
 ####  END  #### MY CLASSES ###################
 
 ### functions for support START ###############
@@ -1229,6 +1258,7 @@ application = tornado.web.Application([
   (r"/getNewGroups", getNewGroups),
   (r"/save_and_generate_newData", save_and_generate_newData),
   (r"/getOtherProj", getOtherProj),
+  (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
   ], **settings)
 

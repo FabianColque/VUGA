@@ -3,11 +3,12 @@ function myBrush(namediv){
 	var divmain = namediv;
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 500 - margin.left - margin.right,
+    width = 650 - margin.left - margin.right,
     height = 200 - margin.top - margin.bottom;
 
   var x, y;
   var brushYearStart, brushYearEnd;
+
 
   this.init = function(){
  		d3.select("#timerow").style("display", "block");
@@ -24,21 +25,23 @@ function myBrush(namediv){
   	//brushYearStart = 1931;
 		//brushYearEnd = 2018;
 
-    maximini = d3.extent(data, function(d){return parseInt(d.year)})
-    brushYearStart = maximini[0]-1
-    brushYearEnd  =maximini[1]+1
+    var maximini = d3.extent(data, function(d){return parseInt(d.year)})
+    brushYearStart = maximini[0]
+    brushYearEnd  =maximini[1]
 
-		x = d3.scale.ordinal().rangeRoundBands([0, width-60], .1);
+    console.log("hols maximini", maximini)
+
+		x = d3.scale.ordinal().rangeBands([35, width-20])//rangeRoundBands([25, width-20], .1);
 		y = d3.scale.linear().range([height, 0]);
 
   	var barchart = d3.select(divmain).append("svg")
     .attr("class", "barchart")
     .attr("width", "100%")
 		.attr("height", height + margin.top + margin.bottom)
-		.attr("y", height - height - 100)
+		//.attr("y", height - height - 100)
 		.append("g");
   	
-  	var z = d3.scale.ordinal().range(["#66c2a5", "black"]);
+  	var z = d3.scale.ordinal().range(["#66c2a5", "white"]);
 
   	var brushYears = barchart.append("g")
 		brushYears.append("text")
@@ -53,7 +56,7 @@ function myBrush(namediv){
         d["year"] = d3.time.format("%Y").parse(d["year"]).getFullYear();
     });
 
-    var freqs = d3.layout.stack()(["freq"].map(function (type) {
+    var freqs = d3.layout.stack()(["freq", "ef"].map(function (type) {
         return data.map(function (d) {
             return {
                 x: d["year"],
@@ -69,23 +72,25 @@ function myBrush(namediv){
         return d.y0 + d.y;
     })]);
 
+    //fabian  = x
+
     //arreglar por que no son los anhos correctos
     //x_axis = d3.svg.axis().scale(x).tickValues([1850, 1855, 1860, 1865, 1870, 1875, 1880, 1885, 1890, 1895, 1900]).orient("bottom");
     x_axis = d3.svg.axis().scale(x).orient("bottom");
-    y_axis = d3.svg.axis().scale(y).orient("right");
+    y_axis = d3.svg.axis().scale(y).orient("left");
 
 
     barchart.append("g")
       .attr("class", "x axis")
       .style("fill", "#000")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate("+(-x.rangeBand())+"," + (height+2) + ")")
       .call(x_axis);
 
     // y axis
     barchart.append("g")
       .attr("class", "y axis")
       .style("fill", "#000")
-      .attr("transform", "translate(" + (width - 85) + ",0)")
+      .attr("transform", "translate(" + 30 + ",0)")//(width - 85)
       .call(y_axis);
 
     // Add a group for each cause.

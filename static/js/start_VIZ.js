@@ -38,6 +38,9 @@ var headers_data = null;
 //borrar
 var all_values_rev = []
 
+//mivarglobal
+var fabian = null;
+
 function start(){
   
   

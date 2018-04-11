@@ -23,6 +23,7 @@
   text-anchor: end !important;
   transform: rotate(-90deg);
   font-size: 9px;
+
 }
 
 #timeChart .axis path,
@@ -30,6 +31,11 @@
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+  
+}
+
+#timeChart .x.axis line {
+  display: none;
 }
 
 #timeChart .x.axis path {
