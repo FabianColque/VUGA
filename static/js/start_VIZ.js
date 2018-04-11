@@ -20,18 +20,11 @@ var original_save = []
 /*variable to display the histograms of the heatmap*/
 var flag_comparison = false;
 var load_aux_original = false;
-/*var comparison_matrices = null;
-var resume_comparison = null;
-var stack_heatmap = null;
-var mipiechart = null;
 
-var comparison_matrices2 = null;
-var resume_comparison2 = null;
-var stack_heatmap2 = null;
-var mipiechart2 = null;*/
 var comparison_original = null;
 var comparison_groups = null;
 
+var brush_health = null;
 
 //colors allowed
 var colorsArray2 = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    

@@ -338,7 +338,25 @@
 
       </div>
 
-      <div class="col-sm-4" id="div_graphs_obj1"><!--inicio de la part down 3-->
+      <div class="col-sm-4">
+        <div class="row" id="timerow" style="display: none">
+          <div class="col-sm-12">
+            <div class="chart-wrapper">
+              <div class="title">Time</div>
+              <div class="chart-stage">
+                <div id="timeChart"></div>
+              </div>
+              <div class="chart-notes"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="div_graphs_obj1">
+          </div>
+        </div>
+      </div>
+      <!--<div class="col-sm-4" id="div_graphs_obj1">--><!--inicio de la part down 3-->
             
       </div><!--aqui termina la part down 3-->
 
@@ -346,7 +364,8 @@
     
 
   </div>
-  <!--End of main div Body-->
+  <!--End of main div Body hasta aqui esta bien-->
+  <script src="../static/js/filterBrush.js"></script>
   <script src="../static/js/drawComparisonGroups.js"></script>
   <script src="../static/js/pieChartVis.js"></script>
   <script src="../static/js/stackBarVis.js"></script>
