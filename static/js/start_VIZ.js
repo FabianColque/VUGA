@@ -9,6 +9,9 @@ var histograms_obj1 = ""
 //variable visualization of Legend
 var mylegend = null;
 
+//filtrar cualquier cosa, como filtro de topright o filtro de timechart en health1
+var text_search_chart = null;
+
 //names of users selected
 var data_set_positions = {}
 var data_set_positions1 = {}

@@ -1151,7 +1151,15 @@ class getUsersbyRangeYear(tornado.web.RequestHandler):
     data_selected = mydata.get("data_selected")
     years_selected = mydata.get("years_selected")
 
-    self.write(json.dumps(""))
+    years = load_json(getpath_db(dbname) + "years.json")
+
+    res = []
+    for y in years_selected:
+      for us in data_selected:
+        if us in years_selected["body"][y]:
+          res.append(us)
+
+    self.write(json.dumps(res))
 
 
 
