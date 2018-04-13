@@ -28,6 +28,7 @@ var comparison_original = null;
 var comparison_groups = null;
 
 var brush_health = null;
+var redraw_timeChart = true;
 
 //colors allowed
 var colorsArray2 = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
@@ -56,7 +57,7 @@ function start(){
   /*aun no se si legend deba ir aqui o por ejemplo dentro de draw_charts*/
   mylegend = new legend();
   auxdefault = 4
-  console.log("musicaaaa", name_dataset)
+  
   if(name_dataset == "health1")
     auxdefault = 2
   var da = post_to_server_global({"dbname": name_dataset, "dimension_num": auxdefault, "select": "all"}, "getDimension_legend")

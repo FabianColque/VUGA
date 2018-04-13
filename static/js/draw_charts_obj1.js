@@ -36,7 +36,7 @@ function drawing_histo_obj1(){
   a = b = c = ? => They have to be Integers, because they are indexes for titles in dimensions
 */
   this.init = function(data){
-    console.log("que pasa primero ahora")
+    
     ndx = "";
     ndxAll = "";
     dims_groups = [];
@@ -520,8 +520,8 @@ function drawing_histo_obj1(){
     
     var res =  post_to_server_global({"dbname": name_dataset, "data_selected": data_sel}, "getDataObj2_table")
     
-    if(name_dataset == "health1"){
-      health_timeChart_logic(res);
+    if(name_dataset == "health1" && redraw_timeChart){
+      health_timeChart_logic(res["years"]);
     }
     
 
@@ -547,6 +547,15 @@ function drawing_histo_obj1(){
           .text(function(d){return d});  
   }
 
+
+  $("#col0_filter").on('keyup click', function(){
+      $("#id_tabla_obj2").DataTable().column(2).search(
+        $("#col0_filter").val(),
+        true,
+        true
+      ).draw();
+    })
+
   function refreshTable_obj2(){
     dc.events.trigger(function(){
       var aux = evt.top(Infinity)
@@ -554,11 +563,11 @@ function drawing_histo_obj1(){
       for(var gg in aux){
         aux2.push(aux[gg].id)
       }
-      console.log("ESTE ES OTRO AQUIIIIIIIIIIIIIIII")
+      
       var alldata2 = post_to_server_global({"dbname": name_dataset, "data_selected": aux2}, "getDataObj2_table")
       
-      if(name_dataset == "health1"){
-        health_timeChart_logic(alldata2);
+      if(name_dataset == "health1" && redraw_timeChart){
+        health_timeChart_logic(alldata2["years"]);
       }
 
       var data_util = []
@@ -576,13 +585,13 @@ function drawing_histo_obj1(){
 
 
   function health_timeChart_logic(dataset){
+    console.log("see you", redraw_timeChart)
     /*para agregar la timechart principal*/
     //f = {"name5878": 1, "name3477": 1, "name312": 1}
     //fabian.filter(function(d){if(d in f)return true})
     //dc.renderAll()
-    var yy = {}
+    /*var yy = {}
     for(var i in dataset["body"]){
-      /*para timechart*/
       if(name_dataset == "health1"){
         cadena = dataset["body"][i].dat[2].toString()
         if(!(cadena in yy))
@@ -591,27 +600,30 @@ function drawing_histo_obj1(){
           yy[cadena] += 1  
       }
       
-    }
+    }*/
     //data = [{"year": "1", "freq": "12", "enfalso": 1}, {"year": "2", "freq": "45", "enfalso": 1}]
 
-    console.log("ENTRA AQUIIIIIIIIIIIIIIIIIII")
-    if(name_dataset == "health1"){
-      yyy = []
+    
+    
+      /*yyy = []
       for(var ii in yy){
         yyy.push({"year": ii, "freq": yy[ii], "ef": 1})
-      }
-      fabian = yyy
+      }*/
+      //fabian = yyy
       var miauxdata = [{"year":1847,"freq":2,"ef":1},{"year":1848,"freq":0,"ef":1},{"year":1852,"freq":83,"ef":1},{"year":1853,"freq":54,"ef":1},{"year":1854,"freq":98,"ef":1},{"year":1855,"freq":81,"ef":1},{"year":1856,"freq":58,"ef":1},{"year":1857,"freq":73,"ef":1},{"year":1858,"freq":101,"ef":1},{"year":1859,"freq":54,"ef":1},{"year":1860,"freq":77,"ef":1},{"year":1861,"freq":90,"ef":1},{"year":1862,"freq":80,"ef":1},{"year":1863,"freq":71,"ef":1},{"year":1864,"freq":122,"ef":1},{"year":1865,"freq":71,"ef":1},{"year":1866,"freq":121,"ef":1},{"year":1867,"freq":124,"ef":1},{"year":1868,"freq":140,"ef":1},{"year":1869,"freq":153,"ef":1},{"year":1870,"freq":190,"ef":1},{"year":1871,"freq":222,"ef":1},{"year":1872,"freq":205,"ef":1},{"year":1873,"freq":205,"ef":1},{"year":1874,"freq":225,"ef":1},{"year":1875,"freq":204,"ef":1},{"year":1876,"freq":181,"ef":1},{"year":1877,"freq":186,"ef":1},{"year":1878,"freq":296,"ef":1},{"year":1879,"freq":350,"ef":1},{"year":1880,"freq":372,"ef":1},{"year":1881,"freq":406,"ef":1},{"year":1882,"freq":428,"ef":1},{"year":1883,"freq":367,"ef":1},{"year":1884,"freq":371,"ef":1},{"year":1885,"freq":212,"ef":1},{"year":1886,"freq":298,"ef":1},{"year":1887,"freq":396,"ef":1},{"year":1888,"freq":525,"ef":1},{"year":1889,"freq":404,"ef":1},{"year":1890,"freq":573,"ef":1},{"year":1891,"freq":420,"ef":1},{"year":1892,"freq":508,"ef":1},{"year":1893,"freq":249,"ef":1},{"year":1894,"freq":375,"ef":1},{"year":1895,"freq":345,"ef":1},{"year":1896,"freq":345,"ef":1},{"year":1897,"freq":184,"ef":1},{"year":1898,"freq":386,"ef":1},{"year":1899,"freq":297,"ef":1},{"year":1900,"freq":475,"ef":1},{"year":1901,"freq":369,"ef":1},{"year":1902,"freq":358,"ef":1}]
-      miauxdata = miauxdata.slice(0,39)
+      miauxdata = miauxdata.slice(0,39)//39
       miauxdata = miauxdata.map(function(d){return {"year": d.year.toString(), "freq": d.freq, "ef": 40}})
+      //yyy = miauxdata
+      //yyy = [{"year":"1900" ,"freq":12 ,"ef":1 },{"year":"1905" ,"freq": 34,"ef": 1},{"year":"2000" ,"freq":23 ,"ef": 1}]
+      yyy = dataset
       brush_health.update(yyy)
-    } 
+     
   }
 
   /***END*****TABLE OBJECT 2****/
 
   function refresh_all_data(data){
-    console.log("que pasa primero")
+    
     data_instances = data
 
 
@@ -664,7 +676,8 @@ function drawing_histo_obj1(){
     
 
     count.on("renderlet.resetall", function(c){
-      console.log("RENDELET RESETALL");
+      console.log("RENDELET RESETALL", redraw_timeChart);
+      
       mouse_wait(true)
 
       setTimeout(function(){
@@ -685,7 +698,10 @@ function drawing_histo_obj1(){
         viz_proj.draw_only_selected_aux(sub_data);
         draw_table_heatmap();     
         mouse_wait(false) 
+        redraw_timeChart = true
       }, 0)
+    
+      
     })
 
     evt = ndx.dimension(function(d){return d.idx;})
@@ -826,6 +842,7 @@ function drawing_histo_obj1(){
       "aaData": text_search_chart.top(Infinity),
       "bDestroy": true,
     });
+    //todo bien hasta aqui
 
     dataTable_obj1.DataTable().on( 'order.dt search.dt page.dt draw.dt', function () {
       var thispage = $('.paginate_button.current').html();            

@@ -20,7 +20,7 @@ var legend = function(){
     }else{
       caso_genre = false
     }
-    console.log("abraco", data)
+    
     height = multiplicador * data.colors.length + 50;
     d3.select(data.selector + " #" + id).remove();
     d3.select(data.selector)

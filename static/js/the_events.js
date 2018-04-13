@@ -139,6 +139,7 @@ d3.select("#explore-viz")
 				brush_health = new myBrush("#timeChart");
 				brush_health.init();
 			}
+			redraw_timeChart = true;
 		}
 
 		if(mynewGroups){

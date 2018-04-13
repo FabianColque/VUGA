@@ -14,6 +14,10 @@ function myBrush(namediv){
  		d3.select("#timerow").style("display", "block");
   }
 
+  this.resetBrush_all = function(){
+    resetBrush()
+  }
+
   this.update = function(data){
 
   	//formato data
@@ -72,7 +76,7 @@ function myBrush(namediv){
         return d.y0 + d.y;
     })]);
 
-    //fabian  = x
+    fabian  = x
 
     //arreglar por que no son los anhos correctos
     //x_axis = d3.svg.axis().scale(x).tickValues([1850, 1855, 1860, 1865, 1870, 1875, 1880, 1885, 1890, 1895, 1900]).orient("bottom");
@@ -83,7 +87,7 @@ function myBrush(namediv){
     barchart.append("g")
       .attr("class", "x axis")
       .style("fill", "#000")
-      .attr("transform", "translate("+(-x.rangeBand())+"," + (height+2) + ")")
+      .attr("transform", "translate("+(-x.rangeBand()/2)+"," + (height+2) + ")")//-x.rangeBand()
       .call(x_axis);
 
     // y axis
@@ -189,6 +193,42 @@ function myBrush(namediv){
     // Update start and end years in upper right-hand corner of the map
     d3.select(divmain).select("#brushYears").text(localBrushYearStart == localBrushYearEnd ? localBrushYearStart : localBrushYearStart + " - " + localBrushYearEnd);
 
+    //mandar a server
+    var da_usu = evt.top(Infinity).map(function(d){return d.id})
+    var dom_x = x.domain()
+    var val = "";
+    console.log("dom_x", dom_x, localBrushYearStart, localBrushYearEnd)
+    var da_ye = []
+    for(var ii = 0; ii < dom_x.length; ii++){
+      if(dom_x[ii] >= localBrushYearStart && dom_x[ii] <= localBrushYearEnd){
+        da_ye.push(dom_x[ii].toString())
+        val += dom_x[ii].toString()
+        val += "|"
+      }
+    }
+    redraw_timeChart = false
+    var da_res = post_to_server_global({"dbname": name_dataset, "data_selected": da_usu, "years_selected": da_ye}, "getUsersbyRangeYear");
+    if(brush.empty()){
+      text_search_chart.filterAll()
+      dc.renderAll()
+      /*$("#col0_filter").val("")
+      $("#id_tabla_obj2").DataTable().column(2).search(
+        "",
+        true,
+        true
+      ).draw();*/
+    }else{
+      text_search_chart.filter(function(d){if(d in da_res)return true})
+      dc.renderAll()
+      /*if(val.length >= 5)
+        val = val.slice(0, -1) 
+      $("#col0_filter").val(val)
+      $("#id_tabla_obj2").DataTable().column(2).search(
+        val,
+        true,
+        true
+      ).draw();*/
+    }  
   }
 
   function resetBrush() {

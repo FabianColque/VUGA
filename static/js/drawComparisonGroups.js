@@ -90,14 +90,14 @@ function drawComparison(div_){
     resume_comparison.update(resume, ["histogram"], sorted_resume)
     mipiechart.update(resume);
 
-    console.log("pasas segundo", data_set_positions)
+    
 
     if(div == "#originalComparison"){
       if(data_selected_save.length != 0){
         data_set_positions = {}
         for(var ds in data_selected_save)
           data_set_positions[String(ds)] = data_selected_save[ds].id;
-        console.log("tuguarida", data_set_positions)  
+        
       }
     }
     var new_names = data_selected.map(function(d){return data_set_positions[d]})

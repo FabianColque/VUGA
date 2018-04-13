@@ -863,7 +863,11 @@ class getDataObj2_table(tornado.web.RequestHandler):
 
     obj2 = {"headers": headers, "body": {}}
 
+    #for timechart health1
+    yy = {}
+
     for ds in data_selected:
+      aux_yy = {}
       for dr in data_ratings["body"][str(ds)]:
         idx = dr["o2"]
         if not str(idx) in obj2["body"]:
@@ -875,12 +879,31 @@ class getDataObj2_table(tornado.web.RequestHandler):
           obj2["body"][str(idx)]["dat"][2] += int(dr["r"])
           obj2["body"][str(idx)]["len"] += 1;
 
+        #for timechart health1
+        if dbname == "health1":
+          anho = str(dr["r"])
+          if anho not in aux_yy:
+            aux_yy[anho] = 1
+            if anho not in yy:
+              yy[anho] = 1
+            else:
+              yy[anho] += 1
+
     for oo in obj2["body"]:
       if dbname == "health1":
         obj2["body"][oo]["dat"][2] = int(round(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"])))
       else:  
         obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"]))
       #obj2["body"][oo]["dat"].append(obj2["body"][oo]["len"])
+
+    #for timechart health1
+    yyy = []
+    for y in yy:
+      yyy.append({"year":y,"freq":yy[y],"ef":1})
+    yyy = sorted(yyy, key=getKey_byYear)
+    obj2["years"] = yyy
+
+
     time1 = time()
     print_message("getDataObj2_table", time1 - time0)
 
@@ -1152,12 +1175,12 @@ class getUsersbyRangeYear(tornado.web.RequestHandler):
     years_selected = mydata.get("years_selected")
 
     years = load_json(getpath_db(dbname) + "years.json")
-
-    res = []
+    #print years["body"]["1986"]
+    res = {}
     for y in years_selected:
       for us in data_selected:
-        if us in years_selected["body"][y]:
-          res.append(us)
+        if us in years["body"][y]:
+          res["name"+us] = 1
 
     self.write(json.dumps(res))
 
@@ -1166,6 +1189,10 @@ class getUsersbyRangeYear(tornado.web.RequestHandler):
 ####  END  #### MY CLASSES ###################
 
 ### functions for support START ###############
+def getKey_byYear(item):
+  return item["year"]
+
+
 def isNumber(str):
   res = 0
   for d in str:
