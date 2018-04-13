@@ -63,7 +63,7 @@ function drawing_histo_obj1(){
     drawing_chartText(data.dimensions);
     draw_datatable_obj1(data);
     drawing_chartCount(data.instances.length);
-    draw_datatable_obj2();
+    //draw_datatable_obj2();
 
     button_resetAll_dcjs(); 
 
@@ -86,25 +86,6 @@ function drawing_histo_obj1(){
       comparison_groups.update();
     }
 
-
-    //no se donde poner esta parte de timeChart para Health database
-    /*if(name_dataset == "health1"){
-      //var miauxdata = [{"year":1847,"freq":2},{"year":1848,"freq":0},{"year":1849,"freq":14},{"year":1850,"freq":46},{"year":1851,"freq":113},{"year":1852,"freq":83},{"year":1853,"freq":54},{"year":1854,"freq":98},{"year":1855,"freq":81},{"year":1856,"freq":58},{"year":1857,"freq":73},{"year":1858,"freq":101},{"year":1859,"freq":54},{"year":1860,"freq":77},{"year":1861,"freq":90},{"year":1862,"freq":80},{"year":1863,"freq":71},{"year":1864,"freq":122},{"year":1865,"freq":71},{"year":1866,"freq":121},{"year":1867,"freq":124},{"year":1868,"freq":140},{"year":1869,"freq":153},{"year":1870,"freq":190},{"year":1871,"freq":222},{"year":1872,"freq":205},{"year":1873,"freq":205},{"year":1874,"freq":225},{"year":1875,"freq":204},{"year":1876,"freq":181},{"year":1877,"freq":186},{"year":1878,"freq":296},{"year":1879,"freq":350},{"year":1880,"freq":372},{"year":1881,"freq":406},{"year":1882,"freq":428},{"year":1883,"freq":367},{"year":1884,"freq":371},{"year":1885,"freq":212},{"year":1886,"freq":298},{"year":1887,"freq":396},{"year":1888,"freq":525},{"year":1889,"freq":404},{"year":1890,"freq":573},{"year":1891,"freq":420},{"year":1892,"freq":508},{"year":1893,"freq":249},{"year":1894,"freq":375},{"year":1895,"freq":345},{"year":1896,"freq":345},{"year":1897,"freq":184},{"year":1898,"freq":386},{"year":1899,"freq":297},{"year":1900,"freq":475},{"year":1901,"freq":369},{"year":1902,"freq":358}];
-      var miauxdata = [{"year":1847,"freq":2,"ef":1},{"year":1848,"freq":0,"ef":1},{"year":1852,"freq":83,"ef":1},{"year":1853,"freq":54,"ef":1},{"year":1854,"freq":98,"ef":1},{"year":1855,"freq":81,"ef":1},{"year":1856,"freq":58,"ef":1},{"year":1857,"freq":73,"ef":1},{"year":1858,"freq":101,"ef":1},{"year":1859,"freq":54,"ef":1},{"year":1860,"freq":77,"ef":1},{"year":1861,"freq":90,"ef":1},{"year":1862,"freq":80,"ef":1},{"year":1863,"freq":71,"ef":1},{"year":1864,"freq":122,"ef":1},{"year":1865,"freq":71,"ef":1},{"year":1866,"freq":121,"ef":1},{"year":1867,"freq":124,"ef":1},{"year":1868,"freq":140,"ef":1},{"year":1869,"freq":153,"ef":1},{"year":1870,"freq":190,"ef":1},{"year":1871,"freq":222,"ef":1},{"year":1872,"freq":205,"ef":1},{"year":1873,"freq":205,"ef":1},{"year":1874,"freq":225,"ef":1},{"year":1875,"freq":204,"ef":1},{"year":1876,"freq":181,"ef":1},{"year":1877,"freq":186,"ef":1},{"year":1878,"freq":296,"ef":1},{"year":1879,"freq":350,"ef":1},{"year":1880,"freq":372,"ef":1},{"year":1881,"freq":406,"ef":1},{"year":1882,"freq":428,"ef":1},{"year":1883,"freq":367,"ef":1},{"year":1884,"freq":371,"ef":1},{"year":1885,"freq":212,"ef":1},{"year":1886,"freq":298,"ef":1},{"year":1887,"freq":396,"ef":1},{"year":1888,"freq":525,"ef":1},{"year":1889,"freq":404,"ef":1},{"year":1890,"freq":573,"ef":1},{"year":1891,"freq":420,"ef":1},{"year":1892,"freq":508,"ef":1},{"year":1893,"freq":249,"ef":1},{"year":1894,"freq":375,"ef":1},{"year":1895,"freq":345,"ef":1},{"year":1896,"freq":345,"ef":1},{"year":1897,"freq":184,"ef":1},{"year":1898,"freq":386,"ef":1},{"year":1899,"freq":297,"ef":1},{"year":1900,"freq":475,"ef":1},{"year":1901,"freq":369,"ef":1},{"year":1902,"freq":358,"ef":1}]
-      miauxdata = miauxdata.slice(0,39)
-      miauxdata = miauxdata.map(function(d){return {"year": d.year.toString(), "freq": d.freq, "ef": 40}})
-      var elegidos = new Set()
-      var sz = parseInt(miauxdata.length/2);
-      for(var i = 0; i < sz; i++){
-        elegidos.add(parseInt(Math.random()*miauxdata.length-1));
-      }
-      var seleaux = []
-      elegidos.forEach(function(d){
-        seleaux.push(miauxdata[d])
-      })
-      seleaux = miauxdata
-      brush_health.update(seleaux)
-    }*/
 
 /*
     d3.selectAll("#heatmap *").remove();
@@ -514,13 +495,17 @@ function drawing_histo_obj1(){
 
   function getDataViz_obj2(){
     var data_sel = []
+    console.log("estoy aprendiendo piano", data_instances)
     for(var i = 0; i < data_instances.length; i++){
       data_sel.push(data_instances[i].id)
     }
     
-    var res =  post_to_server_global({"dbname": name_dataset, "data_selected": data_sel}, "getDataObj2_table")
-    
-    if(name_dataset == "health1" && redraw_timeChart){
+    var res = []
+    //if(name_dataset !== "health1")
+      //res = post_to_server_global({"dbname": name_dataset, "data_selected": data_sel}, "getDataObj2_table")
+    //else
+      res = post_to_server_global({"dbname": name_dataset, "data_selected": data_sel}, "getDataObj2_and_concepts")
+    if(redraw_timeChart){//name_dataset == "health1" && 
       health_timeChart_logic(res["years"]);
     }
     
@@ -563,10 +548,16 @@ function drawing_histo_obj1(){
       for(var gg in aux){
         aux2.push(aux[gg].id)
       }
-      
-      var alldata2 = post_to_server_global({"dbname": name_dataset, "data_selected": aux2}, "getDataObj2_table")
-      
-      if(name_dataset == "health1" && redraw_timeChart){
+      var alldata2 = []
+      //if(name_dataset !== "health1")
+        //alldata2 = post_to_server_global({"dbname": name_dataset, "data_selected": aux2}, "getDataObj2_table")
+      //else{
+        var vamo = {}
+        if(!redraw_timeChart)
+          vamo = brush_health.getConcepts()
+        alldata2 = post_to_server_global({"dbname": name_dataset, "data_selected": aux2, "concepts_selected": vamo}, "getDataObj2_and_concepts")
+      //}
+      if(redraw_timeChart){//name_dataset == "health1" && 
         health_timeChart_logic(alldata2["years"]);
       }
 
@@ -586,35 +577,6 @@ function drawing_histo_obj1(){
 
   function health_timeChart_logic(dataset){
     console.log("see you", redraw_timeChart)
-    /*para agregar la timechart principal*/
-    //f = {"name5878": 1, "name3477": 1, "name312": 1}
-    //fabian.filter(function(d){if(d in f)return true})
-    //dc.renderAll()
-    /*var yy = {}
-    for(var i in dataset["body"]){
-      if(name_dataset == "health1"){
-        cadena = dataset["body"][i].dat[2].toString()
-        if(!(cadena in yy))
-          yy[cadena] = 1
-        else
-          yy[cadena] += 1  
-      }
-      
-    }*/
-    //data = [{"year": "1", "freq": "12", "enfalso": 1}, {"year": "2", "freq": "45", "enfalso": 1}]
-
-    
-    
-      /*yyy = []
-      for(var ii in yy){
-        yyy.push({"year": ii, "freq": yy[ii], "ef": 1})
-      }*/
-      //fabian = yyy
-      var miauxdata = [{"year":1847,"freq":2,"ef":1},{"year":1848,"freq":0,"ef":1},{"year":1852,"freq":83,"ef":1},{"year":1853,"freq":54,"ef":1},{"year":1854,"freq":98,"ef":1},{"year":1855,"freq":81,"ef":1},{"year":1856,"freq":58,"ef":1},{"year":1857,"freq":73,"ef":1},{"year":1858,"freq":101,"ef":1},{"year":1859,"freq":54,"ef":1},{"year":1860,"freq":77,"ef":1},{"year":1861,"freq":90,"ef":1},{"year":1862,"freq":80,"ef":1},{"year":1863,"freq":71,"ef":1},{"year":1864,"freq":122,"ef":1},{"year":1865,"freq":71,"ef":1},{"year":1866,"freq":121,"ef":1},{"year":1867,"freq":124,"ef":1},{"year":1868,"freq":140,"ef":1},{"year":1869,"freq":153,"ef":1},{"year":1870,"freq":190,"ef":1},{"year":1871,"freq":222,"ef":1},{"year":1872,"freq":205,"ef":1},{"year":1873,"freq":205,"ef":1},{"year":1874,"freq":225,"ef":1},{"year":1875,"freq":204,"ef":1},{"year":1876,"freq":181,"ef":1},{"year":1877,"freq":186,"ef":1},{"year":1878,"freq":296,"ef":1},{"year":1879,"freq":350,"ef":1},{"year":1880,"freq":372,"ef":1},{"year":1881,"freq":406,"ef":1},{"year":1882,"freq":428,"ef":1},{"year":1883,"freq":367,"ef":1},{"year":1884,"freq":371,"ef":1},{"year":1885,"freq":212,"ef":1},{"year":1886,"freq":298,"ef":1},{"year":1887,"freq":396,"ef":1},{"year":1888,"freq":525,"ef":1},{"year":1889,"freq":404,"ef":1},{"year":1890,"freq":573,"ef":1},{"year":1891,"freq":420,"ef":1},{"year":1892,"freq":508,"ef":1},{"year":1893,"freq":249,"ef":1},{"year":1894,"freq":375,"ef":1},{"year":1895,"freq":345,"ef":1},{"year":1896,"freq":345,"ef":1},{"year":1897,"freq":184,"ef":1},{"year":1898,"freq":386,"ef":1},{"year":1899,"freq":297,"ef":1},{"year":1900,"freq":475,"ef":1},{"year":1901,"freq":369,"ef":1},{"year":1902,"freq":358,"ef":1}]
-      miauxdata = miauxdata.slice(0,39)//39
-      miauxdata = miauxdata.map(function(d){return {"year": d.year.toString(), "freq": d.freq, "ef": 40}})
-      //yyy = miauxdata
-      //yyy = [{"year":"1900" ,"freq":12 ,"ef":1 },{"year":"1905" ,"freq": 34,"ef": 1},{"year":"2000" ,"freq":23 ,"ef": 1}]
       yyy = dataset
       brush_health.update(yyy)
      
@@ -688,7 +650,7 @@ function drawing_histo_obj1(){
 
         if(tabla_refresh){
           refreshTable_obj1();
-          refreshTable_obj2();  
+          //refreshTable_obj2();  
         }
 
         tabla_refresh = true;
@@ -786,7 +748,19 @@ function drawing_histo_obj1(){
   /*---START--------- Table Object 1*/
 
   function draw_datatable_obj1(data){
+    
+
+    /*para timechart*/
+    var yy = data["instances"].map(function(d){return d.id})
+    //console.log("jose jose", yy)
+    var NroUsersbyConcept = post_to_server_global({"dbname": name_dataset, "data_selected": yy}, "getNroUsersbyConcept")
+
     /*Extracting the headers to table Object 1*/
+
+
+
+
+    //console.log("lalalalalala", data)
     var headers = [];
     headers.push("ID")
     headers.push("name")
@@ -822,6 +796,7 @@ function drawing_histo_obj1(){
       aux["targets"]        = i+2;
       aux["defaultContent"] = "N/A";
       aux["data"] = function(row, type, val, meta){
+        console.log(data)
         return data.dimensions[meta.col-2].titles[row.values[meta.col-2]];
       }
       my_columns.push(aux);
@@ -894,6 +869,8 @@ function drawing_histo_obj1(){
             .attr("class", "header")
             .text(function(d){return d});
     }
+
+    draw_datatable_obj2();
   }
 
   function refreshTable_obj1(){
@@ -902,6 +879,7 @@ function drawing_histo_obj1(){
       dataTable_obj1.fnClearTable();
       dataTable_obj1.fnAddData(alldata);
       dataTable_obj1.fnDraw();
+      refreshTable_obj2();
     })
   }
 

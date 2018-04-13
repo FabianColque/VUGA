@@ -9,6 +9,7 @@ function myBrush(namediv){
   var x, y;
   var brushYearStart, brushYearEnd;
 
+  var concepts = {}
 
   this.init = function(){
  		d3.select("#timerow").style("display", "block");
@@ -16,6 +17,15 @@ function myBrush(namediv){
 
   this.resetBrush_all = function(){
     resetBrush()
+  }
+
+  this.getConcepts = function(){
+    return concepts;
+  }
+
+  this.resetConcepts = function(){
+    concepts = {}
+    console.log("sherlok", concepts)
   }
 
   this.update = function(data){
@@ -57,7 +67,8 @@ function myBrush(namediv){
 
     data.forEach(function (d) {
         d["freq"] = +d["freq"];
-        d["year"] = d3.time.format("%Y").parse(d["year"]).getFullYear();
+        //d["year"] = d3.time.format("%Y").parse(d["year"]).getFullYear();
+        d["year"] = d["year"]
     });
 
     var freqs = d3.layout.stack()(["freq", "ef"].map(function (type) {
@@ -153,6 +164,14 @@ function myBrush(namediv){
     brushg.selectAll("rect")
         .attr("height", height);  
 
+
+
+    d3.select(divmain).selectAll(".x.axis").style("font-size", function(d){
+      if(data.length <= 5)
+        return "19px"
+      return "9px"
+    })
+
   }
 
 
@@ -199,9 +218,11 @@ function myBrush(namediv){
     var val = "";
     console.log("dom_x", dom_x, localBrushYearStart, localBrushYearEnd)
     var da_ye = []
+    concepts = {}
     for(var ii = 0; ii < dom_x.length; ii++){
       if(dom_x[ii] >= localBrushYearStart && dom_x[ii] <= localBrushYearEnd){
         da_ye.push(dom_x[ii].toString())
+        concepts[dom_x[ii].toString()] = 1;
         val += dom_x[ii].toString()
         val += "|"
       }

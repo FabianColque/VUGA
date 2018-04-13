@@ -134,13 +134,17 @@ d3.select("#explore-viz")
 			mipiechart = new pieChartVis();
 			mipiechart.init("piechartmio")
 		}*/
-		if(name_dataset == "health1"){
+		//if(name_dataset == "health1"){
 			if(brush_health == null){
 				brush_health = new myBrush("#timeChart");
 				brush_health.init();
+			}else{
+				brush_health.resetConcepts();	
 			}
 			redraw_timeChart = true;
-		}
+		//}
+			
+		
 
 		if(mynewGroups){
 			mynewGroups.clearAll();

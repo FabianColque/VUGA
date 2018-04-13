@@ -366,7 +366,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     if len_charts_proj == 0:
       len_charts_proj = -1
 
-    es_apto1 = True 
+    es_apto1 = False 
     if not es_apto1: 
       for ftr in detailsjson["features"]:
         if i_aux < len_charts_proj:
@@ -429,7 +429,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     arr_tsne = []
     heatmap_tsne = []
-    es_apto2 = True
+    es_apto2 = False
     if not es_apto2:
       i_body = 0
       for body in dimensionsData["body"]:
@@ -541,6 +541,23 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
 #***************************************************************************************************************************************
 
+    #generando un archivo para los anhos de health1
+    ratings_health  = load_json(getpath_db(dbname) +  "ratings.json")
+    years_health = {}
+    #{"body": {"5988": [{"r": "2014", "o2": 39}
+    for i in ratings_health["body"]:
+      #print ("PANINI", i, ratings_health["body"][i])
+      for j in xrange(0, len(ratings_health["body"][i])):
+        ye = str(ratings_health["body"][i][j]["r"])
+        if ye not in years_health:
+          years_health[ye] = {}
+        years_health[ye][i] = 1
+    years_health = {"body": years_health}
+    save_json(getpath_db(dbname) + "years.json", years_health)
+
+
+
+
     #this I added just to extract the List of dimension vectors
     lista = arr_tsne.tolist()
     nombres = np.array(dimensionsData["body"])
@@ -554,7 +571,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     print ("starting projection...")
 
-    
+    """    
     #Now the projection of All data
     time0 = time()
     model = TSNE(n_components = 2, random_state=0)
@@ -568,7 +585,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       points[poi].append(dimensionsData["body"][poi][0])
 
     save_json(getpath_db(dbname) + "projection.json", points)
-
+    """
     #no deberia estar comentado, solo para generar el dimension vector
     """
     #procesing the projection by each dimension
@@ -1184,7 +1201,129 @@ class getUsersbyRangeYear(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
 
+class getNroUsersbyConcept(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    data_selected = mydata.get("data_selected")
 
+    data_ratings = load_json(getpath_db(dbname) + "ratings.json")
+
+    #//data = [{"year": "1", "freq": "12", "enfalso": 1}, {"year": "2", "freq": "45", "enfalso": 1}]
+    yy = {}
+
+    for ds in data_selected:
+      aux_yy = {}
+      for dr in data_ratings["body"][str(ds)]:
+        #for timechart health1
+        anho = str(dr["r"])
+        if anho not in aux_yy:
+          aux_yy[anho] = 1
+          if anho not in yy:
+            yy[anho] = 1
+          else:
+            yy[anho] += 1
+
+    #for timechart health1
+    yyy = []
+    for y in yy:
+      yyy.append({"year":y,"freq":yy[y],"ef":1})
+    yyy = sorted(yyy, key=getKey_byYear)
+    self.write(json.dumps(yyy))
+
+class getDataObj2_and_concepts(tornado.web.RequestHandler):
+  def post(self):
+    mydata = json.loads(self.request.body)
+    dbname = mydata.get("dbname")
+    data_selected = mydata.get("data_selected")#this data is a array of Objects_1 IDs
+    #concepts_selected = mydata.get("concepts_selected")
+
+    path = "static/data/" + dbname + "/"
+    time0 = time()
+
+    data_ratings = []
+    if dbname == "Movielens only Rating":
+      data_ratings = copy.copy(ratings_movielens)
+    else:
+      data_ratings = load_json(path + "ratings.json")
+    time1 = time()
+    print_message("load ratings.json", time1 - time0)
+
+    time0 = time()
+    data_obj2 = load_json(path + "object_2.json")
+    time1 = time()
+    print_message("load object_2.json", time1 - time0)
+
+    time0 = time()
+
+    headers = []
+    if(dbname == "health1"):
+      headers = [data_obj2["headers"][0], data_obj2["headers"][1], "Year"]
+    else:
+      headers = [data_obj2["headers"][0], data_obj2["headers"][1], "Rating"]
+
+    for x in xrange(2, len(data_obj2["headers"])):
+      headers.append(data_obj2["headers"][x])
+
+    obj2 = {"headers": headers, "body": {}}
+
+    #for timechart health1
+    yy = {}
+
+    for ds in data_selected:
+      aux_yy = {}
+      for dr in data_ratings["body"][str(ds)]:
+        #for timechart health1
+        anho = str(dr["r"])
+        if anho not in aux_yy:
+          aux_yy[anho] = 1
+          if anho not in yy:
+            yy[anho] = 1
+          else:
+            yy[anho] += 1
+
+    
+    if ("concepts_selected" in mydata):
+      print ("miraflores1", yy, mydata["concepts_selected"])
+      concepts_selected = mydata.get("concepts_selected")
+      if len(concepts_selected) > 0:
+        yy = concepts_selected
+
+    print ("miraflores111", yy)
+
+    for ds in data_selected:
+      for dr in data_ratings["body"][str(ds)]:
+        idx = dr["o2"]
+        if dr["r"] in yy:         
+          if not str(idx) in obj2["body"]:
+            aux = [data_obj2["body"][idx][0], data_obj2["body"][idx][1], int(dr["r"])]
+            for x in xrange(2, len(data_obj2["headers"])):
+              aux.append(data_obj2["body"][idx][x])
+            obj2["body"][str(idx)] = {"dat": aux, "len": 1}
+          else:
+            obj2["body"][str(idx)]["dat"][2] += int(dr["r"])
+            obj2["body"][str(idx)]["len"] += 1;
+
+        
+    for oo in obj2["body"]:
+      if dbname == "health1":
+        obj2["body"][oo]["dat"][2] = int(round(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"])))
+      else:  
+        obj2["body"][oo]["dat"][2] = myformat_dec(obj2["body"][oo]["dat"][2]/float(obj2["body"][oo]["len"]))
+      #obj2["body"][oo]["dat"].append(obj2["body"][oo]["len"])
+
+    #for timechart health1
+    yyy = []
+    for y in yy:
+      yyy.append({"year":y,"freq":yy[y],"ef":1})
+    yyy = sorted(yyy, key=getKey_byYear)
+    obj2["years"] = yyy
+
+
+    time1 = time()
+    print_message("getDataObj2_table", time1 - time0)
+
+    self.write(json.dumps(obj2))    
 
 ####  END  #### MY CLASSES ###################
 
@@ -1294,6 +1433,8 @@ application = tornado.web.Application([
   (r"/save_and_generate_newData", save_and_generate_newData),
   (r"/getOtherProj", getOtherProj),
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
+  (r"/getNroUsersbyConcept", getNroUsersbyConcept),
+  (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
   ], **settings)
 

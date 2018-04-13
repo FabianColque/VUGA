@@ -22,7 +22,7 @@
 #timeChart .x.axis text {
   text-anchor: end !important;
   transform: rotate(-90deg);
-  font-size: 9px;
+  /*font-size: 19px;*/
 
 }
 
