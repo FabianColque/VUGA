@@ -302,8 +302,14 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       if dc["t_var"] == "Categorical":
         #busqueda de todas las posibles categorias
         auxset = set()
+        #hans = 1
         for di in dataObj1["body"]:
-          auxset.add(di[ite+2])
+          #if hans < 3:
+            #print ("zimmer", di, ite)
+            #hans += 1
+          auxprepre = details["Dimensions_charts"][ite]["idx"]+1
+          #auxset.add(di[ite+2])
+          auxset.add(di[auxprepre])
         detailsjson["Dimensions_charts"].append({"name": dc["name"], "titles": list(auxset), "type_chart": dc["type_chart"]})
       else:
         if len(dc["dom"]) == 0:
@@ -366,7 +372,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     if len_charts_proj == 0:
       len_charts_proj = -1
 
-    es_apto1 = False 
+    es_apto1 = True#true cuando quiero que sea Health, false para movielens 
     if not es_apto1: 
       for ftr in detailsjson["features"]:
         if i_aux < len_charts_proj:
@@ -429,7 +435,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     arr_tsne = []
     heatmap_tsne = []
-    es_apto2 = False
+    es_apto2 = True#true cuando quiero que sea Health, false para movielens
     if not es_apto2:
       i_body = 0
       for body in dimensionsData["body"]:
@@ -512,6 +518,8 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     if dbname == "health1":
       #modiying_health_data_dimension
       new_order_names = ["RESPIRATOIRE", "bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
+      #new_order_names = ["bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
+      #new_order_names = ["PERFUSION","NUTRITION", "INSULINE", "REHABILITATION"]
       
       arr_tsne, heatmap, mayores, brillo = modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap)
       for i in xrange(0, len(heatmap["body"])):
@@ -571,7 +579,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
 
     print ("starting projection...")
 
-    """    
+        
     #Now the projection of All data
     time0 = time()
     model = TSNE(n_components = 2, random_state=0)
@@ -585,7 +593,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
       points[poi].append(dimensionsData["body"][poi][0])
 
     save_json(getpath_db(dbname) + "projection.json", points)
-    """
+    
     #no deberia estar comentado, solo para generar el dimension vector
     """
     #procesing the projection by each dimension
@@ -998,7 +1006,7 @@ class getDimension_legend(tornado.web.RequestHandler):
       
     if dbname == "Movielens only Rating" and dim_num == 4:
       res["brightness"] = dataViz["brillo"]
-    if dbname == "health1" and dim_num == 2:
+    if dbname == "health1" and dim_num == 3:
       res["brightness"] = dataViz["brillo"]
 
     res["body"] = aux_body

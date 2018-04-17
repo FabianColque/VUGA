@@ -661,7 +661,7 @@ function drawing_histo_obj1(){
         draw_table_heatmap();     
         mouse_wait(false) 
         redraw_timeChart = true
-      }, 0)
+      }, 1000)
     
       
     })

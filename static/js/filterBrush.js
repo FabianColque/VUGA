@@ -12,7 +12,9 @@ function myBrush(namediv){
   var concepts = {}
 
   this.init = function(){
- 		d3.select("#timerow").style("display", "block");
+    //esto es provicional, debo borrarlo
+   if(name_dataset != "Movielens only Rating")
+    d3.select("#timerow").style("display", "block");
   }
 
   this.resetBrush_all = function(){

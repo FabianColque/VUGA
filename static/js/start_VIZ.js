@@ -59,7 +59,7 @@ function start(){
   auxdefault = 4
   
   if(name_dataset == "health1")
-    auxdefault = 2
+    auxdefault = 3
   var da = post_to_server_global({"dbname": name_dataset, "dimension_num": auxdefault, "select": "all"}, "getDimension_legend")
 
   mylegend.init(da);
@@ -70,7 +70,7 @@ function start(){
   headers_data = data_options["intersection"].concat(data_options["dimensions"])
   draw_colors_dimensions_selectors(data_options)
 
-   document.getElementsByClassName("select_color")[0].selectedIndex = 4;
+   document.getElementsByClassName("select_color")[0].selectedIndex = auxdefault;
 }
 
 
