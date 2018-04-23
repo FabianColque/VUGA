@@ -36,7 +36,13 @@ d3.select("#btn_clearAll")
 /*Explore new group since the save area*/
 d3.select("#btn_ExploreGroups")
 	.on("click", function(){
+		if (var_save_area.getData_idx().length == 0) {
+			window.alert("There aren't data for exploring.");
+			return ;
+		}
+
 		fn_loading(true);
+
 		var pro = comparison_original.getOrderbyPriority()
 		var perce = comparison_original.getVectorPercent()
 		var simi = d3.select(".optionSimi").property("selectedIndex");
