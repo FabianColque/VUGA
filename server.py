@@ -1,5 +1,6 @@
 import tornado.ioloop
 import tornado.web
+import tornado.auth
 import os.path
 from tornado import template
 
@@ -41,8 +42,19 @@ class MyError(Exception):
   def __str__(self):
     return repr(self.value)
 
-class MainHandler(tornado.web.RequestHandler) :
+class BaseHandler(tornado.web.RequestHandler):
+  def get_current_user(self):
+    return self.get_secure_cookie("user")
+
+class MainHandler(tornado.web.RequestHandler):
   def get(self):
+    '''
+    self.write(self.get_secure_cookie("user"))
+    self.write(self.get_secure_cookie("access"))
+    if not self.current_user:
+      self.redirect("auth/google")
+      return
+    '''
     self.redirect('static/index.html')
 
 #### START #### MY CLASSES ###################
@@ -805,7 +817,25 @@ class save_and_generate_newData_buckup(tornado.web.RequestHandler):
     print ("aqui acaba")
     self.write(json.dumps(""))
 
-
+class GoogleOAuth2LoginHandler(tornado.web.RequestHandler, tornado.auth.GoogleOAuth2Mixin):
+  @tornado.gen.coroutine
+  def get(self):
+    if self.get_argument('code', False):
+      access = yield self.get_authenticated_user(
+        redirect_uri = 'http://localhost:8888',
+        code = self.get_argument('code'))
+      user = yield self.oauth2_request(
+        "https://www.googleapis.com/oauth2/v1/userinfo",
+        access_token = access["access_token"])
+      self.set_secure_cookie("access", access)
+      self.set_secure_cookie("user", user)
+    else:
+      yield self.authorize_redirect(
+        redirect_uri = 'http://localhost:8888',
+        client_id = self.settings['google_oauth']['key'],
+        scope = ['profile', 'email'],
+        response_type = 'code',
+        extra_params = {'approval_prompt': 'auto'})
 
 class start_new_template_Viz(tornado.web.RequestHandler):
   def get(self):
@@ -1423,7 +1453,8 @@ def binary_search_movieID(data, target):
 settings = dict(
   template_path = os.path.join(os.path.dirname(__file__), "templates"),
   static_path = "static",
-  debug = True
+  debug = True,
+  google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"}
 )    
 
 application = tornado.web.Application([
@@ -1431,6 +1462,7 @@ application = tornado.web.Application([
   (r"/save_new_dataset_configuration", save_new_dataset_configuration),
   (r"/recover_name_datasets", recover_name_datasets),
   (r"/get_data_projection", get_data_projection),
+  (r"/auth/google", GoogleOAuth2LoginHandler),
   (r"/vexus2", start_new_template_Viz),
   (r"/getData_Viz", getData_Viz),
   (r"/getDataObj2_table", getDataObj2_table),
@@ -1444,7 +1476,7 @@ application = tornado.web.Application([
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
-  ], **settings)
+  ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 
 
 if __name__ == "__main__":
