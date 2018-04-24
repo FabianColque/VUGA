@@ -1,18 +1,16 @@
-# Vexus2
+# Vexus 2
 
 ## Installation
 
-Vexus requires Python >= 2.7.
+Vexus 2 requires Python >= 2.7.
 
 The easiest way to install Vexus2 is using [PyPA pip](https://pip.pypa.io/):
 
-```bash
-$ sudo apt install python-pip
-```
+`$ sudo apt install python-pip`
 
 ### Dependencies
 
-Vexus requires:
+Vexus 2 requires:
 
 * [Tornado](http://www.tornadoweb.org)
 
@@ -28,6 +26,4 @@ Vexus requires:
 
 ## Running
 
-```bash
-$ python server.py
-```
+`$ python server.py`
