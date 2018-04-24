@@ -1004,7 +1004,7 @@ class getDimension_legend(tornado.web.RequestHandler):
       for d_body in data_heatmap["body"]:
         aux_body.append(d_body[dim_num_heat])
       
-    if dbname == "Movielens only Rating" and dim_num == 4:
+    if dbname == "Movielens only Rating" and dim_num == 1:
       res["brightness"] = dataViz["brillo"]
     if dbname == "health1" and dim_num == 3:
       res["brightness"] = dataViz["brillo"]
