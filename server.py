@@ -43,15 +43,15 @@ class MyError(Exception):
     return repr(self.value)
 
 class BaseHandler(tornado.web.RequestHandler):
+  def prepare(self):
+    if not self.current_user:
+      self.redirect("auth/google")
+      return
   def get_current_user(self):
     return self.get_secure_cookie("token")
 
 class MainHandler(BaseHandler):
   def get(self):
-    if not self.current_user:
-      self.redirect("auth/google")
-      return
-
     self.get_secure_cookie("token")
     self.get_secure_cookie("id")
     self.get_secure_cookie("given_name")
@@ -810,13 +810,11 @@ class save_and_generate_newData_buckup(BaseHandler):
       print_message(nadass, time1 - time0)
       save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  ptt)
     """
-
-
-
     print ("aqui acaba")
     self.write(json.dumps(""))
 
-class GoogleOAuth2LoginHandler(BaseHandler, tornado.auth.GoogleOAuth2Mixin):
+# Class for Google authentication
+class GoogleOAuth2LoginHandler(tornado.web.RequestHandler, tornado.auth.GoogleOAuth2Mixin):
   @tornado.gen.coroutine
   def get(self):
     if self.get_argument('code', False):
@@ -1478,7 +1476,7 @@ application = tornado.web.Application([
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
-  (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
+  (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
   ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 
 
