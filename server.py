@@ -821,7 +821,7 @@ class GoogleOAuth2LoginHandler(BaseHandler, tornado.auth.GoogleOAuth2Mixin):
   def get(self):
     if self.get_argument('code', False):
       access = yield self.get_authenticated_user(
-        redirect_uri = 'http://localhost:8888/auth/google',
+        redirect_uri = 'http://' + self.request.host + self.request.path,
         code = self.get_argument('code'))
       user = yield self.oauth2_request(
         "https://www.googleapis.com/oauth2/v1/userinfo",
@@ -836,7 +836,7 @@ class GoogleOAuth2LoginHandler(BaseHandler, tornado.auth.GoogleOAuth2Mixin):
       self.redirect('/')
     else:
       yield self.authorize_redirect(
-        redirect_uri = 'http://localhost:8888/auth/google',
+        redirect_uri = 'http://' + self.request.host + self.request.path,
         client_id = self.settings['google_oauth']['key'],
         scope = ['profile', 'email'],
         response_type = 'code',
