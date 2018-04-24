@@ -52,13 +52,34 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MainHandler(BaseHandler):
   def get(self):
-    self.get_secure_cookie("token")
-    self.get_secure_cookie("id")
-    self.get_secure_cookie("given_name")
-    self.get_secure_cookie("family_name")
-    self.get_secure_cookie("email")
-    self.get_secure_cookie("picture")
-    self.get_secure_cookie("locale")
+    data = {}
+    data['user'] = []
+    user = {}
+    user['id'] = self.get_secure_cookie("id")
+    user['connected'] = time()
+    user['profile'] = {}
+    user['profile']['given_name'] = self.get_secure_cookie("given_name")
+    user['profile']['family_name'] = self.get_secure_cookie("family_name")
+    user['profile']['email'] = self.get_secure_cookie("email")
+    user['profile']['picture'] = self.get_secure_cookie("picture")
+    user['profile']['locale'] = self.get_secure_cookie("locale")
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+    data['user'].append(user)
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+    print('User connected: ', user)
+
     self.redirect('static/index.html')
 
 #### START #### MY CLASSES ###################
