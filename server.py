@@ -1,5 +1,6 @@
 import tornado.ioloop
 import tornado.web
+import tornado.auth
 import os.path
 from tornado import template
 
@@ -41,14 +42,50 @@ class MyError(Exception):
   def __str__(self):
     return repr(self.value)
 
-class MainHandler(tornado.web.RequestHandler) :
+class BaseHandler(tornado.web.RequestHandler):
+  def prepare(self):
+    if not self.current_user:
+      self.redirect("auth/google")
+      return
+  def get_current_user(self):
+    return self.get_secure_cookie("token")
+
+class MainHandler(BaseHandler):
   def get(self):
+    data = {}
+    data['user'] = []
+    user = {}
+    user['id'] = self.get_secure_cookie("id")
+    user['connected'] = time()
+    user['profile'] = {}
+    user['profile']['given_name'] = self.get_secure_cookie("given_name")
+    user['profile']['family_name'] = self.get_secure_cookie("family_name")
+    user['profile']['email'] = self.get_secure_cookie("email")
+    user['profile']['picture'] = self.get_secure_cookie("picture")
+    user['profile']['locale'] = self.get_secure_cookie("locale")
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+    data['user'].append(user)
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+    print('User connected: ', user)
+
     self.redirect('static/index.html')
 
 #### START #### MY CLASSES ###################
 
 # This class save the dataset in the Data Folder, it could be obj1, obj2, rating, dimensions.
-class save_new_dataset_configuration(tornado.web.RequestHandler):
+class save_new_dataset_configuration(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -95,7 +132,7 @@ class save_new_dataset_configuration(tornado.web.RequestHandler):
 
 
 # This class recover the name Folders from the Data Folder, these are the names of dataset availabe
-class recover_name_datasets(tornado.web.RequestHandler):
+class recover_name_datasets(BaseHandler):
   def post(self):
     path = "static/data/"
     dir_list = os.listdir(path)
@@ -280,7 +317,7 @@ def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
 
 
 #This class save and generate the new files as dataViz and details .json
-class save_and_generate_newData(tornado.web.RequestHandler):
+class save_and_generate_newData(BaseHandler):
   def post(self):
     details = json.loads(self.request.body)
     dbname = str(details.get("dbname"))
@@ -613,12 +650,7 @@ class save_and_generate_newData(tornado.web.RequestHandler):
     """
     self.write(json.dumps(""))
 
-
-
-
-
-
-class save_and_generate_newData_buckup(tornado.web.RequestHandler):
+class save_and_generate_newData_buckup(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = str(mydata.get("dbname"))
@@ -799,20 +831,42 @@ class save_and_generate_newData_buckup(tornado.web.RequestHandler):
       print_message(nadass, time1 - time0)
       save_json(getpath_db(dbname) + "proj_" + str(i) + ".json",  ptt)
     """
-
-
-
     print ("aqui acaba")
     self.write(json.dumps(""))
 
+# Class for Google authentication
+class GoogleOAuth2LoginHandler(tornado.web.RequestHandler, tornado.auth.GoogleOAuth2Mixin):
+  @tornado.gen.coroutine
+  def get(self):
+    if self.get_argument('code', False):
+      access = yield self.get_authenticated_user(
+        redirect_uri = 'http://' + self.request.host + self.request.path,
+        code = self.get_argument('code'))
+      user = yield self.oauth2_request(
+        "https://www.googleapis.com/oauth2/v1/userinfo",
+        access_token = access["access_token"])
+      self.set_secure_cookie("token", access["id_token"])
+      self.set_secure_cookie("id", user["id"])
+      self.set_secure_cookie("given_name", user["given_name"])
+      self.set_secure_cookie("family_name", user["family_name"])
+      self.set_secure_cookie("email", user["email"])
+      self.set_secure_cookie("picture", user["picture"])
+      self.set_secure_cookie("locale", user["locale"])
+      self.redirect('/')
+    else:
+      yield self.authorize_redirect(
+        redirect_uri = 'http://' + self.request.host + self.request.path,
+        client_id = self.settings['google_oauth']['key'],
+        scope = ['profile', 'email'],
+        response_type = 'code',
+        extra_params = {'approval_prompt': 'auto'})
 
-
-class start_new_template_Viz(tornado.web.RequestHandler):
+class start_new_template_Viz(BaseHandler):
   def get(self):
     dbname = self.get_argument("g")
     self.render('vexus2.html', current_group=dbname)
 
-class get_data_projection(tornado.web.RequestHandler):
+class get_data_projection(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -826,7 +880,7 @@ class get_data_projection(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
 
-class getData_Viz(tornado.web.RequestHandler):
+class getData_Viz(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -853,7 +907,7 @@ class getData_Viz(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
 
-class getDataObj2_table(tornado.web.RequestHandler):
+class getDataObj2_table(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -934,8 +988,7 @@ class getDataObj2_table(tornado.web.RequestHandler):
 
     self.write(json.dumps(obj2)) 
 
-
-class get_heatmap(tornado.web.RequestHandler):
+class get_heatmap(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -960,7 +1013,7 @@ class get_heatmap(tornado.web.RequestHandler):
     self.write(json.dumps(res))
 
 
-class getDimension_legend(tornado.web.RequestHandler):
+class getDimension_legend(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1017,8 +1070,7 @@ class getDimension_legend(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
 
-
-class getDimension_legend_buckup(tornado.web.RequestHandler):
+class getDimension_legend_buckup(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1103,7 +1155,7 @@ class getDimension_legend_buckup(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
     
-class get_Details_options(tornado.web.RequestHandler):
+class get_Details_options(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1118,7 +1170,7 @@ class get_Details_options(tornado.web.RequestHandler):
     
     self.write(json.dumps(res))
 
-class getNewGroups(tornado.web.RequestHandler):
+class getNewGroups(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1175,7 +1227,7 @@ class getNewGroups(tornado.web.RequestHandler):
     self.write(json.dumps(res))
 
 
-class getOtherProj(tornado.web.RequestHandler):
+class getOtherProj(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1192,7 +1244,7 @@ class getOtherProj(tornado.web.RequestHandler):
     self.write(json.dumps(res))
 
 
-class getUsersbyRangeYear(tornado.web.RequestHandler):
+class getUsersbyRangeYear(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1209,7 +1261,7 @@ class getUsersbyRangeYear(tornado.web.RequestHandler):
 
     self.write(json.dumps(res))
 
-class getNroUsersbyConcept(tornado.web.RequestHandler):
+class getNroUsersbyConcept(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1239,7 +1291,7 @@ class getNroUsersbyConcept(tornado.web.RequestHandler):
     yyy = sorted(yyy, key=getKey_byYear)
     self.write(json.dumps(yyy))
 
-class getDataObj2_and_concepts(tornado.web.RequestHandler):
+class getDataObj2_and_concepts(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
     dbname = mydata.get("dbname")
@@ -1423,7 +1475,8 @@ def binary_search_movieID(data, target):
 settings = dict(
   template_path = os.path.join(os.path.dirname(__file__), "templates"),
   static_path = "static",
-  debug = True
+  debug = True,
+  google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"}
 )    
 
 application = tornado.web.Application([
@@ -1431,6 +1484,7 @@ application = tornado.web.Application([
   (r"/save_new_dataset_configuration", save_new_dataset_configuration),
   (r"/recover_name_datasets", recover_name_datasets),
   (r"/get_data_projection", get_data_projection),
+  (r"/auth/google", GoogleOAuth2LoginHandler),
   (r"/vexus2", start_new_template_Viz),
   (r"/getData_Viz", getData_Viz),
   (r"/getDataObj2_table", getDataObj2_table),
@@ -1443,8 +1497,8 @@ application = tornado.web.Application([
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
-  (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static', 'dafault_filename': 'index.html'})
-  ], **settings)
+  (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
+  ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 
 
 if __name__ == "__main__":
