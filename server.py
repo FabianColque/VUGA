@@ -52,34 +52,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MainHandler(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
-    user = {}
-    user['id'] = self.get_secure_cookie("id")
-    user['connected'] = time()
-    user['profile'] = {}
-    user['profile']['given_name'] = self.get_secure_cookie("given_name")
-    user['profile']['family_name'] = self.get_secure_cookie("family_name")
-    user['profile']['email'] = self.get_secure_cookie("email")
-    user['profile']['picture'] = self.get_secure_cookie("picture")
-    user['profile']['locale'] = self.get_secure_cookie("locale")
-
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      with open(filename) as json_data:
-        data = json.load(json_data)
-
-    data['user'].append(user)
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
-    print('User connected: ', user)
-
     self.redirect('static/index.html')
 
 #### START #### MY CLASSES ###################
@@ -315,6 +287,35 @@ def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
+class start_user(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+    user = {}
+    user['id'] = self.get_secure_cookie("id")
+    user['connected'] = time()
+    user['profile'] = {}
+    user['profile']['given_name'] = self.get_secure_cookie("given_name")
+    user['profile']['family_name'] = self.get_secure_cookie("family_name")
+    user['profile']['email'] = self.get_secure_cookie("email")
+    user['profile']['picture'] = self.get_secure_cookie("picture")
+    user['profile']['locale'] = self.get_secure_cookie("locale")
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+    data['user'].append(user)
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+    print('User connected: ', user)
 
 #This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(BaseHandler):
@@ -1497,6 +1498,7 @@ application = tornado.web.Application([
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
+  (r"/start_user", start_user),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
   ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 

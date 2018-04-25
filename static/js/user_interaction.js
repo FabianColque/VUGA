@@ -19,7 +19,7 @@ $( function() {
          }
       ],
       close: function(event, ui) {
-         console.log("Se cerró.")
+         $.get("/start_user");
       }
    });
-} );
+});
