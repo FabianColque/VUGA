@@ -27,7 +27,6 @@ function myBrush(namediv){
 
   this.resetConcepts = function(){
     concepts = {}
-    console.log("sherlok", concepts)
   }
 
   this.update = function(data){
@@ -45,8 +44,7 @@ function myBrush(namediv){
     brushYearStart = maximini[0]
     brushYearEnd  =maximini[1]
 
-    console.log("hols maximini", maximini)
-
+    
 		x = d3.scale.ordinal().rangeBands([35, width-20])//rangeRoundBands([25, width-20], .1);
 		y = d3.scale.linear().range([height, 0]);
 
@@ -119,7 +117,6 @@ function myBrush(namediv){
           return z(i);
       })
       .style("stroke", function(d, i){
-        //console.log(d, i);
         if(i == 0 )
           return "#CCE5E5";
         //return null;  
@@ -218,7 +215,6 @@ function myBrush(namediv){
     var da_usu = evt.top(Infinity).map(function(d){return d.id})
     var dom_x = x.domain()
     var val = "";
-    console.log("dom_x", dom_x, localBrushYearStart, localBrushYearEnd)
     var da_ye = []
     concepts = {}
     for(var ii = 0; ii < dom_x.length; ii++){

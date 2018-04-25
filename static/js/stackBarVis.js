@@ -18,7 +18,7 @@ function stackBarVis(){
       .append("g")
       .attr("class", "stackBarClass")
       .attr("id", "idStack")
-      .attr("transform", "translate(75,5)");
+      .attr("transform", "translate(45,5)");
     //xw = d3.scale.ordinal().rangeBands([0, width])
     xw = d3.scale.linear().domain([0,1]).range([0, width]);
   }

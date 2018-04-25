@@ -10,16 +10,19 @@ function drawComparison(div_){
   var colores = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"];
 
   this.init = function(){/*div_comparison, div_resume, div_heatmap, div_pie*/
+    var w_ = document.getElementById(div.slice(1)).scrollWidth;
     if(comparison_matrices == null)
       comparison_matrices = new comparison_matriz("Original", div + " #comparison-matrix")
+      comparison_matrices.setDimensionsChart(w_ - 100, 200);
+      comparison_matrices.init();
     if(resume_comparison == null){
       resume_comparison = new stackBarVis();
-      resume_comparison.setDimensionsChart(400, 10);
+      resume_comparison.setDimensionsChart(w_ - 100, 10);//w = 400
       resume_comparison.init(div + " #stack_resume_comparison")
     }
     if(stack_heatmap == null){
       stack_heatmap = new stackBarVis();
-      stack_heatmap.setDimensionsChart(400, 10);
+      stack_heatmap.setDimensionsChart(w_ - 100, 10);//w = 400
       stack_heatmap.init(div + " #stack-heatmap");
     }
     if(mipiechart == null){
@@ -87,7 +90,7 @@ function drawComparison(div_){
     var sorted_rows = d3.range(data_heatmap["body"].length).sort(function(a, b){return data_heatmap["body"][b][sorted_resume[0]] - data_heatmap["body"][a][sorted_resume[0]]})
     
     comparison_matrices.update_comparison(dim_data_ready);
-    resume_comparison.update(resume, ["histogram"], sorted_resume)
+    resume_comparison.update(resume, ["All"], sorted_resume)
     mipiechart.update(resume);
 
     

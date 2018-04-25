@@ -79,7 +79,8 @@
 /**CSS to Matrix Obj1**/
 #dataTable_obj1{
   padding: 12px;
-  font-size: 11px
+  font-size: 11px;
+  overflow-x: scroll;
 }
 
 

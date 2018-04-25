@@ -3,7 +3,7 @@
 */
 
 var legend = function(){
-  var width = 160;
+  var width = 126;
   var height = 330;
   var multiplicador = 15.5
   var data;
@@ -21,18 +21,22 @@ var legend = function(){
       caso_genre = false
     }
     
-    height = multiplicador * data.colors.length + 50;
+    height = multiplicador * data.colors.length;
+    var outra_h = document.getElementById("projection_area").scrollHeight * 0.6;
+    if(height > outra_h){
+      height = outra_h;
+    }
     d3.select(data.selector + " #" + id).remove();
     d3.select(data.selector)
       .append("div")
       .attr("class", "container")
       .attr("id", id)
-      .style("text-align","center")
+      //.style("text-align","center")
       .style("width", width + "px")
       .style("height", height + "px")
-      .style("padding","2px")
+      //.style("padding","2px")
       .style("font","10px sans-serif")
-      .style("background","#fff")
+      .style("background","transparent")//"#fff"
       .style("border","1px dashed #1b1a19")
       .style("position", "absolute")
       .style("top", "8px")
@@ -143,7 +147,7 @@ var legend = function(){
   function legend_dynamic(){
     var svg = d3.select(data.selector + " #" + id)
       .append("svg")
-      .attr("width", 150)
+      .attr("width", width - 50)
       .attr("height", 90);
 
     var gradient = svg.append("defs")
@@ -166,7 +170,7 @@ var legend = function(){
       .attr("stop-opacity", 1)
 
     svg.append("rect")
-        .attr("width", 160)
+        .attr("width", width - 50)
         .attr("height", 60)
         .attr("y", "30%")
         .style("fill", "url(#gradient)"); 
@@ -179,10 +183,61 @@ var legend = function(){
     svg.append("text")
       .text(data.names[1])
       .attr("y", "20%")
-      .attr("x", "84%")  
+      .attr("x", "70%")  
   }
 
+
   function get_divFormatToolTip(){
+    //explore_clicked = mychartNew.getExplore_Clicked();
+    explore_clicked = false;
+    var str = "";
+    str += "<div class=\"row\" style=\"text-align: center\"><strong>";
+    str += "<u>";
+    str += data.title;
+    str += "</u>";
+    str += "</strong></div>";
+    
+    //str += "<div class=\"row\"><div class=\"col-sm-12\">";
+   // str += "<div class=\"row\">";
+
+    var visi = "visible";
+    if(!data.hasChecks)visi = "hidden";
+    
+    //selectAll and deselectAll
+    str += "<div class=\"row\">"
+    str += "<div class=\"col-sm-6\">"
+    str += "<span class=\"selectAllBtn\">selectAll</span>"
+    str += "</div>"
+    str += "<div class=\"col-sm-6\">"
+    str += "<span class=\"deselectAllBtn\">deselectAll</span>"
+    str += "</div>"
+    str += "</div>"
+
+    for(var i = 0; i < data.names.length; i++){
+      str += "<div class=\"row\">";//style=\"display:-webkit-inline-box\"
+      str += "<div style=\"display:inline-flex;\">";//margin-left: -35%
+      //str += "<div class=\"col-sm-12\">";
+      //str += "<div class=\"col-sm-2\">";
+      str += "<div id = \"color"+i+"\" style=\"margin-left: 2px; background-color: "+data.colors[i]+"; height: 13px; width:14px; top:4px; padding-right: 0px \"></div>";
+      //str += "</div>";
+      //str += "<div class=\"col-sm-10\">";
+      str += "<input class=\"checks_leg\" id=\"check" + i + "\" style = \"margin-top:2px; margin-left:2px; width:11px;height:11px;visibility:" + visi + "\" type=\"checkbox\" name=\"mycheckbox\" value=\""+ i + "\" checked>";
+      
+      str += "<div id = \"nom"+i+"\" style=\"margin-top:1px\">";
+      str += data.names[i];
+      str += "</div>";
+
+      //str += "</div>";
+      str += "</div>";
+      //str += "</div>"
+      str += "</div>";
+    }
+    return str;
+
+  }
+
+
+  function get_divFormatToolTip2(){
     
     //explore_clicked = mychartNew.getExplore_Clicked();
     explore_clicked = false;
@@ -219,7 +274,7 @@ var legend = function(){
         str += data.names[i];
         str += "</div>";
 
-        str += "<div id = \"color"+i+"\" class=\"col-sm-2\" style=\"background-color: "+data.colors[i]+"; height: 13px; width:6px; top:4px; padding-right: 0px \">";
+        str += "<div id = \"color"+i+"\" class=\"col-sm-2\" style=\"background-color: "+data.colors[i]+"; height: 13px; width:4px; top:4px; padding-right: 0px \">";
         str += "</div>";
 
 
@@ -289,7 +344,7 @@ var legend = function(){
 
       d3.select("#mylegend")
         .style("overflow-y", function(){
-            if(data.colors.length > 18)return "scroll"
+            if(data.colors.length >= 18)return "scroll"
             return "initial"
         })
     }

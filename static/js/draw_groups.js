@@ -2,8 +2,9 @@ var draw_groups = function(){
 
   /*Variables to initial configuration*/
   var selector = "#vizArea_Groups";
-  var width = 700;
-  var height = 500;
+  //document.getElementById("projection_area").scrollWidth;//600;
+  var width = document.getElementById("vizArea_Groups").scrollWidth;//700;
+  var height = width - width*0.2786//500;
   var id = "G1";
 
   /*Variables to force layout*/
@@ -19,7 +20,7 @@ var draw_groups = function(){
 
   /*Scales*/
   var tamCircleScaleGroup = d3.scale.linear()
-    .range([20, 60]);
+    .range([width-width*0.94142, width-width*0.91285])//.range([20, 60]);
   var new_scale_x = d3.scale.linear();
   var new_scale_y = d3.scale.linear();  
 
@@ -53,7 +54,7 @@ var draw_groups = function(){
         .attr("width", width)
         .attr("height", height)
         .style("position", "relative")
-        .style("left", "7%")
+        .style("left", "0%")
 
     this.processData();
     this.process_points();    
@@ -353,7 +354,7 @@ var draw_groups = function(){
       .nodes(d3.values(nodes))
       .links(links)
       .size([width, height])
-      .linkDistance(300)
+      .linkDistance(width - width*0.57)//.linkDistance(300)
       .start();
 
     interval = setInterval(draw, 800)

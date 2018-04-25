@@ -1,6 +1,7 @@
 var vis_projection = function(){
-  var width = 600;
-  var height = 450;
+  var width = document.getElementById("projection_area").scrollWidth;//600;
+  width -= width*0.2337;
+  var height = width - width*0.25;//document.getElementById("projection_area").scrollHeight;//450;
 
   var selector = "#areaMainsvg_projection";
   var id = "svg_projection" 

@@ -18,56 +18,65 @@ function comparison_matriz(name_, div){
   var height = 200;
   //hasta aqui bien
   var colores_movielens = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
+  var chart = null;
+  var xAxis = null;
+  var yAxis = null;
 
+  this.init = function(){
+    chart = d3.select(divChart)
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom + 70)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  var chart = d3.select(divChart)
-          .append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom + 70)
-          .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    xChart = d3.scale.ordinal()
+        .rangeRoundBands([0, width], 0.05);
+            
+    yChart = d3.scale.linear()
+            .range([height, 0]);
 
-  xChart = d3.scale.ordinal()
-      .rangeRoundBands([0, width], 0.05);
-          
-  yChart = d3.scale.linear()
-          .range([height, 0]);
+    xAxis = d3.svg.axis().scale(xChart).orient("bottom");
+    yAxis = d3.svg.axis()
+      .scale(yChart)
+      .tickFormat(function(d, i){return parseInt(d*100) + "%"})
+      .orient("left");
 
-  var xAxis = d3.svg.axis().scale(xChart).orient("bottom");
-  var yAxis = d3.svg.axis()
-    .scale(yChart)
-    .tickFormat(function(d, i){return parseInt(d*100) + "%"})
-    .orient("left");
+    chart.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        
+    //bottom axis
+    chart.append("g")
+      .attr("class", "xAxis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", function(d){
+          return "rotate(-65)";
+        });
 
-  chart.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      
-  //bottom axis
-  chart.append("g")
-    .attr("class", "xAxis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis)
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", function(d){
-        return "rotate(-65)";
-      });
+    //add labels
+    chart
+      .append("text")
+      .attr("transform", "translate(-35," +  (height+margin.bottom)/2 + ") rotate(-90)")
+      .text("% Similarity");
+        
+    chart
+      .append("text")
+      .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")")
+      .text("Dimensions");
 
-  //add labels
-  chart
-    .append("text")
-    .attr("transform", "translate(-35," +  (height+margin.bottom)/2 + ") rotate(-90)")
-    .text("% Similarity");
-      
-  chart
-    .append("text")
-    .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")")
-    .text("Dimensions");
-
-  draw_legend();  
+    draw_legend();  
+  }
+  
+  this.setDimensionsChart = function(w_, h_){
+    width = w_;
+    height = h_;
+  }
 
   this.update_comparison = function(data){
     update_(data);

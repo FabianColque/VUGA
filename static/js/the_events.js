@@ -154,7 +154,8 @@ d3.select("#explore-viz")
 
 		if(mynewGroups){
 			mynewGroups.clearAll();
-			comparison_groups.clearAll();
+			if(comparison_groups)
+				comparison_groups.clearAll();
 			var_save_area.clearAll()
 		}
 

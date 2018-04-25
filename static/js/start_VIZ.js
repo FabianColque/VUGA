@@ -70,7 +70,8 @@ function start(){
   headers_data = data_options["intersection"].concat(data_options["dimensions"])
   draw_colors_dimensions_selectors(data_options)
 
-   document.getElementsByClassName("select_color")[0].selectedIndex = auxdefault;
+  document.getElementsByClassName("select_color")[0].selectedIndex = auxdefault;
+  d3.select("#parentsaveArea").attr("height", document.getElementById("projection_area").scrollHeight + "px")
 }
 
 
@@ -86,7 +87,6 @@ function draw_colors_dimensions_selectors(data){
       .text(function(d){return d.name})
 
   //data = [{"name": "All"}].concat(data);
-  //console.log("poa", [{"name": "All"}].concat(data["intersection"]).concat(data["dimensions"]))
   d3.select(".select_proj")
     //.on("change", onchange_byProj)
     .selectAll(".options_proj")

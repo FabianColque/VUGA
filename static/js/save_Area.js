@@ -1,6 +1,10 @@
 function draw_saveArea(){
 
   data_selected_save = [];
+  d3.select("#btn_ExploreGroups")
+    .style("background-color", "#cccccc")
+    .style("border-color", "#cccccc")
+    .style("pointer-events", "none")
   
   this.update = function(newData){
     updating(newData)
@@ -28,16 +32,39 @@ function draw_saveArea(){
       data_idx.push(parseInt(nd));
     }
 
-    d3.selectAll("#idsavearea_obj1 *").remove()
+    d3.select("#num_elements_saveArea")
+      .text(function(){
+        return "There are " + data_idx.length + " elements";
+      })
 
+    if(data_idx.length > 0){
+      d3.select("#btn_ExploreGroups")
+        .style("background-color", "#5cb85c")
+        .style("border-color", "#4cae4c")
+        .style("pointer-events", "all")
+    }else{
+      d3.select("#btn_ExploreGroups")
+        .style("background-color", "#cccccc")
+        .style("border-color", "#cccccc")
+        .style("pointer-events", "none")
+    }
+
+
+    d3.selectAll("#idsavearea_obj1 *").remove()
     var selection = d3.select("#idsavearea_obj1")
+      .style("height", function(d){
+        return document.getElementById("projection_area").scrollHeight * 0.556 + "px";
+      })
+      .style("overflow-y", "scroll")  
       .selectAll("p")
-      .data(data_idx);
+      .data(data_idx)
+
+      
 
     selection.enter()
       .append("p")
       .text(function(d){
-        return 'Object_' + data_selected_save[d.toString()].n })
+        return 'Obj_' + data_selected_save[d.toString()].n })
       .style("background-color", function(){
         return "#bebada";
       })

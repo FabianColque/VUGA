@@ -98,8 +98,7 @@ function drawing_histo_obj1(){
     //draw_legend_table(cores);
 
     var data_selected = evt.top(Infinity).map(function(d){return d.idx})
-    console.log("data_selected ahora: ", data_selected);
-
+    
     data_dim = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "get_heatmap")
     data_selected = data_selected.slice(0, 100)
     data_dim["body"] = data_dim["body"].slice(0, 100)
@@ -131,8 +130,6 @@ function drawing_histo_obj1(){
       resume = [resume]
       sorted_resume = d3.range(resume[0].length).sort(function(a, b){return resume[0][b] - resume[0][a]});  
       sorted_rows = d3.range(data_dim["body"].length).sort(function(a, b){return data_dim["body"][b][sorted_resume[0]] - data_dim["body"][a][sorted_resume[0]]})
-      console.log("teletubi", sorted_rows)
-      console.log("sorted_resume ini", resume, sorted_resume)
       resume_comparison.update(resume, ["histogram"], sorted_resume)  
       mipiechart.update(resume);
     }else{
@@ -159,8 +156,6 @@ function drawing_histo_obj1(){
       resume = [resume]
       sorted_resume = d3.range(resume[0].length).sort(function(a, b){return resume[0][b] - resume[0][a]});  
       sorted_rows = d3.range(data_dim["body"].length).sort(function(a, b){return data_dim["body"][b][sorted_resume[0]] - data_dim["body"][a][sorted_resume[0]]})
-      console.log("teletubi2", sorted_rows)
-      console.log("sorted_resume ini2", resume, sorted_resume)
       resume_comparison2.update(resume, ["histogram"], sorted_resume)  
       mipiechart2.update(resume);
     }
@@ -313,8 +308,7 @@ function drawing_histo_obj1(){
         //})
       //.append("title")
        // .text(function(d){
-          //console.log("hola", d);
-        //  return d.z;
+          //  return d.z;
         //})
 
       var cell2 = d3.select(this).selectAll(".cell")
@@ -424,7 +418,6 @@ function drawing_histo_obj1(){
       data_obj2.headers.push("# Events")
     else
       data_obj2.headers.push("# Reviews")
-    //console.log("noooo puede serrrr", data_obj2.headers)
     draw_TableHtml_obj2(data_obj2.headers);
     data_util = []
     for(var i in data_obj2["body"]){
@@ -495,7 +488,6 @@ function drawing_histo_obj1(){
 
   function getDataViz_obj2(){
     var data_sel = []
-    console.log("estoy aprendiendo piano", data_instances)
     for(var i = 0; i < data_instances.length; i++){
       data_sel.push(data_instances[i].id)
     }
@@ -576,9 +568,8 @@ function drawing_histo_obj1(){
 
 
   function health_timeChart_logic(dataset){
-    console.log("see you", redraw_timeChart)
-      yyy = dataset
-      brush_health.update(yyy)
+    yyy = dataset
+    brush_health.update(yyy)
      
   }
 
@@ -638,7 +629,7 @@ function drawing_histo_obj1(){
     
 
     count.on("renderlet.resetall", function(c){
-      console.log("RENDELET RESETALL", redraw_timeChart);
+      //console.log("RENDELET RESETALL", redraw_timeChart);
       
       mouse_wait(true)
 
@@ -678,7 +669,7 @@ function drawing_histo_obj1(){
   }
 
   function resetfn(){
-    console.log("RESETALL");
+    //console.log("RESETALL");
     text_search_chart.filter(null);
     evt.filter(function(d){return d;})
     dc.filterAll();
@@ -752,15 +743,10 @@ function drawing_histo_obj1(){
 
     /*para timechart*/
     var yy = data["instances"].map(function(d){return d.id})
-    //console.log("jose jose", yy)
     var NroUsersbyConcept = post_to_server_global({"dbname": name_dataset, "data_selected": yy}, "getNroUsersbyConcept")
 
     /*Extracting the headers to table Object 1*/
 
-
-
-
-    //console.log("lalalalalala", data)
     var headers = [];
     headers.push("ID")
     headers.push("name")
@@ -796,7 +782,6 @@ function drawing_histo_obj1(){
       aux["targets"]        = i+2;
       aux["defaultContent"] = "N/A";
       aux["data"] = function(row, type, val, meta){
-        console.log(data)
         return data.dimensions[meta.col-2].titles[row.values[meta.col-2]];
       }
       my_columns.push(aux);
@@ -950,7 +935,7 @@ function drawing_histo_obj1(){
   function draw_barChart(id_dim, data){
     var colores_generales = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
     array_charts[id_dim]
-      .width(600)
+      .width(document.getElementById("projection_area").scrollWidth - document.getElementById("projection_area").scrollWidth*0.15)//.width(600)
       .height(180)
       .margins({top: 20, right: 50, bottom: 50, left: 50})
       .dimension(dims_groups[id_dim]["dim"])
@@ -966,11 +951,11 @@ function drawing_histo_obj1(){
       .xUnits(dc.units.ordinal)
       .renderHorizontalGridLines(true)
       .xAxisLabel(data[id_dim].name)
-      .renderlet(function(chart){
+      //.renderlet(function(chart){
+      .on("renderlet", function(chart){
         var colors =d3.scale.ordinal().domain(data[id_dim].titles)
             .range(colores_generales.slice(0, data[id_dim].titles.length));
         chart.selectAll('rect.bar').each(function(d, i){
-             //console.log("miraadsadasd", d, colors(d.key), d.key)
              d3.select(this).attr("fill", colors(d.data.key)); // use key accessor if you are using a custom accessor
         });
       });

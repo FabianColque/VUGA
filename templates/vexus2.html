@@ -105,17 +105,17 @@
               <!--<img data-src="holder.jsk/100%x450/white">-->
             <div class="row" >            
             <div id="areaMainsvg_projection"></div>
-            <div class="botones3" style="text-align: center;position:absolute; top:71%; left: 2%">
+            <div class="botones3" style="text-align: center;position:absolute; top:70%; left: 2%">
                 
-                <div class="switch__container">
+                <div class="switch__container" style="font-size: 10px; width:80px; color: black">
                   Lasso off/on
                   <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
                   <label for="switch-shadow"></label>
                 </div>
 
-                <input type="button" class="btn btn-default btn-xs" value="Lasso Reset" id="btn_lassoreset" style="display:none; margin-bottom: 2px" />
-                <input type="button" class="btn btn-default btn-xs" value="Select All" id="btn_selectall" style="display:none; margin-bottom: 2px" />
-                <input type="button" class="btn btn-default btn-xs" value="Reset All" id="btn_resetall" style="display:block; margin-bottom: 2px" />
+                <input type="button" class="btn btn-default btn-xs" value="Lasso Reset" id="btn_lassoreset" style="display:none; margin-bottom: 2px; font-size: 10px" />
+                <input type="button" class="btn btn-default btn-xs" value="Select All" id="btn_selectall" style="display:none; margin-bottom: 2px; font-size: 10px" />
+                <input type="button" class="btn btn-default btn-xs" value="Reset All" id="btn_resetall" style="display:block; margin-bottom: 2px; font-size: 10px" />
                 <br>
                 <br>
                 <!--<input type="button" class="btn btn-success" value="Explore" id="explore-viz" style="display:block; margin-bottom: 2px" />-->
@@ -141,7 +141,7 @@
       <div class="col-sm-2">
         <div class="row">
           <div class="col-sm-12">
-            <div class="chart-wrapper">
+            <div class="chart-wrapper" id = "parentsaveArea">
               <div class="chart-title">
                 <div class="row">
                   <div class="col-sm-4">
@@ -162,33 +162,58 @@
                   </div>
                 </div>
               </div>
-              <div class="chart-stage" style="height: 426px; overflow-y: scroll">
+              <div class="chart-stage"  overflow-y: scroll"><!--style="height: 426px"-->
                   <!--<img data-src="holder.jsk/100%x450/white">-->
                   <div id="idsavearea_obj1" style="-webkit-inline-box"></div>
               </div>
               <div class="chart-notes">
                 <!--<input type="text" name="Title" id="title-save" value="Title" style="width:100%"><br>-->
                 <div class="row">
-                  <div class="col-sm-5">
-                    <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" >
-                  </div>
-                  <div class="col-sm-2"></div>
-                  <div class="col-sm-5">
-                    Max. Groups
-                    <input type="number" id="iK_groups" name="quantity" min="2" value="5" style="width: 50px">
+                  <div class="col-sm-12">
+                    <div id="num_elements_saveArea" style="color:black"></div>
                   </div>
                 </div>
+                <br>
+                
+                <div class="row">
+                  <div class="col-sm-12">
+                    Max. Groups
+                    <input type="number" id="iK_groups" name="quantity" min="2" value="5" style="width: 40px">
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-sm-12">
                     Top Dimensions
-                    <input type="number" id="iP_groups" name="quantity" min="1" value="100" style="width: 50px">
+                    <input type="number" id="iP_groups" name="quantity" min="1" value="100" style="width: 40px">
                     %
+                    <!--<select class="optionSimi">
+                      <option>+ Similarity</option>
+                      <option>- Similarity</option>
+                    </select>-->
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12">
                     <select class="optionSimi">
                       <option>+ Similarity</option>
                       <option>- Similarity</option>
                     </select>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-sm-5">
+                    <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" >
+                  </div>
+                  <!--<div class="col-sm-2"></div>-->
+                  <!--<div class="col-sm-5">
+                    Max. Groups
+                    <input type="number" id="iK_groups" name="quantity" min="2" value="5" style="width: 50px">
+                  </div>-->
+                </div>
+
               </div>
             </div>
           </div>
@@ -199,7 +224,7 @@
       <div class="col-sm-5">
           <div class="chart-wrapper" id="groups_id">
               <div class="chart-title"> Group VIZ </div>
-              <div class="chart-stage" style="height: 475px;">
+              <div class="chart-stage"><!-- style="height: 475px;"-->
                   <!--<img data-src="holder.jsk/100%x450/white">-->
                   <div id="vizArea_Groups"></div>
               </div>
@@ -322,13 +347,12 @@
             </div>
           </div>
         </div>
-
+        <!--
         <div class="row">
           <div class="col-sm-12">
             <div class="chart-wrapper">
               <div class="chart-title"> Matriz Rating</div>
               <div class="chart-stage">
-                <!--<div id="stack-heatmap"></div>>-->
                 <div id="legend-heatmap"></div>
                 <div id="heatmap" class="newchart">
                   <div class="title"></div>
@@ -337,7 +361,7 @@
             </div>
           </div>
         </div>
-
+        -->
 
       </div>
 
@@ -399,7 +423,6 @@
     }
 
     function fn_loading(status){
-      console.log("fn_loading");
       d3.select("#main_body")
         .style("opacity", function(){
           if(status)return 0.5
