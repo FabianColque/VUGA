@@ -24,6 +24,10 @@ Vexus 2 requires:
 
     `$ pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose`
 
+* [simplejson](https://simplejson.readthedocs.io)
+
+    `$ pip install simplejson`
+
 ## Running
 
 `$ python server.py`
