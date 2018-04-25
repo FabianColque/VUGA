@@ -4,6 +4,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF8">
   <title>{{ current_group }}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' /> 
+
   <!--
   Here we are adding the styles that the app needs
   -->
@@ -14,6 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" type="text/css" href="../static/css/vexus2.css">
   <link rel="stylesheet" type="text/css" href="../static/css/global/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/jquery-ui_custom.css">
 
   <!--
   Here we are adding the libraries that the app needs
@@ -36,9 +38,6 @@
   <script>
     Holder.add_theme("white", { background: "#fff", foreground: "#a7a7a7", size: 10})
   </script>
-
-  
-
 </head>
 <body class="application">
   
@@ -53,7 +52,7 @@
           <span class="icon-bar"></span>
         </button>
         
-        <a class="navbar-brand" href="">VEXUS 2</a>
+        <a class="navbar-brand" >VEXUS 2</a>
       </div>
 
       <div class="navbar-collapse collapse">
@@ -369,6 +368,14 @@
     
 
   </div>
+
+  <div id="dialog-start">
+    <p>
+	   <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+		You will start a interaction with the Vexus 2 when you push the start button.
+	 </p>
+  </div>
+
   <!--End of main div Body hasta aqui esta bien-->
   <script src="../static/js/filterBrush.js"></script>
   <script src="../static/js/drawComparisonGroups.js"></script>
@@ -382,7 +389,7 @@
   <script src="../static/js/draw_charts_obj1.js"></script>
   <script src="../static/js/legend.js"></script>
   <script src="../static/js/draw_groups.js"></script>
-
+  <script src="../static/js/user_interaction.js"></script>
 
   <!--Start script to change configuration and VIZ-->
   <script>
