@@ -109,6 +109,9 @@ var legend = function(){
     //console.log("outlier", data.outlier)
     //res["outlier"] = [med, q1, q3, lim]
     */
+
+    fabian = []
+
     scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
     all_values_rev = []
     d3.selectAll(data.selector + " .pointDots")
@@ -120,6 +123,9 @@ var legend = function(){
           color_aux = color_aux.toHsv()
           color_aux.v = data["brightness"][i]*100
           color_aux = tinycolor(color_aux)
+
+          fabian.push(color_aux.toRgbString())
+
           return color_aux.toRgbString()
         }
 
@@ -204,11 +210,11 @@ var legend = function(){
     if(!data.hasChecks)visi = "hidden";
     
     //selectAll and deselectAll
-    str += "<div class=\"row\">"
+    str += "<div class=\"row\" style = \"margin-left: -25px\">"
     str += "<div class=\"col-sm-6\">"
     str += "<span class=\"selectAllBtn\">selectAll</span>"
     str += "</div>"
-    str += "<div class=\"col-sm-6\">"
+    str += "<div class=\"col-sm-6\" style= \"padding-left:4px\">"
     str += "<span class=\"deselectAllBtn\">deselectAll</span>"
     str += "</div>"
     str += "</div>"

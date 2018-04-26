@@ -87,7 +87,7 @@ function myBrush(namediv){
         return d.y0 + d.y;
     })]);
 
-    fabian  = x
+    
 
     //arreglar por que no son los anhos correctos
     //x_axis = d3.svg.axis().scale(x).tickValues([1850, 1855, 1860, 1865, 1870, 1875, 1880, 1885, 1890, 1895, 1900]).orient("bottom");

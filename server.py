@@ -409,7 +409,7 @@ class save_and_generate_newData(BaseHandler):
     if len_charts_proj == 0:
       len_charts_proj = -1
 
-    es_apto1 = True#true cuando quiero que sea Health, false para movielens 
+    es_apto1 = False#true cuando quiero que sea Health, false para movielens 
     if not es_apto1: 
       for ftr in detailsjson["features"]:
         if i_aux < len_charts_proj:
@@ -472,7 +472,7 @@ class save_and_generate_newData(BaseHandler):
 
     arr_tsne = []
     heatmap_tsne = []
-    es_apto2 = True#true cuando quiero que sea Health, false para movielens
+    es_apto2 = False#true cuando quiero que sea Health, false para movielens
     if not es_apto2:
       i_body = 0
       for body in dimensionsData["body"]:
@@ -538,7 +538,7 @@ class save_and_generate_newData(BaseHandler):
 
 #***************************************************************************************************************************************
     mayores = []  
-    if dbname == "Movielens only Rating":
+    if dbname == "movilens3D":#"Movielens only Rating":
       #new_orders_ind = [2, 6, 11, 10, 1, 7, 17, 0, 14, 15, 9, 13, 12, 5, 4, 3, 6, 16]
       new_order_names = ["Drama", "Comedy", "Action", "Thriller", "Sci-Fi", "Romance", "Adventure", "Crime", "War", "Horror", "Children", "Animation", "Mystery", "Musical", "Fantasy", "Film-Noir", "Western", "Documentary"]
       arr_tsne, heatmap, mayores, brillo = modiying_movielens_only_Num_rating(arr_tsne, dimensionsData, heatmap)
@@ -619,7 +619,7 @@ class save_and_generate_newData(BaseHandler):
         
     #Now the projection of All data
     time0 = time()
-    model = TSNE(n_components = 2, random_state=0)
+    model = TSNE(n_components = 3, random_state=0)
     np.set_printoptions(suppress=True)
     points = model.fit_transform(arr_tsne)
     points = np.matrix(points)
