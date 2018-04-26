@@ -287,19 +287,10 @@ def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
-class start_user(BaseHandler):
-  def get(self):
+class certified_user(BaseHandler):
+  def post(self):
     data = {}
     data['user'] = []
-    user = {}
-    user['id'] = self.get_secure_cookie("id")
-    user['connected'] = time()
-    user['profile'] = {}
-    user['profile']['given_name'] = self.get_secure_cookie("given_name")
-    user['profile']['family_name'] = self.get_secure_cookie("family_name")
-    user['profile']['email'] = self.get_secure_cookie("email")
-    user['profile']['picture'] = self.get_secure_cookie("picture")
-    user['profile']['locale'] = self.get_secure_cookie("locale")
 
     filename = 'log/users.json'
     if not os.path.exists(os.path.dirname(filename)):
@@ -312,7 +303,61 @@ class start_user(BaseHandler):
       with open(filename) as json_data:
         data = json.load(json_data)
 
-    data['user'].append(user)
+    try:
+      for datum in data["user"]:
+        if datum["profile"]["email"] == self.get_secure_cookie("email"):
+          if datum["status"] == 0:
+            self.write("0")
+            return
+          elif datum["status"] == 1:
+            self.write("1")
+            return
+          break
+    except KeyError, e:
+      print 'I got a KeyError - reason "%s"' % str(e)
+
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+    self.write("-1")
+
+class start_user(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+    user = {}
+    user['id'] = self.get_secure_cookie("id")
+    user['start_time'] = time()
+    user['end_time'] = None
+    user['status'] = 0
+    user['profile'] = {}
+    user['profile']['given_name'] = self.get_secure_cookie("given_name")
+    user['profile']['family_name'] = self.get_secure_cookie("family_name")
+    user['profile']['email'] = self.get_secure_cookie("email")
+    user['profile']['picture'] = self.get_secure_cookie("picture")
+    user['profile']['locale'] = self.get_secure_cookie("locale")
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == user["profile"]["email"]:
+        change = False
+        if datum["status"] != 0:
+          data["user"][idx]["status"] = 0
+        break
+
+    if change:
+      data['user'].append(user)
     with open(filename, "w+") as outfile:
       json.dump(data, outfile)
     print('User connected: ', user)
@@ -1499,6 +1544,7 @@ application = tornado.web.Application([
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/start_user", start_user),
+  (r"/certified_user", certified_user),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
   ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 
