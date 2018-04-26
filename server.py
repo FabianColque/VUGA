@@ -362,6 +362,35 @@ class start_user(BaseHandler):
       json.dump(data, outfile)
     print('User connected: ', user)
 
+class end_user(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == self.get_secure_cookie("email"):
+        change = False
+        data["user"][idx]["status"] = 1
+        data["user"][idx]["end_time"] = time()
+        break
+
+    if change:
+      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+
 #This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(BaseHandler):
   def post(self):
@@ -1543,8 +1572,9 @@ application = tornado.web.Application([
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
-  (r"/start_user", start_user),
   (r"/certified_user", certified_user),
+  (r"/start_user", start_user),
+  (r"/end_user", end_user),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
   ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 

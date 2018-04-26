@@ -1,17 +1,17 @@
 $( function() {
    var data_status = -1;
    var dialogStartAutoOpen = true;
-   var dialogEndAutoOpen = false;
+   var dialogThanksAutoOpen = false;
    $.post("/certified_user", function(data) {
       data_status = data;
       if (data_status == 0) {
          dialogStartAutoOpen = false;
       }
-      if (data_status == 1) {
+      else if (data_status == 1) {
          dialogStartAutoOpen = false;
-         dialogEndAutoOpen = true;
+         dialogThanksAutoOpen = true;
       }
-      $( "#dialog-start" ).dialog({
+      $("#dialog-start").dialog({
          modal: true,
          resizable: false,
          dialogClass: "no-close",
@@ -26,25 +26,64 @@ $( function() {
             {
                text: "START",
                click: function() {
-                  $( this ).dialog( "close" );
+                  $(this).dialog("close");
                }
             }
          ],
          close: function(event, ui) {
             $.get("/start_user");
+            $("#end_interaction").button("option", "disabled", false);
          }
       });
-      $( "#dialog-end" ).dialog({
+      $("#dialog-end").dialog({
+         modal: true,
+         resizable: false,
+         closeOnEscape: true,
+         autoOpen: false,
+         draggable: false,
+         my: "center",
+         at: "center",
+         of: window,
+         title: "End interaction",
+         buttons: [
+            {
+               text: "Conclude",
+               click: function() {
+                  $(this).dialog( "close" );
+                  $.get("/end_user");
+                  $("#end_interaction").button("option", "disabled", true);
+                  $("#dialog-thanks").dialog("open");
+               }
+            },
+            {
+               text: "Cancel",
+               click: function() {
+                  $(this).dialog("close");
+               }
+            }
+         ],
+      });
+      $("#dialog-thanks").dialog({
          modal: true,
          resizable: false,
          dialogClass: "no-close",
          closeOnEscape: false,
-         autoOpen: dialogEndAutoOpen,
+         autoOpen: dialogThanksAutoOpen,
          draggable: false,
          my: "center",
          at: "center",
          of: window,
          title: "Thanks"
+      });
+      var endInteractionDisabled = false;
+      if (dialogStartAutoOpen || dialogThanksAutoOpen) {
+         endInteractionDisabled = true;
+      }
+      $("#end_interaction").button({
+         disabled: endInteractionDisabled
+      });
+      $("#end_interaction").click(function(event) {
+         $("#dialog-end").dialog("open");
       });
    })
 });
