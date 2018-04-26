@@ -4,6 +4,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF8">
   <title>{{ current_group }}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' /> 
+
   <!--
   Here we are adding the styles that the app needs
   -->
@@ -11,9 +12,10 @@
   <link rel="stylesheet" type="text/css" href="../static/js/global/keen/keen-dashboards.css" />
   <link rel="stylesheet" type="text/css" href="../static/css/global/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="../static/css/global/dc.min.css">
-
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   <link rel="stylesheet" type="text/css" href="../static/css/vexus2.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/global/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/jquery-ui_custom.css">
 
   <!--
   Here we are adding the libraries that the app needs
@@ -31,14 +33,11 @@
   <script src="../static/js/global/keen/meta.js"></script>
   <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
   <script src="../static/js/global/jquery.csv-0.71.min.js"></script>
-
+  <script src="../static/js/global/jquery-ui.min.js"></script>
 
   <script>
     Holder.add_theme("white", { background: "#fff", foreground: "#a7a7a7", size: 10})
   </script>
-
-  
-
 </head>
 <body class="application">
   
@@ -53,7 +52,7 @@
           <span class="icon-bar"></span>
         </button>
         
-        <a class="navbar-brand" href="">VEXUS 2</a>
+        <a class="navbar-brand" >VEXUS 2</a>
       </div>
 
       <div class="navbar-collapse collapse">
@@ -72,6 +71,13 @@
           <li>
             <div class="col-md-1" id="resetall_container">
                 <button class="btn resetall">RESET<br />FILTERS</button>
+            </div>
+          </li>
+          <li>
+            <div class="col-md-1" >
+              <button class="ui-button ui-widget ui-corner-all" id="end_interaction">
+                END<br />INTERACTION
+              </button>
             </div>
           </li>
         </ul>
@@ -393,6 +399,34 @@
     
 
   </div>
+
+  <div id="dialog-start">
+    <p>
+	   <span class="ui-icon ui-icon-circle-check" ></span>
+		You will start the interaction with the Vexus 2.
+	 </p>
+    <p>
+	   <span class="ui-icon ui-icon-circle-check" ></span>
+		This interaction take 20 minutea approximalety.
+	 </p>
+    <p>
+	   <span class="ui-icon ui-icon-circle-check" ></span>
+		Push the <b>start</b> button for start interaction.
+    </p>
+  </div>
+  <div id="dialog-end">
+    <p>
+	   <span class="ui-icon ui-icon-alert" ></span>
+		Are you sure that you have completed all tasks?
+	 </p>
+  </div>
+  <div id="dialog-thanks">
+    <p>
+	   <span class="ui-icon ui-icon-heart" ></span>
+		Thanks for your participation.
+	 </p>
+  </div>
+
   <!--End of main div Body hasta aqui esta bien-->
   <script src="../static/js/filterBrush.js"></script>
   <script src="../static/js/drawComparisonGroups.js"></script>
@@ -406,7 +440,7 @@
   <script src="../static/js/draw_charts_obj1.js"></script>
   <script src="../static/js/legend.js"></script>
   <script src="../static/js/draw_groups.js"></script>
-
+  <script src="../static/js/user_interaction.js"></script>
 
   <!--Start script to change configuration and VIZ-->
   <script>

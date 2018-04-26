@@ -52,35 +52,14 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MainHandler(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
-    user = {}
-    user['id'] = self.get_secure_cookie("id")
-    user['connected'] = time()
-    user['profile'] = {}
-    user['profile']['given_name'] = self.get_secure_cookie("given_name")
-    user['profile']['family_name'] = self.get_secure_cookie("family_name")
-    user['profile']['email'] = self.get_secure_cookie("email")
-    user['profile']['picture'] = self.get_secure_cookie("picture")
-    user['profile']['locale'] = self.get_secure_cookie("locale")
-
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      with open(filename) as json_data:
-        data = json.load(json_data)
-
-    data['user'].append(user)
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
-    print('User connected: ', user)
-
-    self.redirect('static/index.html')
+    for developer in self.settings["developers"]:
+      if developer == self.get_secure_cookie("email"):
+        self.redirect('static/index.html')
+        return
+    count_user()
+    path = "static/data/"
+    dataset = os.listdir(path)[count_user() % len(os.listdir(path))]
+    self.redirect('vexus2?g=' + str(dataset))
 
 #### START #### MY CLASSES ###################
 
@@ -128,16 +107,12 @@ class save_new_dataset_configuration(BaseHandler):
     res = {"response": "yes"}
     self.write(json.dumps(res))  
 
-
-
-
 # This class recover the name Folders from the Data Folder, these are the names of dataset availabe
 class recover_name_datasets(BaseHandler):
   def post(self):
     path = "static/data/"
     dir_list = os.listdir(path)
     self.write(json.dumps(dir_list))    
-
 
 #adicional function to test the next option
 #normalization by each user with each genre
@@ -315,6 +290,138 @@ def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
+class is_developer(BaseHandler):
+  def post(self):
+    for developer in self.settings["developers"]:
+      if developer == self.get_secure_cookie("email"):
+        self.write("1")
+        return
+    self.write("0")
+
+class certified_user(BaseHandler):
+  def post(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    try:
+      for datum in data["user"]:
+        if datum["profile"]["email"] == self.get_secure_cookie("email"):
+          if datum["status"] == 0:
+            self.write("0")
+            return
+          elif datum["status"] == 1:
+            self.write("1")
+            return
+          break
+    except KeyError, e:
+      print 'I got a KeyError - reason "%s"' % str(e)
+
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+    self.write("-1")
+
+class start_user(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    user = {}
+    user['id'] = self.get_secure_cookie("id")
+    user['start_time'] = time()
+    user['end_time'] = None
+    user['status'] = 0
+    user['profile'] = {}
+    user['profile']['given_name'] = self.get_secure_cookie("given_name")
+    user['profile']['family_name'] = self.get_secure_cookie("family_name")
+    user['profile']['email'] = self.get_secure_cookie("email")
+    user['profile']['picture'] = self.get_secure_cookie("picture")
+    user['profile']['locale'] = self.get_secure_cookie("locale")
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == user["profile"]["email"]:
+        change = False
+        if datum["status"] != 0:
+          data["user"][idx]["status"] = 0
+        break
+
+    if change:
+      data['user'].append(user)
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+    print('User connected: ', user)
+
+class end_user(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == self.get_secure_cookie("email"):
+        change = False
+        data["user"][idx]["status"] = 1
+        data["user"][idx]["end_time"] = time()
+        break
+
+    if change:
+      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+
+def count_user():
+  data = {}
+  data['user'] = []
+
+  filename = 'log/users.json'
+  if not os.path.exists(os.path.dirname(filename)):
+    try:
+      os.makedirs(os.path.dirname(filename))
+    except OSError as exc:
+      if exc.errno != errno.EEXIST:
+        raise
+  else:
+    if os.path.exists(filename):
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+  return len(data["user"])
 
 #This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(BaseHandler):
@@ -1476,7 +1583,8 @@ settings = dict(
   template_path = os.path.join(os.path.dirname(__file__), "templates"),
   static_path = "static",
   debug = True,
-  google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"}
+  google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"},
+  developers = ["goesrex@gmail.com", "fbcolque@gmail.com", "joao.comba@gmail.com"]
 )    
 
 application = tornado.web.Application([
@@ -1497,6 +1605,10 @@ application = tornado.web.Application([
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
+  (r"/is_developer", is_developer),
+  (r"/certified_user", certified_user),
+  (r"/start_user", start_user),
+  (r"/end_user", end_user),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
   ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 
