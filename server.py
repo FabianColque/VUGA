@@ -52,7 +52,14 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MainHandler(BaseHandler):
   def get(self):
-    self.redirect('static/index.html')
+    for developer in self.settings["developers"]:
+      if developer == self.get_secure_cookie("email"):
+        self.redirect('static/index.html')
+        return
+    count_user()
+    path = "static/data/"
+    dataset = os.listdir(path)[count_user() % len(os.listdir(path))]
+    self.redirect('vexus2?g=' + str(dataset))
 
 #### START #### MY CLASSES ###################
 
@@ -100,16 +107,12 @@ class save_new_dataset_configuration(BaseHandler):
     res = {"response": "yes"}
     self.write(json.dumps(res))  
 
-
-
-
 # This class recover the name Folders from the Data Folder, these are the names of dataset availabe
 class recover_name_datasets(BaseHandler):
   def post(self):
     path = "static/data/"
     dir_list = os.listdir(path)
     self.write(json.dumps(dir_list))    
-
 
 #adicional function to test the next option
 #normalization by each user with each genre
@@ -287,6 +290,14 @@ def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
+class is_developer(BaseHandler):
+  def post(self):
+    for developer in self.settings["developers"]:
+      if developer == self.get_secure_cookie("email"):
+        self.write("1")
+        return
+    self.write("0")
+
 class certified_user(BaseHandler):
   def post(self):
     data = {}
@@ -393,6 +404,24 @@ class end_user(BaseHandler):
       print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
     with open(filename, "w+") as outfile:
       json.dump(data, outfile)
+
+def count_user():
+  data = {}
+  data['user'] = []
+
+  filename = 'log/users.json'
+  if not os.path.exists(os.path.dirname(filename)):
+    try:
+      os.makedirs(os.path.dirname(filename))
+    except OSError as exc:
+      if exc.errno != errno.EEXIST:
+        raise
+  else:
+    if os.path.exists(filename):
+      with open(filename) as json_data:
+        data = json.load(json_data)
+
+  return len(data["user"])
 
 #This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(BaseHandler):
@@ -1554,7 +1583,8 @@ settings = dict(
   template_path = os.path.join(os.path.dirname(__file__), "templates"),
   static_path = "static",
   debug = True,
-  google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"}
+  google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"},
+  developers = ["goesrex@gmail.com", "fbcolque@gmail.com", "joao.comba@gmail.com"]
 )    
 
 application = tornado.web.Application([
@@ -1575,6 +1605,7 @@ application = tornado.web.Application([
   (r"/getUsersbyRangeYear", getUsersbyRangeYear),
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
+  (r"/is_developer", is_developer),
   (r"/certified_user", certified_user),
   (r"/start_user", start_user),
   (r"/end_user", end_user),
