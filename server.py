@@ -300,8 +300,9 @@ class certified_user(BaseHandler):
         if exc.errno != errno.EEXIST:
           raise
     else:
-      with open(filename) as json_data:
-        data = json.load(json_data)
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
 
     try:
       for datum in data["user"]:
@@ -333,8 +334,9 @@ class start_user(BaseHandler):
         if exc.errno != errno.EEXIST:
           raise
     else:
-      with open(filename) as json_data:
-        data = json.load(json_data)
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
 
     user = {}
     user['id'] = self.get_secure_cookie("id")
@@ -375,8 +377,9 @@ class end_user(BaseHandler):
         if exc.errno != errno.EEXIST:
           raise
     else:
-      with open(filename) as json_data:
-        data = json.load(json_data)
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
 
     change = True
     for idx, datum in enumerate(data["user"]):
