@@ -1,15 +1,14 @@
 $( function() {
    $.post("/is_developer", function(is_d) {
       if (is_d == 0) {
-         var data_status = -1;
+         $("#dialog-start").show();
+         $("#dialog-end").show();
+         $("#dialog-thanks").show();
+         $("#end_interaction_div").show();
          var dialogStartAutoOpen = true;
          var dialogThanksAutoOpen = false;
-         $.post("/certified_user", function(data) {
-            data_status = data;
-            if (data_status == 0) {
-               dialogStartAutoOpen = false;
-            }
-            else if (data_status == 1) {
+         $.post("/certified_user", function(data_status) {
+            if (data_status == 1) {
                dialogStartAutoOpen = false;
                dialogThanksAutoOpen = true;
             }
@@ -93,7 +92,7 @@ $( function() {
          $("#dialog-start").hide();
          $("#dialog-end").hide();
          $("#dialog-thanks").hide();
-         $("#end_interaction").hide();
+         $("#end_interaction_div").hide();
       }
    })
 });
