@@ -56,9 +56,12 @@ class MainHandler(BaseHandler):
       if developer == self.get_secure_cookie("email"):
         self.redirect('static/index.html')
         return
-    count_user()
-    path = "static/data/"
-    dataset = os.listdir(path)[count_user() % len(os.listdir(path))]
+    dataset = self.get_secure_cookie("dataset")
+    if not dataset:
+      count_user()
+      path = "static/data/"
+      dataset = os.listdir(path)[count_user() % len(os.listdir(path))]
+      self.set_secure_cookie("dataset", dataset)
     self.redirect('vexus2?g=' + str(dataset))
 
 #### START #### MY CLASSES ###################
@@ -351,6 +354,7 @@ class start_user(BaseHandler):
 
     user = {}
     user['id'] = self.get_secure_cookie("id")
+    user["dataset"] = self.get_secure_cookie("dataset")
     user['start_time'] = time()
     user['end_time'] = None
     user['status'] = 0
