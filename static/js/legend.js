@@ -124,7 +124,7 @@ var legend = function(){
           color_aux.v = data["brightness"][i]*100
           color_aux = tinycolor(color_aux)
 
-          fabian.push(color_aux.toRgbString())
+          //fabian.push(color_aux.toRgbString())
 
           return color_aux.toRgbString()
         }

@@ -268,6 +268,7 @@ var vis_projection = function(){
     d3.select("#switch-shadow")
     .on("click", function(){
       if(this.checked == true){
+        d3.select("#explore-viz").style("display", "initial")
         lasso_on();
         zoomSwitch(false);
         lasso_active = true;

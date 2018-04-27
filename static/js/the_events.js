@@ -124,22 +124,11 @@ function btnSave_Obj1_individuals(){
 //Click to explore the data selected in projection area
 d3.select("#explore-viz")
 	.on("click", function(d){
-		/*if(comparison_matrices == null)
-			comparison_matrices = new comparison_matriz("original", "#comparison-matrix", ".originalComparison")
-		if(resume_comparison == null){
-			resume_comparison = new stackBarVis();
-			resume_comparison.setDimensionsChart(700, 10)
-			resume_comparison.init("stack_resume_comparison")
-		}
-		if(stack_heatmap == null){
-			stack_heatmap = new stackBarVis();
-			stack_heatmap.init("stack-heatmap")
-		}
+		
+		d3.select("#Save_obj1").style("display", "initial")
+		d3.select("#Save_All_obj1").style("display", "initial")				
 
-		if(mipiechart == null){
-			mipiechart = new pieChartVis();
-			mipiechart.init("piechartmio")
-		}*/
+
 		//if(name_dataset == "health1"){
 			if(brush_health == null){
 				brush_health = new myBrush("#timeChart");
@@ -178,8 +167,12 @@ d3.select("#explore-viz")
 				}else{//otherwise
 					histograms_obj1.refresh_All_Data(datahisto.instances)
 				}
+				viz_proj.draw_only_selected();	
+			}else{
+				window.alert("Zero users selected. Please, select users using Lasso");
+				//eturn;
 			}
-			viz_proj.draw_only_selected();		
+				
 			fn_loading(false);
 		}, 0)
 	});
