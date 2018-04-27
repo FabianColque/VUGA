@@ -5,15 +5,10 @@ $( function() {
          $("#dialog-end").show();
          $("#dialog-thanks").show();
          $("#end_interaction_div").show();
-         var data_status = -1;
          var dialogStartAutoOpen = true;
          var dialogThanksAutoOpen = false;
-         $.post("/certified_user", function(data) {
-            data_status = data;
-            if (data_status == 0) {
-               dialogStartAutoOpen = false;
-            }
-            else if (data_status == 1) {
+         $.post("/certified_user", function(data_status) {
+            if (data_status == 1) {
                dialogStartAutoOpen = false;
                dialogThanksAutoOpen = true;
             }

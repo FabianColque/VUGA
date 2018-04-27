@@ -365,8 +365,8 @@ class start_user(BaseHandler):
     for idx, datum in enumerate(data["user"]):
       if datum["profile"]["email"] == user["profile"]["email"]:
         change = False
-        if datum["status"] != 0:
-          data["user"][idx]["status"] = 0
+        data["user"][idx]["start_time"] = time()
+        data["user"][idx]["status"] = 0
         break
 
     if change:
