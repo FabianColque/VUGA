@@ -1,6 +1,10 @@
 $( function() {
    $.post("/is_developer", function(is_d) {
       if (is_d == 0) {
+         $("#dialog-start").show();
+         $("#dialog-end").show();
+         $("#dialog-thanks").show();
+         $("#end_interaction_div").show();
          var data_status = -1;
          var dialogStartAutoOpen = true;
          var dialogThanksAutoOpen = false;
@@ -93,7 +97,7 @@ $( function() {
          $("#dialog-start").hide();
          $("#dialog-end").hide();
          $("#dialog-thanks").hide();
-         $("#end_interaction").hide();
+         $("#end_interaction_div").hide();
       }
    })
 });
