@@ -72,6 +72,9 @@ function start(){
 
   document.getElementsByClassName("select_color")[0].selectedIndex = auxdefault;
   d3.select("#parentsaveArea").attr("height", document.getElementById("projection_area").scrollHeight + "px")
+
+
+  test_enjoyhint();
 }
 
 
@@ -138,4 +141,31 @@ function isEmptyOBJ(obj) {
   }
 
   return true;
+}
+
+
+function test_enjoyhint(){
+
+  //initialize instance
+  var enjoyhint_instance = new EnjoyHint({});
+
+  //simple config.
+  //Only one step - highlighting(with description) "New" button
+  //hide EnjoyHint after a click on the button.
+  var enjoyhint_script_steps = [
+      {
+          "next .navbar-brand": 'Now let\'s do a quick tour about the demo, let\'s start!'
+      },
+      {
+          "next #svg_projection": "This is the area projection. Each point represent one user",
+          "shape": "circle"
+      }
+
+  ];
+
+  //set script config
+  enjoyhint_instance.set(enjoyhint_script_steps);
+
+  //run Enjoyhint script
+enjoyhint_instance.run();
 }
