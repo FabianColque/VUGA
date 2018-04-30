@@ -327,6 +327,9 @@ class certified_user(BaseHandler):
           elif datum["status"] == 1:
             self.write("1")
             return
+          elif datum["status"] == 2:
+            self.write("2")
+            return
           break
     except KeyError, e:
       print 'I got a KeyError - reason "%s"' % str(e)
@@ -335,7 +338,7 @@ class certified_user(BaseHandler):
       json.dump(data, outfile)
     self.write("-1")
 
-class start_user(BaseHandler):
+class register_user(BaseHandler):
   def get(self):
     data = {}
     data['user'] = []
@@ -355,8 +358,10 @@ class start_user(BaseHandler):
     user = {}
     user['id'] = self.get_secure_cookie("id")
     user["dataset"] = self.get_secure_cookie("dataset")
-    user['start_time'] = time()
-    user['end_time'] = None
+    user['start_tour'] = time()
+    user['end_tour'] = None
+    user['start_interaction'] = None
+    user['end_interaction'] = None
     user['status'] = 0
     user['profile'] = {}
     user['profile']['given_name'] = self.get_secure_cookie("given_name")
@@ -369,7 +374,7 @@ class start_user(BaseHandler):
     for idx, datum in enumerate(data["user"]):
       if datum["profile"]["email"] == user["profile"]["email"]:
         change = False
-        data["user"][idx]["start_time"] = time()
+        data["user"][idx]["start_tour"] = time()
         data["user"][idx]["status"] = 0
         break
 
@@ -377,7 +382,66 @@ class start_user(BaseHandler):
       data['user'].append(user)
     with open(filename, "w+") as outfile:
       json.dump(data, outfile)
-    print('User connected: ', user)
+
+class end_tour(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == self.get_secure_cookie("email"):
+        change = False
+        data["user"][idx]["status"] = 1
+        data["user"][idx]["end_tour"] = time()
+        break
+
+    if change:
+      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+
+class start_user(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == self.get_secure_cookie("email"):
+        change = False
+        data["user"][idx]["status"] = 1
+        data["user"][idx]["start_interaction"] = time()
+        break
+
+    if change:
+      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
 
 class end_user(BaseHandler):
   def get(self):
@@ -400,8 +464,8 @@ class end_user(BaseHandler):
     for idx, datum in enumerate(data["user"]):
       if datum["profile"]["email"] == self.get_secure_cookie("email"):
         change = False
-        data["user"][idx]["status"] = 1
-        data["user"][idx]["end_time"] = time()
+        data["user"][idx]["status"] = 2
+        data["user"][idx]["end_interaction"] = time()
         break
 
     if change:
@@ -1611,6 +1675,8 @@ application = tornado.web.Application([
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/is_developer", is_developer),
   (r"/certified_user", certified_user),
+  (r"/register_user", register_user),
+  (r"/end_tour", end_tour),
   (r"/start_user", start_user),
   (r"/end_user", end_user),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})

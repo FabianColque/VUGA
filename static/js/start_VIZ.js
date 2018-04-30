@@ -72,9 +72,6 @@ function start(){
 
   document.getElementsByClassName("select_color")[0].selectedIndex = auxdefault;
   d3.select("#parentsaveArea").attr("height", document.getElementById("projection_area").scrollHeight + "px")
-
-
-  test_enjoyhint();
 }
 
 
@@ -144,10 +141,18 @@ function isEmptyOBJ(obj) {
 }
 
 
-function test_enjoyhint(){
+function test_enjoyhint() {
 
   //initialize instance
-  var enjoyhint_instance = new EnjoyHint({});
+  var enjoyhint_instance = new EnjoyHint({
+    onEnd: function() {
+      $.get("/end_tour");
+      location.reload();
+    },
+    onSkip: function() {
+      location.reload();
+    }
+  });
 
   //simple config.
   //Only one step - highlighting(with description) "New" button
@@ -167,5 +172,5 @@ function test_enjoyhint(){
   enjoyhint_instance.set(enjoyhint_script_steps);
 
   //run Enjoyhint script
-enjoyhint_instance.run();
+  enjoyhint_instance.run();
 }
