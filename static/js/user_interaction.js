@@ -4,10 +4,12 @@ $( function() {
          $("#dialog-interactive-tour").show();
          $("#dialog-start").show();
          $("#dialog-end").show();
+         $("#dialog-form").show();
          $("#dialog-thanks").show();
          $("#end_interaction_div").show();
          var dialogInteractiveTourOpen = true;
          var dialogStartAutoOpen = false;
+         var dialogFormAutoOpen = false;
          var dialogThanksAutoOpen = false;
          $.post("/certified_user", function(data_status) {
             if (data_status == 0) {
@@ -85,7 +87,7 @@ $( function() {
                title: "End interaction",
                buttons: [
                   {
-                     text: "Conclude",
+                     text: "Continue",
                      click: function() {
                         $(this).dialog( "close" );
                         $.get("/end_user");
@@ -100,6 +102,19 @@ $( function() {
                      }
                   }
                ],
+            });
+				$("#dialog-form").dialog({
+               modal: true,
+               resizable: false,
+               dialogClass: "no-close",
+               closeOnEscape: false,
+               autoOpen: dialogFormAutoOpen,
+               draggable: false,
+               my: "center",
+               at: "center",
+               of: window,
+					width: "90%",
+               title: "Vexus 2 Questions"
             });
             $("#dialog-thanks").dialog({
                modal: true,
@@ -129,6 +144,7 @@ $( function() {
          $("#dialog-interactive-tour").hide();
          $("#dialog-start").hide();
          $("#dialog-end").hide();
+         $("#dialog-form").hide();
          $("#dialog-thanks").hide();
          $("#end_interaction_div").hide();
       }
