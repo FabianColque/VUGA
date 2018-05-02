@@ -832,9 +832,8 @@ class save_and_generate_newData(BaseHandler):
 
     if dbname == "NewBookCrossing":
       #modiying_health_data_dimension
-      new_order_names = ['fiction', 'nonfiction', 'mystery', 'romance', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'crime', 'contemporary', 'history', 'biography', 'horror', 'memoir', 'religion', 'science']#['fiction', 'nonfiction', 'romance', 'mystery', 'fantasy', 'historical_fiction', 'classics', 'science_fiction', 'thriller', 'young_adult', 'contemporary', 'crime', 'horror', 'history', 'biography', 'memoir', 'chick_lit', 'suspense', 'religion', 'paranormal', 'philosophy', 'self_help', 'science', 'spirituality', 'psychology', 'christian', 'poetry', 'travel', 'art', 'business', 'comics', 'graphic_novels', 'sports', 'cookbooks', 'music', 'manga']
-      #new_order_names = ["bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
-      #new_order_names = ["PERFUSION","NUTRITION", "INSULINE", "REHABILITATION"]
+      #new_order_names = ['fiction', 'nonfiction', 'romance', 'mystery', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'contemporary', 'crime', 'history', 'biography', 'horror', 'memoir', 'religion', 'science']
+      new_order_names = ['nonfiction', 'mystery', 'romance', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'crime', 'contemporary', 'horror', 'history', 'biography', 'memoir', 'religion', 'philosophy', 'science']
       
       arr_tsne, heatmap, mayores, brillo = modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap)
       for i in xrange(0, len(heatmap["body"])):
