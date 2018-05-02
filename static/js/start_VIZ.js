@@ -60,6 +60,8 @@ function start(){
   
   if(name_dataset == "health1")
     auxdefault = 3
+  if(name_dataset == "NewBookCrossing")
+    auxdefault = 2
   var da = post_to_server_global({"dbname": name_dataset, "dimension_num": auxdefault, "select": "all"}, "getDimension_legend")
 
   mylegend.init(da);
