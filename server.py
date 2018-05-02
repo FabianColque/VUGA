@@ -293,6 +293,75 @@ def modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
+def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
+  rangos = []
+  arr_tsne = []
+  sz = len(dimensionsData["body"])
+  totales_by_user = sz * [0.0]
+  for i in xrange(0, sz):
+    auxaux = []
+    for j in xrange(1, len(dimensionsData["body"][0])):
+      totales_by_user[i] = totales_by_user[i] + float(dimensionsData["body"][i][j])
+      auxaux.append(0.0)
+    rangos.append([2.0,-2.0]) 
+    arr_tsne.append(auxaux)
+
+  arr_tsne = np.array(arr_tsne)
+
+  mayores = [0]*sz
+  brillo = [0]*sz
+  for i in xrange(0, sz):
+    for j in xrange(1, len(dimensionsData["body"][0])):
+      #print ("vientooo", dimensionsData["body"][i][j], totales_by_user[i], dimensionsData["body"][i])
+      arr_tsne[i][j-1] = float(str(dimensionsData["body"][i][j]))/totales_by_user[i]
+      if i == 0:
+        print ('QQQQ: ', arr_tsne[i][j-1])
+      if arr_tsne[i][j-1] != 0.0:
+        rangos[i][0] = min(rangos[i][0], arr_tsne[i][j-1])
+        rangos[i][1] = max(rangos[i][1], arr_tsne[i][j-1])
+
+  heatmap["body"] = deepcopy(arr_tsne)  
+
+  p_neighbor = 0.02
+  for i in xrange(0, len(heatmap["body"])):
+    poss = 0
+    aux_sort = []
+    for j in xrange(0, len(heatmap["body"][0])):
+      aux_sort.append(heatmap["body"][i][j])
+      if heatmap["body"][i][j] == 0.0:
+        heatmap["body"][i][j] = -1#bien aqui
+      else:
+        if j > 0:
+          if heatmap["body"][i][j] > heatmap["body"][i][poss]:
+            poss = j
+      """if i == 0 and j == 0:
+        print ("AAAAAAAAAA ", rangos[i][0], rangos[i][1], 0.0, 1.0, heatmap["body"][i][j])
+        if heatmap["body"][i][j] == 0.0:
+          heatmap["body"][i][j] = -1;
+        else:
+          heatmap["body"][i][j] = myscale2(rangos[i][0], rangos[i][1], 0.0, 1.0, heatmap["body"][i][j])
+
+        if i == 0 and j == 0:
+          print ("BBBBBBBBBB ", heatmap["body"][i][j])"""
+    pass
+    #mayores[i] = new_orders_ind[poss]
+    mayores[i] = poss
+    aux_sort.sort()
+    #if aux_sort[len(aux_sort)-1]  - aux_sort[len(aux_sort)-2] <= p_neighbor:
+      #mayores[i] = len(heatmap["body"][0]) + 1
+    #brillo[i] = 1.0 - (aux_sort[len(aux_sort)-2]/aux_sort[len(aux_sort)-1])
+    mean = np.mean(aux_sort)
+    brillo[i] = 1.0 - ((aux_sort[len(aux_sort)-2]-mean)/(aux_sort[len(aux_sort)-1])-mean)
+
+  #print ("atencion", heatmap["body"][5848], mayores[5848])    
+
+  print ('rangos [0]', rangos[0])
+  print ('test arr_tsne 2: ', arr_tsne)
+  print ('test arr[0] tsne2: ', arr_tsne[0])
+  print ('len arr_tsne 2', len(arr_tsne), len(arr_tsne[0]))    
+
+  return arr_tsne, heatmap, mayores, brillo
+
 class is_developer(BaseHandler):
   def post(self):
     for developer in self.settings["developers"]:
@@ -584,7 +653,7 @@ class save_and_generate_newData(BaseHandler):
     if len_charts_proj == 0:
       len_charts_proj = -1
 
-    es_apto1 = False#true cuando quiero que sea Health, false para movielens 
+    es_apto1 = True#true cuando quiero que sea Health, false para movielens 
     if not es_apto1: 
       for ftr in detailsjson["features"]:
         if i_aux < len_charts_proj:
@@ -647,7 +716,7 @@ class save_and_generate_newData(BaseHandler):
 
     arr_tsne = []
     heatmap_tsne = []
-    es_apto2 = False#true cuando quiero que sea Health, false para movielens
+    es_apto2 = True#true cuando quiero que sea Health, false para movielens
     if not es_apto2:
       i_body = 0
       for body in dimensionsData["body"]:
@@ -668,7 +737,7 @@ class save_and_generate_newData(BaseHandler):
             val_heat = val
           else:
             if details["features"][i_ftr]["detail"] == []:
-              print ("vacio ...", details_limits[i_ftr][0], details_limits[i_ftr][1], body[i_ftr+1])
+              print ("vacio ...", details_limits[i_ftr][0], details_limits[i_ftr][1], body[i_ftr+1], i_ftr + 1, i_body)
               val = myscale(float(details_limits[i_ftr][0]), float(details_limits[i_ftr][1]), 0.0, 1.0, float(body[i_ftr+1]), True)
               if float(body[i_ftr+1]) < float(details_limits[i_ftr][0]):
                 val_heat = 0.0
@@ -713,7 +782,7 @@ class save_and_generate_newData(BaseHandler):
 
 #***************************************************************************************************************************************
     mayores = []  
-    if dbname == "movilens3D":#"Movielens only Rating":
+    if dbname == "Movielens only Rating":#"NewBookCrossing":#"Movielens only Rating":
       #new_orders_ind = [2, 6, 11, 10, 1, 7, 17, 0, 14, 15, 9, 13, 12, 5, 4, 3, 6, 16]
       new_order_names = ["Drama", "Comedy", "Action", "Thriller", "Sci-Fi", "Romance", "Adventure", "Crime", "War", "Horror", "Children", "Animation", "Mystery", "Musical", "Fantasy", "Film-Noir", "Western", "Documentary"]
       arr_tsne, heatmap, mayores, brillo = modiying_movielens_only_Num_rating(arr_tsne, dimensionsData, heatmap)
@@ -761,6 +830,25 @@ class save_and_generate_newData(BaseHandler):
 
 #***************************************************************************************************************************************
 
+    if dbname == "NewBookCrossing":
+      #modiying_health_data_dimension
+      new_order_names = ['fiction', 'nonfiction', 'mystery', 'romance', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'crime', 'contemporary', 'history', 'biography', 'horror', 'memoir', 'religion', 'science']#['fiction', 'nonfiction', 'romance', 'mystery', 'fantasy', 'historical_fiction', 'classics', 'science_fiction', 'thriller', 'young_adult', 'contemporary', 'crime', 'horror', 'history', 'biography', 'memoir', 'chick_lit', 'suspense', 'religion', 'paranormal', 'philosophy', 'self_help', 'science', 'spirituality', 'psychology', 'christian', 'poetry', 'travel', 'art', 'business', 'comics', 'graphic_novels', 'sports', 'cookbooks', 'music', 'manga']
+      #new_order_names = ["bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
+      #new_order_names = ["PERFUSION","NUTRITION", "INSULINE", "REHABILITATION"]
+      
+      arr_tsne, heatmap, mayores, brillo = modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap)
+      for i in xrange(0, len(heatmap["body"])):
+        dataViz["instances"][i]["values"].append(mayores[i])
+      dataViz["brillo"] = brillo
+      data_deta = load_json(getpath_db(dbname) + "details.json")
+
+      data_deta["Dimensions_charts"].append({"type_chart": "", "titles": new_order_names, "name": "Genre"})
+      #["n_RevAction", "n_RevAdventure", "n_RevAnimation", "n_RevChildrens", "n_RevComedy", "n_RevCrime", "n_RevDocumentary", "n_RevDrama", "n_RevFantasy", "n_RevFilm-Noir", "n_RevHorror", "n_RevMusical", "n_RevMystery", "n_RevRomance", "n_RevSci-Fi", "n_RevThriller", "n_RevWar", "n_RevWestern"]
+      save_json(getpath_db(dbname) + "dataViz.json", dataViz)
+      save_json(getpath_db(dbname) + "details.json", data_deta)
+
+
+#****************************************************************************************************************************************
     #generando un archivo para los anhos de health1
     ratings_health  = load_json(getpath_db(dbname) +  "ratings.json")
     years_health = {}
@@ -794,7 +882,7 @@ class save_and_generate_newData(BaseHandler):
         
     #Now the projection of All data
     time0 = time()
-    model = TSNE(n_components = 3, random_state=0)
+    model = TSNE(n_components = 2, random_state=0)
     np.set_printoptions(suppress=True)
     points = model.fit_transform(arr_tsne)
     points = np.matrix(points)
@@ -1235,6 +1323,8 @@ class getDimension_legend(BaseHandler):
     if dbname == "Movielens only Rating" and dim_num == 4:
       res["brightness"] = dataViz["brillo"]
     if dbname == "health1" and dim_num == 3:
+      res["brightness"] = dataViz["brillo"]
+    if dbname == "NewBookCrossing" and dim_num == 2:
       res["brightness"] = dataViz["brillo"]
 
     res["body"] = aux_body
