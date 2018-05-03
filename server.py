@@ -399,6 +399,9 @@ class certified_user(BaseHandler):
           elif datum["status"] == 2:
             self.write("2")
             return
+          elif datum["status"] == 3:
+            self.write("3")
+            return
           break
     except KeyError, e:
       print 'I got a KeyError - reason "%s"' % str(e)
@@ -431,6 +434,8 @@ class register_user(BaseHandler):
     user['end_tour'] = None
     user['start_interaction'] = None
     user['end_interaction'] = None
+    user['start_form'] = None
+    user['end_form'] = None
     user['status'] = 0
     user['profile'] = {}
     user['profile']['given_name'] = self.get_secure_cookie("given_name")
@@ -535,6 +540,66 @@ class end_user(BaseHandler):
         change = False
         data["user"][idx]["status"] = 2
         data["user"][idx]["end_interaction"] = time()
+        break
+
+    if change:
+      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+
+class start_form(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == self.get_secure_cookie("email"):
+        change = False
+        data["user"][idx]["status"] = 2
+        data["user"][idx]["start_form"] = time()
+        break
+
+    if change:
+      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
+    with open(filename, "w+") as outfile:
+      json.dump(data, outfile)
+
+class end_form(BaseHandler):
+  def get(self):
+    data = {}
+    data['user'] = []
+
+    filename = 'log/users.json'
+    if not os.path.exists(os.path.dirname(filename)):
+      try:
+        os.makedirs(os.path.dirname(filename))
+      except OSError as exc:
+        if exc.errno != errno.EEXIST:
+          raise
+    else:
+      if os.path.exists(filename):
+        with open(filename) as json_data:
+          data = json.load(json_data)
+
+    change = True
+    for idx, datum in enumerate(data["user"]):
+      if datum["profile"]["email"] == self.get_secure_cookie("email"):
+        change = False
+        data["user"][idx]["status"] = 3
+        data["user"][idx]["end_form"] = time()
         break
 
     if change:
@@ -1768,6 +1833,8 @@ application = tornado.web.Application([
   (r"/end_tour", end_tour),
   (r"/start_user", start_user),
   (r"/end_user", end_user),
+  (r"/start_form", start_form),
+  (r"/end_form", end_form),
   (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
   ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 

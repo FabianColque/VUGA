@@ -15,16 +15,25 @@ $( function() {
             if (data_status == 0) {
                dialogInteractiveTourOpen = true;
                dialogStartAutoOpen = false;
+               dialogFormAutoOpen = false;
                dialogThanksAutoOpen = false;
             }
             else if (data_status == 1) {
                dialogInteractiveTourOpen = false;
                dialogStartAutoOpen = true;
+               dialogFormAutoOpen = false;
                dialogThanksAutoOpen = false;
             }
             else if (data_status == 2) {
                dialogInteractiveTourOpen = false;
                dialogStartAutoOpen = false;
+               dialogFormAutoOpen = true;
+               dialogThanksAutoOpen = false;
+            }
+            else if (data_status == 3) {
+               dialogInteractiveTourOpen = false;
+               dialogStartAutoOpen = false;
+               dialogFormAutoOpen = false;
                dialogThanksAutoOpen = true;
             }
             $("#dialog-interactive-tour").dialog({
@@ -92,7 +101,7 @@ $( function() {
                         $(this).dialog( "close" );
                         $.get("/end_user");
                         $("#end_interaction").button("option", "disabled", true);
-                        $("#dialog-thanks").dialog("open");
+                        $("#dialog-form").dialog("open");
                      }
                   },
                   {
@@ -114,7 +123,14 @@ $( function() {
                at: "center",
                of: window,
 					width: "90%",
-               title: "Vexus 2 Questions"
+               title: "Vexus 2 Questions",
+               open: function(event, ui) {
+                 $.get("/start_form");
+               },
+               close: function(event, ui) {
+                 $.get("/end_form");
+                 $("#dialog-thanks").dialog("open");
+               }
             });
             $("#dialog-thanks").dialog({
                modal: true,

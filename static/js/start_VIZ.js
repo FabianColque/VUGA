@@ -199,10 +199,10 @@ function test_enjoyhint() {
       },
       {
           "next #dataTable_obj2": "Here, we have the list of Movies"
-      },
-      {
-          "next #originalComparison": "In this part, we have some charts with the distribution of users by each attribute"  
       }
+      //{
+        //  "next #originalComparison": "In this part, we have some charts with the distribution of users by each attribute"  
+      //}
 
   ];
 
