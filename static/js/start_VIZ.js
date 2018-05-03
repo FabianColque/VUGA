@@ -47,6 +47,13 @@ var fabian = null;
 
 function start(){
   
+  //some details
+  if(name_dataset == "health1")
+    d3.select("#name_obj2").text("Actions")
+  else if(name_dataset == "NewBookCrossing")
+    d3.select("#name_obj2").text("Books")
+  else
+    d3.select("#name_obj2").text("Movies")
   
   var data_projection = post_to_server_global({"dbname": name_dataset}, "get_data_projection");
   viz_proj = new vis_projection();
@@ -164,8 +171,37 @@ function test_enjoyhint() {
           "next .navbar-brand": 'Now let\'s do a quick tour about the demo, let\'s start!'
       },
       {
-          "next #svg_projection": "This is the area projection. Each point represent one user",
-          "shape": "circle"
+          "next #svg_projection": "Here, we display the users represented by circles."
+      },
+      {
+          "next #mylegend": "Users use this set of colors. Each user is colored by the dominant dimension."
+      },
+      {
+          "click .switch__container": "You need to click here to active the tool Lasso to select a subset of users and continue the exploration"
+      },
+      {
+          "next #svg_projection": "Please, Using your mouse, select a set of users (circles)"
+      },
+      {
+          "next .botones3": "Also, we have 3 options to use the tool Lasso, Lasso reset for reset the selection of users, Select All for select all users and Reset All for reset all users"
+      },
+      {
+          "click #explore-viz": "Click here to display the information of the users selected"
+      },
+      {
+          "next #dataTable_obj1": "Here, we have the list of users"
+      },
+      {
+          "next #div_graphs_obj1": "Now, the information of users are displayed with charts"
+      },
+      {
+          "next #div_graphs_obj1_0": "Click in one bar to filter the users based in this attribute"
+      },
+      {
+          "next #dataTable_obj2": "Here, we have the list of Movies"
+      },
+      {
+          "next #originalComparison": "In this part, we have some charts with the distribution of users by each attribute"  
       }
 
   ];
