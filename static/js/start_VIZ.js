@@ -152,7 +152,7 @@ function isEmptyOBJ(obj) {
 
 function test_enjoyhint() {
 
-  //initialize instance
+  // initialize instance
   var enjoyhint_instance = new EnjoyHint({
     onEnd: function() {
       $.get("/end_tour");
@@ -163,46 +163,56 @@ function test_enjoyhint() {
     }
   });
 
-  //simple config.
-  //Only one step - highlighting(with description) "New" button
-  //hide EnjoyHint after a click on the button.
+  // config steps
   var enjoyhint_script_steps = [
       {
-          "next .navbar-brand": 'Now let\'s do a quick tour about the demo, let\'s start!'
+          "next .navbar-brand": 'Now let\'s do a quick tour about the demo, let\'s start!',
+			 "showSkip": false
       },
       {
-          "next #svg_projection": "Here, we display the users represented by circles."
+          "next #svg_projection": "Here, we display the users represented by circles.",
+			 "showSkip": false
       },
       {
-          "next #mylegend": "Users use this set of colors. Each user is colored by the dominant dimension."
+          "next #mylegend": "Users use this set of colors. Each user is colored by the dominant dimension.",
+			 "showSkip": false
       },
       {
-          "click .switch__container": "You need to click here to active the tool Lasso to select a subset of users and continue the exploration"
+          "click .switch__container": "You need to click here to active the tool Lasso to select a subset of users and continue the exploration",
+			 "showSkip": false
       },
       {
-          "next #svg_projection": "Please, Using your mouse, select a set of users (circles)"
+          "next #svg_projection": "Please, Using your mouse, select a set of users (circles)",
+			 "showSkip": false
       },
       {
-          "next .botones3": "Also, we have 3 options to use the tool Lasso, Lasso reset for reset the selection of users, Select All for select all users and Reset All for reset all users"
+          "next .botones3": "Also, we have 3 options to use the tool Lasso, Lasso reset for reset the selection of users, Select All for select all users and Reset All for reset all users",
+			 "showSkip": false
       },
       {
-          "click #explore-viz": "Click here to display the information of the users selected"
+          "click #explore-viz": "Click here to display the information of the users selected",
+			 "showSkip": false
       },
       {
-          "next #dataTable_obj1": "Here, we have the list of users"
+          "next #dataTable_obj1": "Here, we have the list of users",
+			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1": "Now, the information of users are displayed with charts"
+          "next #div_graphs_obj1": "Now, the information of users are displayed with charts",
+			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1_0": "Click in one bar to filter the users based in this attribute"
+          "next #div_graphs_obj1_0": "Click in one bar to filter the users based in this attribute",
+			 "showSkip": false
       },
       {
-          "next #dataTable_obj2": "Here, we have the list of Movies"
+          "next #dataTable_obj2": "Here, we have the list of Movies",
+			 "showSkip": false
+      },
+      {
+          "next #originalComparison": "In this part, we have some charts with the distribution of users by each attribute",
+			 "showSkip": false
       }
-      //{
-        //  "next #originalComparison": "In this part, we have some charts with the distribution of users by each attribute"  
-      //}
 
   ];
 
