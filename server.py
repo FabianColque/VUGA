@@ -353,6 +353,9 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
     #brillo[i] = 1.0 - (aux_sort[len(aux_sort)-2]/aux_sort[len(aux_sort)-1])
     mean = np.mean(aux_sort)
     brillo[i] = 1.0 - ((aux_sort[len(aux_sort)-2]-mean)/(aux_sort[len(aux_sort)-1])-mean)
+    brillo[i] += 0.15
+    if brillo[i] > 1:
+      brillo[i] = 1
 
   #print ("atencion", heatmap["body"][5848], mayores[5848])    
 
@@ -910,8 +913,10 @@ class save_and_generate_newData(BaseHandler):
     if dbname == "NewBookCrossing":
       #modiying_health_data_dimension
       #new_order_names = ['fiction', 'nonfiction', 'romance', 'mystery', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'contemporary', 'crime', 'history', 'biography', 'horror', 'memoir', 'religion', 'science']
-      new_order_names = ['nonfiction', 'mystery', 'romance', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'crime', 'contemporary', 'horror', 'history', 'biography', 'memoir', 'religion', 'philosophy', 'science']
-      
+      #new_order_names = ['nonfiction', 'mystery', 'romance', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'crime', 'contemporary', 'horror', 'history', 'biography', 'memoir', 'religion', 'philosophy', 'science']
+      #new_order_names = ['nonfiction', 'romance', 'mystery', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'young_adult', 'contemporary', 'crime', 'history', 'biography', 'horror', 'memoir', 'religion', 'philosophy', 'science']
+      new_order_names = ['nonfiction', 'mystery', 'romance', 'fantasy', 'historical_fiction', 'classics', 'thriller', 'science_fiction', 'crime', 'young_adult', 'contemporary', 'history', 'biography', 'horror', 'memoir', 'religion', 'philosophy', 'science']
+
       arr_tsne, heatmap, mayores, brillo = modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap)
       for i in xrange(0, len(heatmap["body"])):
         dataViz["instances"][i]["values"].append(mayores[i])
