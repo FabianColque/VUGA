@@ -43,9 +43,11 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogInteractiveTourOpen,
 					draggable: false,
-					my: "center",
-					at: "center",
-					of: window,
+               position: {
+   					my: "center",
+	   				at: "center",
+		   			of: window
+               },
 					title: "Start interactive guided tour",
 					buttons: [
 						{
@@ -67,9 +69,11 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogStartAutoOpen,
 					draggable: false,
-					my: "center",
-					at: "center",
-					of: window,
+               position: {
+   					my: "center",
+	   				at: "center",
+		   			of: window
+               },
 					title: "Start interaction",
 					buttons: [
 						{
@@ -90,9 +94,11 @@ $( function() {
 					closeOnEscape: true,
 					autoOpen: false,
 					draggable: false,
-					my: "center",
-					at: "center",
-					of: window,
+               position: {
+	   				my: "center",
+   					at: "center",
+					   of: window
+               },
 					title: "End interaction",
 					buttons: [
 						{
@@ -119,10 +125,13 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogFormAutoOpen,
 					draggable: false,
-					my: "center",
-					at: "center",
-					of: window,
+               position: {
+					   my: "center bottom-10",
+   					at: "center bottom-10",
+	   				of: window
+               },
 					width: "90%",
+               height: ($(window).height() - 100),
 					title: "Vexus 2 Questions",
 					open: function(event, ui) {
 						$.get("/start_form");
@@ -149,9 +158,11 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogThanksAutoOpen,
 					draggable: false,
-					my: "center",
-					at: "center",
-					of: window,
+               position: {
+   					my: "center",
+	   				at: "center",
+		   			of: window
+               },
 					title: "Thanks"
 				});
 				var endInteractionDisabled = false;
