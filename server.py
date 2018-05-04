@@ -32,6 +32,7 @@ from copy import deepcopy
 import copy
 
 import my_algorithm
+import my_spreadsheet
 
 heatmap_movielens = [] 
 ratings_movielens = []
@@ -364,6 +365,17 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
   print ('len arr_tsne 2', len(arr_tsne), len(arr_tsne[0]))    
 
   return arr_tsne, heatmap, mayores, brillo
+
+class is_load_spreadsheet(BaseHandler):
+  def post(self):
+    if my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email")):
+      self.write("1")
+    else:
+      self.write("0")
+
+class get_email(BaseHandler):
+  def post(self):
+    self.write(self.get_secure_cookie("email"))
 
 class is_developer(BaseHandler):
   def post(self):
@@ -1834,6 +1846,8 @@ application = tornado.web.Application([
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/is_developer", is_developer),
+  (r"/is_load_spreadsheet", is_load_spreadsheet),
+  (r"/get_email", get_email),
   (r"/certified_user", certified_user),
   (r"/register_user", register_user),
   (r"/end_tour", end_tour),
