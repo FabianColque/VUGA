@@ -28,6 +28,10 @@ Vexus 2 requires:
 
     `$ pip install simplejson`
 
+* [Google API Client](https://developers.google.com/api-client-library/python/)
+
+    `$ pip install --upgrade google-api-python-client`
+
 ## Running
 
 `$ python server.py`
