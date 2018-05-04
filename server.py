@@ -362,6 +362,10 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
+class get_email(BaseHandler):
+  def post(self):
+    self.write(self.get_secure_cookie("email"))
+
 class is_developer(BaseHandler):
   def post(self):
     for developer in self.settings["developers"]:
@@ -1828,6 +1832,7 @@ application = tornado.web.Application([
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/is_developer", is_developer),
+  (r"/get_email", get_email),
   (r"/certified_user", certified_user),
   (r"/register_user", register_user),
   (r"/end_tour", end_tour),
