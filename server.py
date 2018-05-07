@@ -733,7 +733,7 @@ class save_and_generate_newData(BaseHandler):
     if len_charts_proj == 0:
       len_charts_proj = -1
 
-    es_apto1 = True#true cuando quiero que sea Health, false para movielens 
+    es_apto1 = True#true cuando quiero que sea Health e books, false para movielens 
     if not es_apto1: 
       for ftr in detailsjson["features"]:
         if i_aux < len_charts_proj:
@@ -796,7 +796,7 @@ class save_and_generate_newData(BaseHandler):
 
     arr_tsne = []
     heatmap_tsne = []
-    es_apto2 = True#true cuando quiero que sea Health, false para movielens
+    es_apto2 = True#true cuando quiero que sea Health e books, false para movielens
     if not es_apto2:
       i_body = 0
       for body in dimensionsData["body"]:
@@ -878,10 +878,10 @@ class save_and_generate_newData(BaseHandler):
 #***************************************************************************************************************************************
     if dbname == "health1":
       #modiying_health_data_dimension
-      new_order_names = ["RESPIRATOIRE", "bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
+      #elbuenonew_order_names = ["RESPIRATOIRE", "bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
       #new_order_names = ["bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
       #new_order_names = ["PERFUSION","NUTRITION", "INSULINE", "REHABILITATION"]
-      
+      new_order_names = ['RESP_AERO', 'RESP_OXY', 'RESP_PPC', 'RESP_VEN', 'NUTRITION_NUTENT', 'INSULINE', 'PERFANTIB', 'PERFANTID', 'PERFSANG', 'PERFDIV', 'PERFCHIMIO', 'PERFANTIV', 'PERF', 'PERFATBC', 'PERFIMMUNO', 'RESP_ASPI', 'PERFPAR', 'PERFRINC', 'PERFKETAM', 'PERFPARK', 'RESP_ENR', 'RESP_VENTRACH', 'PERFHTAP', 'RESP_VISPERF', 'RESP_TRACHEO', 'REHAB_FIT', 'REHAB_RME', 'REHAB_RRE', 'REHAB_REH']
       arr_tsne, heatmap, mayores, brillo = modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap)
       for i in xrange(0, len(heatmap["body"])):
         dataViz["instances"][i]["values"].append(mayores[i])
@@ -1368,6 +1368,7 @@ class getDimension_legend(BaseHandler):
 
 
     colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
+    #colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 
     time0 = time()
     data_heatmap = []
