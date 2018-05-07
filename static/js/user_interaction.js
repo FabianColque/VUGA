@@ -166,7 +166,7 @@ $( function() {
 					title: "Thanks"
 				});
 				var endInteractionDisabled = false;
-				if (dialogInteractiveTourOpen || dialogStartAutoOpen || dialogThanksAutoOpen) {
+				if (dialogInteractiveTourOpen || dialogStartAutoOpen || dialogFormAutoOpen || dialogThanksAutoOpen) {
 					endInteractionDisabled = true;
 				}
 				$("#end_interaction").button({
