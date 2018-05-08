@@ -307,7 +307,6 @@ var legend = function(){
 
     d3.select(data.selector + " .selectAllBtn")
       .style("cursor", "pointer")
-
       .style("color", "#005580")
       .on("click", function(){
         d3.selectAll(data.selector + " .pointDots")
@@ -330,26 +329,3 @@ var legend = function(){
       })
   }
 }
-
-      .style("color", "red")
-        .on("click", function(){
-          d3.selectAll(data.selector + " .pointDots")
-            .style("visibility", "hidden")
-          d3.selectAll(".checks_leg").property("checked", false)
-        })
-
-      d3.select("#mylegend").style("overflow-y", function() {
-         if (data.colors.length >= 18) {
-            return "scroll"
-         }
-         return "initial"
-      })
-      d3.select("#mylegend").style("height", function() {
-         if(data.colors.length < 18) {
-            return "auto"
-         }
-         return d3.select("#mylegend").style("height")
-      })
-    }
-}
-
