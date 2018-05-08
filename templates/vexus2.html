@@ -138,7 +138,7 @@
               
             </div>
             <div class="col-sm-4">
-              <input type="button" class="btn btn-success" value="Visualize Users" id="explore-viz" style="display:none;" />    
+              <input type="button" class="btn btn-success" value="Visualize Users" id="explore-viz" style="display:none;" title="Visualize details of users selected" />    
             </div>
             <div class="col-sm-3">
               <div class="totalPoints" style="margin-left: 2%; -webkit-text-stroke-width: 1px">Total Users: </div>
@@ -165,10 +165,10 @@
                     <!--<span class="glyphicon glyphicon-floppy-save" id="btn_saveJSON" aria-hidden="Left Align" style="float:right"></span>-->
                   </div>
                   <div class="col-sm-2">
-                    <span class="glyphicon glyphicon glyphicon-stats" id="btn_back_Projection" aria-hidden="Left Align" style="float:right"></span>
+                    <span class="glyphicon glyphicon glyphicon-stats" id="btn_back_Projection" aria-hidden="Left Align" style="float:right; cursor: pointer" title="<- Shown in projection"></span>
                   </div>
                   <div class="col-sm-2">
-                    <span class="glyphicon glyphicon glyphicon-trash" id="btn_clearAll" aria-hidden="Left Align" style="float:right"></span>
+                    <span class="glyphicon glyphicon glyphicon-trash" id="btn_clearAll" aria-hidden="Left Align" style="float:right; cursor: pointer;" title="remove All ↓"></span>
                   </div>
                 </div>
               </div>
@@ -215,7 +215,7 @@
 
                 <div class="row">
                   <div class="col-sm-5">
-                    <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" >
+                    <input type="button" id="btn_ExploreGroups" class="btn btn-success" value="Explore Groups" title="Click to generate new Groups">
                   </div>
                   <!--<div class="col-sm-2"></div>-->
                   <!--<div class="col-sm-5">
@@ -267,8 +267,8 @@
               <div class="chart-title"> Users Table </div>
               <div class="chart-stage">
                   <!--<img data-src="holder.jsk/100%x550/white">-->
-                  <input type="button" class="btn btn-info" value="Save All" id="Save_All_obj1" style="display: none" />
-                  <input type="button" class="btn btn-warning" value="Save" id="Save_obj1" style="display: none" />
+                  <input type="button" class="btn btn-info" value="Save All" id="Save_All_obj1" style="display: none" title="Save all users of this table" />
+                  <input type="button" class="btn btn-warning" value="Save" id="Save_obj1" style="display: none" title="Save users selected of this table" />
                   <div class="row" id="dataTable_obj1">
                       <!--Here is the table Obj1-->
                   </div> 

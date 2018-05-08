@@ -55,6 +55,7 @@ function drawComparison(div_){
       .text(name)
   }
   
+
   this.update = function(data_nose){
     //primero cargamos la nueva data
     d3.select(div).select("#name_block").style("visibility", "visible")

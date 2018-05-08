@@ -83,6 +83,10 @@
   overflow-x: scroll;
 }
 
+#dataTable_obj1 tr{
+  cursor: pointer;
+} 
+
 
 /*CSS for comparison matrix*/
 #comparison-matrix{

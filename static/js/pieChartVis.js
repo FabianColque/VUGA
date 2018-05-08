@@ -58,7 +58,11 @@ function pieChartVis(){
                 return colores_movielens[d.data.x]; 
                 })
               .attr("stroke", "black")
-              .attr("stroke-width", "0.5");
+              .attr("stroke-width", "0.5")
+              .append("title")
+              .text(function(d){
+                return parseFloat(d.value*100.0).toFixed(2) + "%"
+              });
 
           arc.append("text")
               .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })

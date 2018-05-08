@@ -62,12 +62,14 @@ function comparison_matriz(name_, div){
     //add labels
     chart
       .append("text")
-      .attr("transform", "translate(-35," +  (height+margin.bottom)/2 + ") rotate(-90)")
-      .text("% Similarity");
+      .attr("transform", "translate(-30," +  (height+margin.bottom)/2 + ") rotate(-90)")
+      .style("font", "15px sans-serif")
+      .text("% Users");
         
     chart
       .append("text")
-      .attr("transform", "translate(" + (width/2) + "," + (height + margin.bottom - 5) + ")")
+      .attr("transform", "translate(" + ((width/2) - (width/7)) + "," + (height + margin.bottom - 35) + ")")
+      .style("font", "15px sans-serif")
       .text("Dimensions");
 
     draw_legend();  

@@ -173,6 +173,7 @@ var draw_groups = function(){
     .append("g")
       .attr("class", "node")
       .attr("id", function(d){return "node"+d.name})
+      .style("cursor", "pointer")
       .attr("transform", function(d){return "translate("+new_scale_x(d.x)+", "+new_scale_y(d.y)+")"})
 
     node.append("circle")
