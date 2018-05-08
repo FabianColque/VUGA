@@ -88,46 +88,60 @@ var legend = function(){
   }
 
   function update_points(){
-    
-    if(data.mode == 'dynamic'){
-      console.log("dynamic")
-      scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
-      all_values_rev = []
-      d3.selectAll(data.selector + " .pointDots")
-        .style("fill", function(d, i){
-          if(data.body[d[2]] < 0 || data.body[d[2]] > 1)
-            return "white"
-          return scaleColor(data.body[d[2]])
-      })
+    /*var liminf = 0;
+    var limsup = 0;
+    var scaleColor = d3.scale.linear();
+    if(data.mode == "static"){
+      var sol = data.names.length-1;
+      var eu = d3.range(sol+1).map(function(d){return d * 1/sol})
+      scaleColor.domain(eu).range(get_array_consecutives(data.names.length))
     }else{
-      console.log("static")
-      scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
-      all_values_rev = []
-      d3.selectAll(data.selector + " .pointDots")
-        .style("fill", function(d, i){
-          if(d.length < 5)
-            d.push(data.body[i])
-          else
-            d[4] = data.body[i];
+      newdom = []
+      limsup = data.outlier[0] + data.outlier[3]
+      liminf = data.outlier[0] - data.outlier[3]
+      if(liminf < 0)liminf = 0
+      if(limsup > 1)limsup = 1
+      hdelta = (limsup - liminf)/8;//9-1
+      newdom = d3.range(9).map(function(d, i){return liminf + hdelta*i})
+      //scaleColor.domain([0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]).range(get_array_consecutives(5))
+      scaleColor.domain(newdom).range(get_array_consecutives(9))
+    }  
+    //console.log("outlier", data.outlier)
+    //res["outlier"] = [med, q1, q3, lim]
+    */
 
-          if(caso_genre){
-            //var color_aux = scaleColor(data.body[d[2]]);
-            var color_aux = data.colors[data.body[d[2]]];
-            color_aux = tinycolor(color_aux)
-            color_aux = color_aux.toHsv()
-            color_aux.v = data["brightness"][i]*100
-            color_aux = tinycolor(color_aux)
+    fabian = []
 
-            return color_aux.toRgbString()
-          }
+    scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
+    all_values_rev = []
+    d3.selectAll(data.selector + " .pointDots")
+      .style("fill", function(d, i){
+        
+        if(caso_genre){
+          var color_aux = scaleColor(data.body[d[2]]);
+          color_aux = tinycolor(color_aux)
+          color_aux = color_aux.toHsv()
+          color_aux.v = data["brightness"][i]*100
+          color_aux = tinycolor(color_aux)
 
-          //if(data.body[d[2]] < 0 || data.body[d[2]] > 1)
-            //return "white"
-          //return scaleColor(data.body[d[2]])
-          return data.colors[data.body[d[2]]];
-      })
-    }
+          //fabian.push(color_aux.toRgbString())
 
+          return color_aux.toRgbString()
+        }
+
+        if(data.body[d[2]] < 0 || data.body[d[2]] > 1)
+          return "white"
+        return scaleColor(data.body[d[2]])
+        //return data.colors[Math.round(scaleColor(aux))]
+        /*var  aux = 0;
+        if(data.body[d[2]] > 0.125)
+          aux = 1
+        else
+          aux = 8 * data.body[d[2]]
+        //return "#081d58"
+        return data.colors[Math.round(scaleColor(aux))]*/
+        //return data.colors[Math.round(scaleColor(data.body[d[2]]))]
+    })
   }
 
   function get_array_consecutives(num){
@@ -210,7 +224,7 @@ var legend = function(){
       str += "<div style=\"display:inline-flex;\">";//margin-left: -35%
       //str += "<div class=\"col-sm-12\">";
       //str += "<div class=\"col-sm-2\">";
-      str += "<div id = \"color"+i+"\" style=\"margin-left: 2px; background-color: "+data.colors[i]+"; height: 13px; width:14px; top:4px; padding-right: 0px; border:1px solid #000000 \"></div>";
+      str += "<div id = \"color"+i+"\" style=\"margin-left: 2px; background-color: "+data.colors[i]+"; height: 13px; width:14px; top:4px; padding-right: 0px \"></div>";
       //str += "</div>";
       //str += "<div class=\"col-sm-10\">";
       str += "<input class=\"checks_leg\" id=\"check" + i + "\" style = \"margin-top:2px; margin-left:2px; width:11px;height:11px;visibility:" + visi + "\" type=\"checkbox\" name=\"mycheckbox\" value=\""+ i + "\" checked>";
@@ -283,54 +297,50 @@ var legend = function(){
 
   var click_checkbox = function(){
         
-    d3.selectAll(data.selector + " #mylegend input")
-      .on("click", function(d,i){
-        //console.log("holaaaa", i)
-        var rec_color = d3.select(data.selector + " #mylegend #color"+i).style("background-color");
-        //if now is checked
-        if(this.checked){
-          d3.selectAll(data.selector + " .pointDots")
-            .style("visibility", function(d, u){
-              //if(scaleColor(data["body"][d[2]]) == rec_color || scaleColor(data["body"][d[2]]) == tinycolor(rec_color).toHexString())return "visible"
-              if(d[4] == i)return "visible";
-              return this.style.visibility;                              
-            })
-        }else{
-          d3.selectAll(data.selector + " .pointDots")
-            .style("visibility", function(d, u){
-              //if(scaleColor(data["body"][d[2]]) == rec_color || scaleColor(data["body"][d[2]]) == tinycolor(rec_color).toHexString())return "hidden"
-              if(d[4] == i)return "hidden";
-              return this.style.visibility;                                
-            })
-        }
-      })
+        d3.selectAll(data.selector + " #mylegend input")
+            .on("click", function(d,i){
+                
 
-    d3.select(data.selector + " .selectAllBtn")
+                var rec_color = d3.select(data.selector + " #mylegend #color"+i).style("background-color");
+                //if now is checked
+                if(this.checked){
+                    
+                    d3.selectAll(data.selector + " .pointDots")
+                        .style("visibility", function(d, u){
+                            
+                            /*if(this.style.fill == rec_color){
+                                
+                                return "visible";
+                            }
+                            return this.style.visibility;*/
+                            //if(u < 10)console.log("noooooo", d, scaleColor(data["body"][d[2]]), rec_color)
+                            if(scaleColor(data["body"][d[2]]) == rec_color || scaleColor(data["body"][d[2]]) == tinycolor(rec_color).toHexString())return "visible"
+                            return this.style.visibility;                              
+                        })
+                }else{
+                    d3.selectAll(data.selector + " .pointDots")
+                        .style("visibility", function(d, u){
+                            //if(i < 10)console.log("coloressss" , d)
+                            /*if(this.style.fill == rec_color){
+                                return "hidden";
+                            }
+                            return this.style.visibility;*/
+                          if(scaleColor(data["body"][d[2]]) == rec_color || scaleColor(data["body"][d[2]]) == tinycolor(rec_color).toHexString())return "hidden"
+                          return this.style.visibility;                                
+                        })
+                }
+            })
+
+      d3.select(data.selector + " .selectAllBtn")
+        .style("cursor", "pointer")
+        .style("color", "#005580")
+        .on("click", function(){
+          d3.selectAll(data.selector + " .pointDots")
+            .style("visibility", "visible")
+          d3.selectAll(".checks_leg").property("checked", true)
+        })
+      d3.select(data.selector + " .deselectAllBtn")
       .style("cursor", "pointer")
-
-      .style("color", "#005580")
-      .on("click", function(){
-        d3.selectAll(data.selector + " .pointDots")
-          .style("visibility", "visible")
-        d3.selectAll(".checks_leg").property("checked", true)
-      })
-    d3.select(data.selector + " .deselectAllBtn")
-    .style("cursor", "pointer")
-    .style("color", "red")
-      .on("click", function(){
-        d3.selectAll(data.selector + " .pointDots")
-          .style("visibility", "hidden")
-        d3.selectAll(".checks_leg").property("checked", false)
-      })
-
-    d3.select("#mylegend")
-      .style("overflow-y", function(){
-          if(data.colors.length >= 18)return "scroll"
-          return "initial"
-      })
-  }
-}
-
       .style("color", "red")
         .on("click", function(){
           d3.selectAll(data.selector + " .pointDots")
@@ -338,18 +348,10 @@ var legend = function(){
           d3.selectAll(".checks_leg").property("checked", false)
         })
 
-      d3.select("#mylegend").style("overflow-y", function() {
-         if (data.colors.length >= 18) {
-            return "scroll"
-         }
-         return "initial"
-      })
-      d3.select("#mylegend").style("height", function() {
-         if(data.colors.length < 18) {
-            return "auto"
-         }
-         return d3.select("#mylegend").style("height")
-      })
+      d3.select("#mylegend")
+        .style("overflow-y", function(){
+            if(data.colors.length >= 18)return "scroll"
+            return "initial"
+        })
     }
 }
-

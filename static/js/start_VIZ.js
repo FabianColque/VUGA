@@ -166,31 +166,47 @@ function test_enjoyhint() {
   // config steps
   var enjoyhint_script_steps = [
       {
-          "next .navbar-brand": 'Now let\'s do a quick tour about the demo, let\'s start!',
+          "next #svg_projection": "<p align ='left'>This is the Projection Area.<br>Here, we display the users represented by circles.</p>",
 			 "showSkip": false
       },
       {
-          "next #svg_projection": "Here, we display the users represented by circles.",
+          "next #mylegend": "<p align ='left'>Users use this set of colors. Each user is colored by the dominant dimension.<br>Also, This legend helps us to filter the dimensions for a best exploration.</p>",
 			 "showSkip": false
       },
       {
-          "next #mylegend": "Users use this set of colors. Each user is colored by the dominant dimension.",
+          "click .deselectAllBtn": "<p align ='left'>You need to click here to deselect all the dimensions.</p>",
 			 "showSkip": false
       },
       {
-          "click .switch__container": "You need to click here to active the tool Lasso to select a subset of users and continue the exploration",
+          "click .selectAllBtn": "<p align ='left'>You need to click here to select all the dimensions.</p>",
 			 "showSkip": false
       },
       {
-          "next #svg_projection": "Please, Using your mouse, select a set of users (circles)",
+          "click #check0": "<p align ='left'>You need to click here to deselect one dimension.</p>",
 			 "showSkip": false
       },
       {
-          "next .botones3": "Also, we have 3 options to use the tool Lasso, Lasso reset for reset the selection of users, Select All for select all users and Reset All for reset all users",
+          "click #check0": "<p align ='left'>You need to click here to select one dimension.</p>",
+			 "showSkip": false
+         },
+      {
+          "next .select_color": "<p align ='left'>Here, we can change the dimensions.</p>",
 			 "showSkip": false
       },
       {
-          "click #explore-viz": "Click here to display the information of the users selected",
+          "click #switch-shadow-label": "<p align ='left'>You need to click here to continue the exploration:<br><text style='color: #00a6eb'>Lasso on</text> - For active the Lasso tool to select a subset of users.<br><text style='color: #00a6eb'>Lasso off</text> - Zoom the Projection Area with the scroll mouse button and move it with the pressed left mouse button.</p>",
+			 "showSkip": false
+      },
+      {
+          "next .btn_3_lassos": "<p align ='left'>Also, we have 3 options to use the Lasso tool for select one or more regions in the Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - For clear a previous selection.<br><text style='color: #00a6eb'>Select All</text> - For select all visible users.<br><text style='color: #00a6eb'>Reset All</text> - For return at the complete projection.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #svg_projection": "<p align ='left'>Please, using your mouse, select a set of users (circles).</p>",
+			 "showSkip": false
+      },
+      {
+          "click #explore-viz": "<p align ='left'>Click here to display the information of the users selected.</p>",
 			 "showSkip": false
       },
       {
@@ -210,7 +226,7 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #originalComparison": "In this part, we have some charts with the distribution of users by each attribute",
+          "next #piechartmio": "In this part, we have some charts with the distribution of users by each attribute",
 			 "showSkip": false
       }
 

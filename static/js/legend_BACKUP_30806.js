@@ -307,7 +307,7 @@ var legend = function(){
 
     d3.select(data.selector + " .selectAllBtn")
       .style("cursor", "pointer")
-
+<<<<<<< HEAD
       .style("color", "#005580")
       .on("click", function(){
         d3.selectAll(data.selector + " .pointDots")
@@ -330,7 +330,7 @@ var legend = function(){
       })
   }
 }
-
+=======
       .style("color", "red")
         .on("click", function(){
           d3.selectAll(data.selector + " .pointDots")
@@ -352,4 +352,4 @@ var legend = function(){
       })
     }
 }
-
+>>>>>>> e4d60303c774756474cd7e061a22c7f3e05f88a0
