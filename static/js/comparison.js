@@ -17,7 +17,7 @@ function comparison_matriz(name_, div){
   var width = 450;
   var height = 200;
   //hasta aqui bien
-  var colores_movielens = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
+  var colores_movielens = colorsArray2//["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
   var chart = null;
   var xAxis = null;
   var yAxis = null;
@@ -128,6 +128,8 @@ function comparison_matriz(name_, div){
         //return "rgb(179,205,227)"
         return colores_movielens[i];
       })
+      .attr("stroke", "black")
+      .attr("stroke-width", "0.5")
       .append("title")
       .text(function(d){
         return parseFloat(d.val*100).toFixed(2) + " %";

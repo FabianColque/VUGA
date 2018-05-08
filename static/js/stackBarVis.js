@@ -5,7 +5,7 @@ function stackBarVis(){
 
   var h_cell = 20;
   var divClass = ""
-  var colores_movielens = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
+  var colores_movielens = colorsArray2//["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
   var xw = null;
   var dataori = null;
 
@@ -102,6 +102,8 @@ function stackBarVis(){
         })
         .attr("height", function(d){return h_cell})
         .style("fill", function(d){return colores_movielens[d.y]})
+        .attr("stroke", "black")
+        .attr("stroke-width", "0.5")
         .append("title")
         .text(function(d){
           return parseFloat(d.val*100).toFixed(2) + " %"

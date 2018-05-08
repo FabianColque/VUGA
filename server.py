@@ -881,7 +881,9 @@ class save_and_generate_newData(BaseHandler):
       #elbuenonew_order_names = ["RESPIRATOIRE", "bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
       #new_order_names = ["bmi", "iah", "PERFUSION", "epworth", "NUTRITION", "INSULINE", "REHABILITATION"]
       #new_order_names = ["PERFUSION","NUTRITION", "INSULINE", "REHABILITATION"]
-      new_order_names = ['RESP_AERO', 'RESP_OXY', 'RESP_PPC', 'RESP_VEN', 'NUTRITION_NUTENT', 'INSULINE', 'PERFANTIB', 'PERFANTID', 'PERFSANG', 'PERFDIV', 'PERFCHIMIO', 'PERFANTIV', 'PERF', 'PERFATBC', 'PERFIMMUNO', 'RESP_ASPI', 'PERFPAR', 'PERFRINC', 'PERFKETAM', 'PERFPARK', 'RESP_ENR', 'RESP_VENTRACH', 'PERFHTAP', 'RESP_VISPERF', 'RESP_TRACHEO', 'REHAB_FIT', 'REHAB_RME', 'REHAB_RRE', 'REHAB_REH']
+      #new_old  new_order_names = ['RESP_AERO', 'RESP_OXY', 'RESP_PPC', 'RESP_VEN', 'NUTRITION_NUTENT', 'INSULINE', 'PERFANTIB', 'PERFANTID', 'PERFSANG', 'PERFDIV', 'PERFCHIMIO', 'PERFANTIV', 'PERF', 'PERFATBC', 'PERFIMMUNO', 'RESP_ASPI', 'PERFPAR', 'PERFRINC', 'PERFKETAM', 'PERFPARK', 'RESP_ENR', 'RESP_VENTRACH', 'PERFHTAP', 'RESP_VISPERF', 'RESP_TRACHEO', 'REHAB_FIT', 'REHAB_RME', 'REHAB_RRE', 'REHAB_REH']
+      new_order_names = ['RESP_AERO', 'RESP_OXY', 'RESP_PPC', 'RESP_VEN', 'NUTRITION_NUTENT', 'INSULINE', 'PERFANTIB', 'PERFANTID', 'PERFSANG', 'PERFDIV', 'PERFCHIMIO', 'PERFANTIV', 'PERF', 'PERFATBC', 'RESP_ASPI', 'PERFPAR', 'PERFRINC', 'RESP_ENR', 'RESP_VENTRACH', 'PERFHTAP', 'RESP_TRACHEO', 'REHAB_FIT', 'REHAB_RME']
+
       arr_tsne, heatmap, mayores, brillo = modiying_health_data_dimension(arr_tsne, dimensionsData, heatmap)
       for i in xrange(0, len(heatmap["body"])):
         dataViz["instances"][i]["values"].append(mayores[i])
@@ -1366,8 +1368,8 @@ class getDimension_legend(BaseHandler):
     dim_num = mydata.get("dimension_num")
     dim_num = int(dim_num)
 
-
-    colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
+    colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#808080  ", "#FFFFFF", "#000000"]                    
+    #colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
     #colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 
     time0 = time()
@@ -1391,7 +1393,7 @@ class getDimension_legend(BaseHandler):
 
       sz_dim = float(len(details["Dimensions_charts"][dim_num]["titles"]) - 1.0)
       for i_dataviz in xrange(0, len(dataViz["instances"])):
-        aux_body.append(dataViz["instances"][i_dataviz]["values"][dim_num]/sz_dim)
+        aux_body.append(dataViz["instances"][i_dataviz]["values"][dim_num])#/sz_dim
     else:
       dim_num_heat = dim_num - len(details["Dimensions_charts"]) + len(details["dim_toProj"])
       res["title"] = data_heatmap["headers"][dim_num_heat]
@@ -1824,7 +1826,7 @@ settings = dict(
   static_path = "static",
   debug = True,
   google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"},
-  developers = ["goesrex@gmail.com", "fbcolque@gmail.com", "joao.comba@gmail.com"]
+  developers = ["goesrex@gmail.com", "fbcolque@gmail.com", "joao.comba@gmail.com", "Melina.loreto@gmail.com", "viviane.p.moreira@gmail.com"]
 )    
 
 application = tornado.web.Application([

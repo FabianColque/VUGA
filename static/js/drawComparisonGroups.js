@@ -7,7 +7,8 @@ function drawComparison(div_){
   var sorted_resume = [];
   var dim_data_ready = [];
 
-  var colores = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"];
+  //var colores = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"];
+  var colores = colorsArray2;
 
   this.init = function(){/*div_comparison, div_resume, div_heatmap, div_pie*/
     var w_ = document.getElementById(div.slice(1)).scrollWidth;
@@ -61,8 +62,8 @@ function drawComparison(div_){
     if(data_nose == undefined){
       data_selected = evt.top(Infinity).map(function(d){return d.idx});
     }
-    
-    data_selected = data_selected.slice(0,100);
+    //console.log("cuando sucede esto")
+    //data_selected = data_selected.slice(0,100);
     data_heatmap = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "get_heatmap");
 
     var dim_porcen = new Array(data_heatmap["headers"].length).fill(0.0);
@@ -87,8 +88,19 @@ function drawComparison(div_){
     resume = [resume];
 
     sorted_resume = d3.range(resume[0].length).sort(function(a, b){return resume[0][b] - resume[0][a]});  
-    var sorted_rows = d3.range(data_heatmap["body"].length).sort(function(a, b){return data_heatmap["body"][b][sorted_resume[0]] - data_heatmap["body"][a][sorted_resume[0]]})
+    //var sorted_rows = d3.range(data_heatmap["body"].length).sort(function(a, b){return data_heatmap["body"][b][sorted_resume[0]] - data_heatmap["body"][a][sorted_resume[0]]})
     
+    var num_col = data_heatmap["body"][0].length;
+    var sorted_rows = d3.range(data_heatmap["body"].length)
+      .sort(function(a, b){
+        for(var i = 0; i < num_col; i++){
+          if(data_heatmap["body"][b][sorted_resume[i]] != data_heatmap["body"][a][sorted_resume[i]])
+            return data_heatmap["body"][b][sorted_resume[i]] - data_heatmap["body"][a][sorted_resume[i]]
+        }
+        return sorted_resume[b] - sorted_resume[a];
+      })
+
+
     comparison_matrices.update_comparison(dim_data_ready);
     resume_comparison.update(resume, ["All"], sorted_resume)
     mipiechart.update(resume);
@@ -106,9 +118,37 @@ function drawComparison(div_){
     var new_names = data_selected.map(function(d){return data_set_positions[d]})
     new_names = sorted_rows.map(function(d){return new_names[d]});
     var data_sorted = sorted_rows.map(function(d){return data_heatmap["body"][d]})
+    maximum_len = 100
+    if(data_sorted.length < 100)
+      maximum_len = data_sorted.length
+    olas = shuffle(maximum_len)
+    console.log("impo: ", olas)
+    olas = olas.slice(0, maximum_len)
+    console.log("impo2: ", olas)
+    olas.sort(function(a,b){return a-b});
+    console.log("impo3: ", olas)
 
+    data_sorted1 = d3.range(maximum_len).map(function(d){return data_sorted[olas[d]]})
+    
+    data_sorted = data_sorted1
+    fabian = data_sorted
+    //data_sorted = data_sorted.slice(0, 100)
     stack_heatmap.update(data_sorted, new_names, sorted_resume)
 
+  }
+
+  function shuffle(maxElements) {
+    //create ordered array : 0,1,2,3..maxElements
+    for (var temArr = [], i = 0; i < maxElements; i++) {
+        temArr[i] = i;
+    }
+
+    for (var finalArr = [maxElements], i = 0; i < maxElements; i++) {
+        //remove rundom element form the temArr and push it into finalArrr
+        finalArr[i] = temArr.splice(Math.floor(Math.random() * (maxElements - i)), 1)[0];
+    }
+
+    return finalArr
   } 
 
 }
