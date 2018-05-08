@@ -327,5 +327,11 @@ var legend = function(){
           if(data.colors.length >= 18)return "scroll"
           return "initial"
       })
+    d3.select("#mylegend").style("height", function() {
+         if(data.colors.length < 18) {
+            return "auto"
+         }
+         return d3.select("#mylegend").style("height")
+      })
   }
 }

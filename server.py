@@ -1606,7 +1606,10 @@ class getUsersbyRangeYear(BaseHandler):
     for y in years_selected:
       for us in data_selected:
         if us in years["body"][y]:
-          res["name"+us] = 1
+          if dbname.lower()[0:6] == "health" or dbname.lower()[0:9] == "movielens":
+            res["user"+us] = 1
+          else:
+            res["name"+us] = 1
 
     self.write(json.dumps(res))
 
@@ -1738,7 +1741,7 @@ class getDataObj2_and_concepts(BaseHandler):
 
 ### functions for support START ###############
 def getKey_byYear(item):
-  return item["year"]
+  return int(item["year"])
 
 
 def isNumber(str):
