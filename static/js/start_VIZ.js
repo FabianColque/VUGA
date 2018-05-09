@@ -170,25 +170,9 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #mylegend": "<p align ='left'>Users use this set of colors. Each user is colored by the dominant dimension.<br>Also, This legend helps us to filter the dimensions for a best exploration.</p>",
+          "next #mylegend": "<p align ='left'>Users use this set of colors. Each user is colored by the dominant dimension.<br>Also, This legend helps us to filter the dimensions for a best exploration:<br><text style='color: #00a6eb'>deselectAll</text> - Deselect all the dimensions.<br><text style='color: #00a6eb'>selectAll</text> - Select all the dimensions.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Select/deselect one dimension.</p>",
 			 "showSkip": false
       },
-      {
-          "click .deselectAllBtn": "<p align ='left'>You need to click here to deselect all the dimensions.</p>",
-			 "showSkip": false
-      },
-      {
-          "click .selectAllBtn": "<p align ='left'>You need to click here to select all the dimensions.</p>",
-			 "showSkip": false
-      },
-      {
-          "click #check0": "<p align ='left'>You need to click here to deselect one dimension.</p>",
-			 "showSkip": false
-      },
-      {
-          "click #check0": "<p align ='left'>You need to click here to select one dimension.</p>",
-			 "showSkip": false
-         },
       {
           "next .select_color": "<p align ='left'>Here, we can change the dimensions.</p>",
 			 "showSkip": false
@@ -222,14 +206,33 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #dataTable_obj2": "Here, we have the list of Movies",
+          "next #dataTable_obj2": "<p align ='left'>Here, we display a list of " + d3.select("#name_obj2").text() + " about the users currently selected.</p>",
 			 "showSkip": false
       },
       {
-          "next #piechartmio": "In this part, we have some charts with the distribution of users by each attribute",
+          "next #charts_without_detail": "<p align ='right'><text style='color: #00a6eb'>In this part, we have some charts with the distribution of users by each attribute.</text></p>",
+			 "showSkip": false
+      },
+      {
+          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select one user.</p>",
+			 "showSkip": false
+      },
+      {
+          "click #id_tabla_obj1>tbody>tr:last": "<p align ='left'>Select another user.</p>",
+			 "showSkip": false
+      },
+      {
+          "click #Save_obj1": "<p align ='left'>Click here to save the selected users into 'Save Area'.<br>Also, we can click in <text style='color: #00a6eb'>Save All</text> button to save all users into 'Save Area'.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #idsavearea_obj1": "<p align ='left'>This is the Save Area.<br>Here, we display a list of the saved users.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #config_groups": "<p align ='left'>Also, we have 3 options to use the Lasso tool for select one or more regions in the Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - For clear a previous selection.<br><text style='color: #00a6eb'>Select All</text> - For select all visible users.<br><text style='color: #00a6eb'>Reset All</text> - For return at the complete projection.</p>",
 			 "showSkip": false
       }
-
   ];
 
   //set script config
