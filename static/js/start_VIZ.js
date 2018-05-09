@@ -210,15 +210,15 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #dataTable_obj1": "Here, we have the list of users",
+          "next #dataTable_obj1": "<p align ='left'>Here, we have the list of users and the general information of each one.</p>",
 			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1": "Now, the information of users are displayed with charts",
+          "next #div_graphs_obj1": "<p align ='left'>Now, the information of users but summarized are displayed with the charts.</p>",
 			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1_0": "Click in one bar to filter the users based in this attribute",
+          "next #div_graphs_obj1_0": "<p align ='left'>Click in a category inside the chart to filter the users based in that attribute.</p>",
 			 "showSkip": false
       },
       {
