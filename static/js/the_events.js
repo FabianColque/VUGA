@@ -17,12 +17,13 @@ d3.select("#btn_back_Projection")
 		setTimeout(function(){
 			//var_save_area.getData_idx();
 			flag_comparison = false
-	        var datahisto = post_to_server_global({"data_selected": original_save, "dbname": name_dataset}, "getData_Viz")
-	        
-	        viz_proj.setDataSelected(original_save)
-	        viz_proj.draw_only_selected()
-	        histograms_obj1.refresh_All_Data(datahisto.instances)
-			
+			original_save = var_save_area.getData_idx()
+			if(original_save.length > 0){
+				var datahisto = post_to_server_global({"data_selected": original_save, "dbname": name_dataset}, "getData_Viz")
+		        viz_proj.setDataSelected(original_save)
+		        viz_proj.draw_only_selected()
+		        histograms_obj1.refresh_All_Data(datahisto.instances)	
+			}
 			fn_loading(false)
 		})
 	})

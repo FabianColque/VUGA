@@ -4,8 +4,7 @@ function myBrush(namediv){
 
   var ww = document.getElementById("div_graphs_obj1").scrollWidth;
   
-  console.log("kkkk", ww)
-	var margin = {top: 20, right: 20, bottom: 30, left: 10},
+  var margin = {top: 20, right: 20, bottom: 30, left: 10},
     width = ww - margin.left - margin.right,
     height = 200 - margin.top - margin.bottom;
     //width = 650 - margin.left - margin.right,

@@ -90,7 +90,6 @@ var legend = function(){
   function update_points(){
     
     if(data.mode == 'dynamic'){
-      console.log("dynamic")
       scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
       all_values_rev = []
       d3.selectAll(data.selector + " .pointDots")
@@ -100,7 +99,6 @@ var legend = function(){
           return scaleColor(data.body[d[2]])
       })
     }else{
-      console.log("static")
       scaleColor = d3.scale.linear().domain(gerar_ranges(data.colors.length)).range(data.colors)
       all_values_rev = []
       d3.selectAll(data.selector + " .pointDots")
@@ -285,7 +283,6 @@ var legend = function(){
         
     d3.selectAll(data.selector + " #mylegend input")
       .on("click", function(d,i){
-        //console.log("holaaaa", i)
         var rec_color = d3.select(data.selector + " #mylegend #color"+i).style("background-color");
         //if now is checked
         if(this.checked){

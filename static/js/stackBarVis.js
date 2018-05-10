@@ -14,7 +14,7 @@ function stackBarVis(){
     d3.select(divClass)
       .append("svg")
         .attr("width", width + margin.left + margin.right+50)
-        .attr("height", height + margin.top + margin.bottom+20)
+        .attr("height", height + margin.top + margin.bottom+50)
       .append("g")
       .attr("class", "stackBarClass")
       .attr("id", "idStack")

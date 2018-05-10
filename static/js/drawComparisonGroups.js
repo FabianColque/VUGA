@@ -63,7 +63,6 @@ function drawComparison(div_){
     if(data_nose == undefined){
       data_selected = evt.top(Infinity).map(function(d){return d.idx});
     }
-    //console.log("cuando sucede esto")
     //data_selected = data_selected.slice(0,100);
     data_heatmap = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected}, "get_heatmap");
 
@@ -123,12 +122,9 @@ function drawComparison(div_){
     if(data_sorted.length < 100)
       maximum_len = data_sorted.length
     olas = shuffle(maximum_len)
-    console.log("impo: ", olas)
     olas = olas.slice(0, maximum_len)
-    console.log("impo2: ", olas)
     olas.sort(function(a,b){return a-b});
-    console.log("impo3: ", olas)
-
+    
     data_sorted1 = d3.range(maximum_len).map(function(d){return data_sorted[olas[d]]})
     
     data_sorted = data_sorted1
