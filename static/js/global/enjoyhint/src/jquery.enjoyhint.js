@@ -120,7 +120,7 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
 
                 var defs = $(makeSVG('defs'));
                 var marker = $(makeSVG('marker', {id: "arrowMarker", viewBox: "0 0 36 21", refX: "21", refY: "10", markerUnits: "strokeWidth", orient: "auto", markerWidth: "16", markerHeight: "12"}));
-                var polilyne = $(makeSVG('path', {style: "fill:none; stroke:rgb(255,255,255); stroke-width:2", d: "M0,0 c30,11 30,9 0,20"}));
+                var polilyne = $(makeSVG('path', {style: "fill:none; stroke:#00a6eb; stroke-width:2", d: "M0,0 c30,11 30,9 0,20"}));
 
                 defs.append(marker.append(polilyne)).appendTo(that.$svg);
 
@@ -648,7 +648,7 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
                         $('#enjoyhint_arrpw_line').remove();
 
                         var d = 'M' + x_from + ',' + y_from + ' Q' + control_point_x + ',' + control_point_y + ' ' + x_to + ',' + y_to;
-                        that.$svg.append(makeSVG('path', {style: "fill:none; stroke:rgb(255,255,255); stroke-width:3", 'marker-end': "url(#arrowMarker)", d: d, id: 'enjoyhint_arrpw_line'}));
+                        that.$svg.append(makeSVG('path', {style: "fill:none; stroke:#00a6eb; stroke-width:3", 'marker-end': "url(#arrowMarker)", d: d, id: 'enjoyhint_arrpw_line'}));
                         that.enjoyhint.removeClass(that.cl.svg_transparent);
 
                     }, that.options.animation_time / 2);

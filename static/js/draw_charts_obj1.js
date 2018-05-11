@@ -864,6 +864,7 @@ function drawing_histo_obj1(){
       dataTable_obj1.fnClearTable();
       dataTable_obj1.fnAddData(alldata);
       dataTable_obj1.fnDraw();
+		window.dispatchEvent(new Event('resize'));
       refreshTable_obj2();
     })
   }

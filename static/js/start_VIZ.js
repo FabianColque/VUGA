@@ -198,7 +198,7 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1": "<p align ='left'>Now, the information of users but summarized are displayed with the charts.</p>",
+          "next #charts_w_time": "<p align ='left'>Now, the information of users but summarized are displayed with the charts.</p>",
 			 "showSkip": false
       },
       {
@@ -210,7 +210,7 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #charts_without_detail": "<p align ='right'><text style='color: #00a6eb'>In this part, we have some charts with the distribution of users by each attribute.</text></p>",
+          "next #charts_without_detail": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>In this part, we have some charts with the distribution of users by each attribute.</text></p>",
 			 "showSkip": false
       },
       {
@@ -242,19 +242,21 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "click #node1": "<p align ='left'>Click in this group for visualize its information.</p>",
-			 "showSkip": false
+          event: 'click',
+			 selector: '#node1',
+			 description: "<p align ='left'>Click in this group for visualize its information.</p>",
+			 showSkip: false
       },
       {
           "next #dataTable_obj1": "<p align ='left'>Cliking in a group, we have the list of users and the general information of the selected group.</p>",
 			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1": "<p align ='left'>Also, the charts of the selected group.</p>",
+          "next #charts_w_time": "<p align ='left'>Also, the charts of the selected group.</p>",
 			 "showSkip": false
       },
       {
-          "next #charts_without_detail_compair": "<p align ='right'><text style='color: #00a6eb'>Finally, we can compare the original group anthe group selected.</text></p>",
+          "next #charts_without_detail_compair": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Finally, we can compare the original group and the group selected.</text></p>",
 			 "showSkip": false
       }
   ];
