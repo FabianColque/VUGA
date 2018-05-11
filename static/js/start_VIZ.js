@@ -230,7 +230,31 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #config_groups": "<p align ='left'>Also, we have 3 options to use the Lasso tool for select one or more regions in the Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - For clear a previous selection.<br><text style='color: #00a6eb'>Select All</text> - For select all visible users.<br><text style='color: #00a6eb'>Reset All</text> - For return at the complete projection.</p>",
+          "next #config_groups": "<p align ='left'> Also, we have 3 options of configuration to explore groups:<br><text style='color: #00a6eb'>Max. Groups</text> - It is the number of user groups that you want as result.<br><text style='color: #00a6eb'>Top Dimensions</text> - For choose the percentage of relevant dimensions.<br><text style='color: #00a6eb'>+ Similarity/- Similarity</text> - If you want find the more similar/less similar users.</p>",
+			 "showSkip": false
+      },
+      {
+          "click #btn_ExploreGroups": "<p align ='left'>Click here to explore groups.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #vizArea_Groups": "<p align ='left'>The result is a set of user groups with the number of users in each group, the similarity with the original group (purple) and<br>the intersection (number of users in common) with the original group. The light blue lines are the groups with users in common.</p>",
+			 "showSkip": false
+      },
+      {
+          "click #node1": "<p align ='left'>Click in this group for visualize its information.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #dataTable_obj1": "<p align ='left'>Cliking in a group, we have the list of users and the general information of the selected group.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #div_graphs_obj1": "<p align ='left'>Also, the charts of the selected group.</p>",
+			 "showSkip": false
+      },
+      {
+          "next #charts_without_detail_compair": "<p align ='right'><text style='color: #00a6eb'>Finally, we can compare the original group anthe group selected.</text></p>",
 			 "showSkip": false
       }
   ];
