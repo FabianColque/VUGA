@@ -17,6 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../static/css/vexus2.css">
   <link rel="stylesheet" type="text/css" href="../static/css/global/jquery-ui.min.css">
   <link rel="stylesheet" type="text/css" href="../static/css/jquery-ui_custom.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/sidenav_custom.css">
 
   <!--
   Here we are adding the libraries that the app needs
@@ -77,9 +78,16 @@
             </div>
           </li>
           <li>
+            <div hidden class="col-md-1" id="tasks_div">
+              <button class="ui-button ui-widget ui-corner-all" id="tasks_button">
+                VIEW<br/>TASKS
+              </button>
+            </div>
+          </li>
+          <li>
             <div hidden class="col-md-1" id="end_interaction_div">
               <button class="ui-button ui-widget ui-corner-all" id="end_interaction">
-                END<br />INTERACTION
+                END<br/>INTERACTION
               </button>
             </div>
           </li>
@@ -456,6 +464,13 @@
 	 </p>
   </div>
 
+  <div id="sidenav_tasks" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNavTask()">&times;</a>
+	 <iframe id="iframe_tasks" src="https://docs.google.com/forms/d/e/1FAIpQLSemBh94vkvy90poyCxWDCpoowKB_nmgQo771G8xyOzgTmwp4g/viewform?embedded=true" width="100%" height="100%" frameborder="1" marginheight="0" marginwidth="0" >
+      <p>Your browser does not support iframes. Please change your browser and login with your same email for continuing with the tasks.</p>
+	 </iframe>
+  </div>
+
   <!--End of main div Body hasta aqui esta bien-->
   <script src="../static/js/filterBrush.js"></script>
   <script src="../static/js/drawComparisonGroups.js"></script>
@@ -500,7 +515,12 @@
         //.style("left", top+"%")
         //.style("left", "50%")
     }
-
+	 
+	 function closeNavTask() {
+      $("#sidenav_tasks").css('width', '0');
+      $("#main_body").css('margin-right', '0');
+      $("#tasks_button").removeClass('ui-state-active');
+	 }
 
     start()   
   </script>

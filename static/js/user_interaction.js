@@ -6,6 +6,7 @@ $( function() {
 			$("#dialog-end").show();
 			$("#dialog-form").show();
 			$("#dialog-thanks").show();
+			$("#tasks_div").show();
 			$("#end_interaction_div").show();
 			var dialogInteractiveTourOpen = true;
 			var dialogStartAutoOpen = false;
@@ -85,6 +86,7 @@ $( function() {
 					],
 					close: function(event, ui) {
 						$.get("/start_user");
+						$("#tasks_button").button("option", "disabled", false);
 						$("#end_interaction").button("option", "disabled", false);
 					}
 				});
@@ -106,6 +108,7 @@ $( function() {
 							click: function() {
 								$(this).dialog( "close" );
 								$.get("/end_user");
+								$("#tasks_button").button("option", "disabled", true);
 								$("#end_interaction").button("option", "disabled", true);
 								$("#dialog-form").dialog("open");
 							}
@@ -165,12 +168,27 @@ $( function() {
                },
 					title: "Thanks"
 				});
-				var endInteractionDisabled = false;
+				var buttonsDisabled = false;
 				if (dialogInteractiveTourOpen || dialogStartAutoOpen || dialogFormAutoOpen || dialogThanksAutoOpen) {
-					endInteractionDisabled = true;
+					buttonsDisabled = true;
 				}
+				$("#tasks_button").button({
+					disabled: buttonsDisabled
+				});
+				$("#tasks_button").click(function(event) {
+               if ($("#sidenav_tasks").css("width") == "0px") {
+                  $("#sidenav_tasks").css('width', '400px');
+                  $("#main_body").css('margin-right', '400px');
+                  $("#tasks_button").addClass('ui-state-active');
+               }
+               else {
+                  $("#sidenav_tasks").css('width', '0');
+                  $("#main_body").css('margin-right', '0');
+                  $("#tasks_button").removeClass('ui-state-active');
+               }
+				});
 				$("#end_interaction").button({
-					disabled: endInteractionDisabled
+					disabled: buttonsDisabled
 				});
 				$("#end_interaction").click(function(event) {
 					$("#dialog-end").dialog("open");
@@ -183,6 +201,7 @@ $( function() {
 			$("#dialog-end").hide();
 			$("#dialog-form").hide();
 			$("#dialog-thanks").hide();
+			$("#tasks_div").hide();
 			$("#end_interaction_div").hide();
 		}
 	})
