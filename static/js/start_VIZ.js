@@ -179,7 +179,8 @@ function test_enjoyhint() {
       },
       {
           "click #switch-shadow-label": "<p align ='left'>You need to click here to continue the exploration:<br><text style='color: #00a6eb'>Lasso on</text> - For active the Lasso tool to select a subset of users.<br><text style='color: #00a6eb'>Lasso off</text> - Zoom the Projection Area with the scroll mouse button and move it with the pressed left mouse button.</p>",
-			 "showSkip": false
+			 "showSkip": false,
+			 "shape": "circle"
       },
       {
           "next .btn_3_lassos": "<p align ='left'>Also, we have 3 options to use the Lasso tool for select one or more regions in the Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - For clear a previous selection.<br><text style='color: #00a6eb'>Select All</text> - For select all visible users.<br><text style='color: #00a6eb'>Reset All</text> - For return at the complete projection.</p>",
@@ -242,13 +243,12 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          event: 'click',
-			 selector: '#node1',
-			 description: "<p align ='left'>Click in this group for visualize its information.</p>",
-			 showSkip: false
+          "click #node1": "<p align ='left'>Click in this group for visualize its information.</p>",
+			 "showSkip": false,
+			 "shape": "circle"
       },
       {
-          "next #dataTable_obj1": "<p align ='left'>Cliking in a group, we have the list of users and the general information of the selected group.</p>",
+          "next #dataTable_obj1": "<p align ='left'>Clicking in a group, we have the list of users and the general information of the selected group.</p>",
 			 "showSkip": false
       },
       {
