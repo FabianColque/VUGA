@@ -4,6 +4,8 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 
 # Setup the Sheets API
+
+
 def setup_spreadsheet():
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
     store = file.Storage('credentials.json')
@@ -17,10 +19,13 @@ def setup_spreadsheet():
     return service
 
 # Call the Sheets API
-def is_load_spreadsheet(email): 
+
+
+def is_load_spreadsheet(email):
     SPREADSHEET_ID = '1_8iMR6JHGnhGS9BLorcCkmSPd74wS8KCRZkvBAsZymU'
     RANGE_NAME = 'B2:B'
-    result = setup_spreadsheet().spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+    result = setup_spreadsheet().spreadsheets().values().get(
+        spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
     values = result.get('values', [])
     if not values:
         return False
@@ -30,5 +35,6 @@ def is_load_spreadsheet(email):
                 if row[0] == email:
                     return True
     return False
+
 
 setup_spreadsheet()
