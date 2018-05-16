@@ -44,11 +44,11 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogInteractiveTourOpen,
 					draggable: false,
-               position: {
-   					my: "center",
-	   				at: "center",
-		   			of: window
-               },
+					position: {
+						my: "center",
+						at: "center",
+						of: window
+					},
 					title: "Start interactive guided tour",
 					buttons: [
 						{
@@ -70,11 +70,11 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogStartAutoOpen,
 					draggable: false,
-               position: {
-   					my: "center",
-	   				at: "center",
-		   			of: window
-               },
+					position: {
+						my: "center",
+						at: "center",
+						of: window
+					},
 					title: "Start interaction",
 					buttons: [
 						{
@@ -88,6 +88,9 @@ $( function() {
 						$.get("/start_user");
 						$("#tasks_button").button("option", "disabled", false);
 						$("#end_interaction").button("option", "disabled", false);
+						$("#sidenav_tasks").css("width", "400px");
+						$("#main_body").css("margin-right", "400px");
+						$("#tasks_button").addClass("ui-state-active");
 					}
 				});
 				$("#dialog-end").dialog({
@@ -96,11 +99,11 @@ $( function() {
 					closeOnEscape: true,
 					autoOpen: false,
 					draggable: false,
-               position: {
-	   				my: "center",
-   					at: "center",
-					   of: window
-               },
+					position: {
+						my: "center",
+						at: "center",
+						of: window
+					},
 					title: "End interaction",
 					buttons: [
 						{
@@ -128,13 +131,13 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogFormAutoOpen,
 					draggable: false,
-               position: {
-					   my: "center bottom-10",
-   					at: "center bottom-10",
-	   				of: window
-               },
+					position: {
+						my: "center bottom-10",
+						at: "center bottom-10",
+						of: window
+					},
 					width: "90%",
-               height: ($(window).height() - 100),
+					height: ($(window).height() - 100),
 					title: "Vexus 2 Questions",
 					open: function(event, ui) {
 						$.get("/start_form");
@@ -161,11 +164,11 @@ $( function() {
 					closeOnEscape: false,
 					autoOpen: dialogThanksAutoOpen,
 					draggable: false,
-               position: {
-   					my: "center",
-	   				at: "center",
-		   			of: window
-               },
+					position: {
+						my: "center",
+						at: "center",
+						of: window
+					},
 					title: "Thanks"
 				});
 				var buttonsDisabled = false;
@@ -176,16 +179,16 @@ $( function() {
 					disabled: buttonsDisabled
 				});
 				$("#tasks_button").click(function(event) {
-               if ($("#sidenav_tasks").css("width") == "0px") {
-                  $("#sidenav_tasks").css('width', '400px');
-                  $("#main_body").css('margin-right', '400px');
-                  $("#tasks_button").addClass('ui-state-active');
-               }
-               else {
-                  $("#sidenav_tasks").css('width', '0');
-                  $("#main_body").css('margin-right', '0');
-                  $("#tasks_button").removeClass('ui-state-active');
-               }
+					if ($("#sidenav_tasks").css("width") == "0px") {
+						$("#sidenav_tasks").css("width", "400px");
+						$("#main_body").css("margin-right", "400px");
+						$("#tasks_button").addClass("ui-state-active");
+					}
+					else {
+						$("#sidenav_tasks").css("width", "0");
+						$("#main_body").css("margin-right", "0");
+						$("#tasks_button").removeClass("ui-state-active");
+					}
 				});
 				$("#end_interaction").button({
 					disabled: buttonsDisabled
@@ -193,7 +196,7 @@ $( function() {
 				$("#end_interaction").click(function(event) {
 					$("#dialog-end").dialog("open");
 				});
-			})
+			});
 		}
 		else if (is_d == 1) {
 			$("#dialog-interactive-tour").hide();
@@ -204,5 +207,5 @@ $( function() {
 			$("#tasks_div").hide();
 			$("#end_interaction_div").hide();
 		}
-	})
+	});
 });
