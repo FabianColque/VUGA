@@ -21,8 +21,7 @@ def setup_spreadsheet():
 # Call the Sheets API
 
 
-def is_load_spreadsheet(email):
-    SPREADSHEET_ID = '1_8iMR6JHGnhGS9BLorcCkmSPd74wS8KCRZkvBAsZymU'
+def is_load_spreadsheet(email, SPREADSHEET_ID):
     RANGE_NAME = 'B2:B'
     result = setup_spreadsheet().spreadsheets().values().get(
         spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()

@@ -91,35 +91,46 @@ $( function() {
 						$("#sidenav_tasks").css("width", "400px");
 						$("#main_body").css("margin-right", "400px");
 						$("#tasks_button").addClass("ui-state-active");
+						$.post("/get_email", function(email) {
+							document.getElementById("iframe_tasks").src = "https://docs.google.com/forms/d/e/1FAIpQLSemBh94vkvy90poyCxWDCpoowKB_nmgQo771G8xyOzgTmwp4g/viewform?embedded=true&entry.945529671=" + email;
+							$("#iframe_tasks").load(function() {
+								$.post("/is_load_spreadsheet", {id: "19CjpPh-5RmdYFy77XVhLXHwBq-n3Ly1wE659HijS1do"}, function(is_load) {
+									if (is_load == 1) {
+										$.get("/end_user");
+										$("#sidenav_tasks").css("width", "0");
+										$("#main_body").css("margin-right", "0");
+										$("#tasks_button").removeClass("ui-state-active");
+										$("#dialog-end").dialog("open");
+									}
+								});
+							});
+						});
 					}
 				});
 				$("#dialog-end").dialog({
 					modal: true,
 					resizable: false,
-					closeOnEscape: true,
-					autoOpen: false,
+					dialogClass: "no-close",
+					closeOnEscape: false,
+					autoOpen: dialogFormAutoOpen,
 					draggable: false,
 					position: {
 						my: "center",
 						at: "center",
 						of: window
 					},
-					title: "End interaction",
+					title: "Continue with questions",
+					open: function(event, ui) {
+						$.get("/start_form");
+					},
 					buttons: [
 						{
-							text: "Continue",
+							text: "CONTINUE",
 							click: function() {
 								$(this).dialog( "close" );
-								$.get("/end_user");
 								$("#tasks_button").button("option", "disabled", true);
 								$("#end_interaction").button("option", "disabled", true);
 								$("#dialog-form").dialog("open");
-							}
-						},
-						{
-							text: "Cancel",
-							click: function() {
-								$(this).dialog("close");
 							}
 						}
 					],
@@ -129,7 +140,7 @@ $( function() {
 					resizable: false,
 					dialogClass: "no-close",
 					closeOnEscape: false,
-					autoOpen: dialogFormAutoOpen,
+					autoOpen: false,
 					draggable: false,
 					position: {
 						my: "center bottom-10",
@@ -140,11 +151,10 @@ $( function() {
 					height: ($(window).height() - 100),
 					title: "Vexus 2 Questions",
 					open: function(event, ui) {
-						$.get("/start_form");
 						$.post("/get_email", function(email) {
 							document.getElementById("iframe_form").src = "https://docs.google.com/forms/d/e/1FAIpQLSdvagDwi3UsroT7xViFJwJh8ILlJwXAHUEPViFqmuHCiV_emw/viewform?embedded=true&entry.945529671=" + email;
 							$("#iframe_form").load(function() {
-								$.post("/is_load_spreadsheet", function(is_load) {
+								$.post("/is_load_spreadsheet", {id: "1_8iMR6JHGnhGS9BLorcCkmSPd74wS8KCRZkvBAsZymU"}, function(is_load) {
 									if (is_load == 1) {
 										$("#dialog-form").dialog("close");
 									}

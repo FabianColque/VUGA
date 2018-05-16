@@ -368,7 +368,8 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
 
 class is_load_spreadsheet(BaseHandler):
   def post(self):
-    if my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email")):
+    s_id = self.get_argument("id")
+    if my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email"), s_id):
       self.write("1")
     else:
       self.write("0")
