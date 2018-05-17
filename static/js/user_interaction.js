@@ -7,7 +7,7 @@ $( function() {
 			$("#dialog-form").show();
 			$("#dialog-thanks").show();
 			$("#tasks_div").show();
-			$("#end_interaction_div").show();
+			$("#help_div").show();
 			var dialogInteractiveTourOpen = true;
 			var dialogStartAutoOpen = false;
 			var dialogFormAutoOpen = false;
@@ -87,7 +87,7 @@ $( function() {
 					close: function(event, ui) {
 						$.get("/start_user");
 						$("#tasks_button").button("option", "disabled", false);
-						$("#end_interaction").button("option", "disabled", false);
+						$("#help_button").button("option", "disabled", false);
 						$("#sidenav_tasks").css("width", "400px");
 						$("#main_body").css("margin-right", "400px");
 						$("#tasks_button").addClass("ui-state-active");
@@ -100,6 +100,8 @@ $( function() {
 										$("#sidenav_tasks").css("width", "0");
 										$("#main_body").css("margin-right", "0");
 										$("#tasks_button").removeClass("ui-state-active");
+                              $("#tasks_button").button("option", "disabled", true);
+                              $("#help_button").button("option", "disabled", true);
 										$("#dialog-end").dialog("open");
 									}
 								});
@@ -128,8 +130,6 @@ $( function() {
 							text: "CONTINUE",
 							click: function() {
 								$(this).dialog( "close" );
-								$("#tasks_button").button("option", "disabled", true);
-								$("#end_interaction").button("option", "disabled", true);
 								$("#dialog-form").dialog("open");
 							}
 						}
@@ -200,12 +200,13 @@ $( function() {
 						$("#tasks_button").removeClass("ui-state-active");
 					}
 				});
-				$("#end_interaction").button({
+				$("#help_button").button({
 					disabled: buttonsDisabled
 				});
-				$("#end_interaction").click(function(event) {
-					$("#dialog-end").dialog("open");
+				$("#help_button").click(function(event) {
+               test_enjoyhint_with_skip();
 				});
+            $("#help_button").css("height", $("#tasks_button").css("height"));
 			});
 		}
 		else if (is_d == 1) {
@@ -215,7 +216,7 @@ $( function() {
 			$("#dialog-form").hide();
 			$("#dialog-thanks").hide();
 			$("#tasks_div").hide();
-			$("#end_interaction_div").hide();
+			$("#help_div").hide();
 		}
 	});
 });

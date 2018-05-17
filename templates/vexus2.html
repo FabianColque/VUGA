@@ -85,9 +85,10 @@
             </div>
           </li>
           <li>
-            <div hidden class="col-md-1" id="end_interaction_div">
-              <button class="ui-button ui-widget ui-corner-all" id="end_interaction">
-                END<br/>INTERACTION
+            <div hidden class="col-md-1" id="help_div">
+              <button class="ui-button ui-widget ui-corner-all ui-button-icon-only" title="Help" id="help_button">
+                <span class="ui-icon ui-icon-help" ></span>
+                HELP
               </button>
             </div>
           </li>
@@ -498,7 +499,6 @@
   <script>
 
     d3.select("body").append("div").attr("class", "loader").style("display", "none").style("position", "fixed").style("top", "50%").style("left", "50%")
-
 
     function mouse_wait(status){
       d3.select("body").style("cursor", function(){
