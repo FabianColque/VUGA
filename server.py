@@ -31,6 +31,8 @@ from scipy.stats import scoreatpercentile
 from copy import deepcopy
 import copy
 
+import psycopg2
+
 import my_algorithm
 import my_spreadsheet
 
@@ -1866,6 +1868,35 @@ application = tornado.web.Application([
 
 
 if __name__ == "__main__":
+  print "Connecting database ..."
+  conn = None
+  try:
+    conn = psycopg2.connect("dbname='vexus2' user='postgres' " +
+                            "host='combaftp.inf.ufrgs.br' password='combaftp'")
+    cur = conn.cursor()
+    print "Connected database..."
+    cur.execute("""
+                CREATE TABLE IF NOT EXISTS public.user (
+                   id_dataset integer NOT NULL,
+                   id_user integer NOT NULL,
+                   idx integer NOT NULL,
+                   id varchar(50) NOT NULL,
+                   n varchar(50) NOT NULL,
+                   x double precision NOT NULL,
+                   y double precision NOT NULL,
+                   brillo double precision NOT NULL,
+                   PRIMARY KEY (id_dataset, id_user)
+                )
+                """)
+    print "CREATE TABLE IF NOT EXISTS public.user ..."
+    cur.close()
+    conn.commit()
+  except psycopg2.Error as error:
+    print error.pgcode, ": ", error.pgerror
+  finally:
+    if conn is not None:
+      conn.close()
+
   print "Starting ..."
   global heatmap_movielens
   heatmap_movielens = load_json("static/data/Movielens only Rating/heatmap.json")
