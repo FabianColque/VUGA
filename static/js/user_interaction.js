@@ -89,7 +89,6 @@ $( function() {
 						$("#tasks_button").button("option", "disabled", false);
 						$("#help_button").button("option", "disabled", false);
 						$("#sidenav_tasks").css("width", "400px");
-						$("#main_body").css("margin-right", "400px");
 						$("#tasks_button").addClass("ui-state-active");
 						$.post("/get_email", function(email) {
 							document.getElementById("iframe_tasks").src = "https://docs.google.com/forms/d/e/1FAIpQLSemBh94vkvy90poyCxWDCpoowKB_nmgQo771G8xyOzgTmwp4g/viewform?embedded=true&entry.945529671=" + email;
@@ -98,7 +97,6 @@ $( function() {
 									if (is_load == 1) {
 										$.get("/end_user");
 										$("#sidenav_tasks").css("width", "0");
-										$("#main_body").css("margin-right", "0");
 										$("#tasks_button").removeClass("ui-state-active");
                               $("#tasks_button").button("option", "disabled", true);
                               $("#help_button").button("option", "disabled", true);
@@ -191,12 +189,10 @@ $( function() {
 				$("#tasks_button").click(function(event) {
 					if ($("#sidenav_tasks").css("width") == "0px") {
 						$("#sidenav_tasks").css("width", "400px");
-						$("#main_body").css("margin-right", "400px");
 						$("#tasks_button").addClass("ui-state-active");
 					}
 					else {
 						$("#sidenav_tasks").css("width", "0");
-						$("#main_body").css("margin-right", "0");
 						$("#tasks_button").removeClass("ui-state-active");
 					}
 				});
