@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS public.rating (
 
 CREATE TABLE IF NOT EXISTS public.evaluated_user_profile (
    id_dataset integer NOT NULL,
-   id_evaluated_user serial NOT NULL,
+   id_evaluated_user integer NOT NULL,
    email varchar(50) NOT NULL,
    given_name varchar(100),
    family_name varchar(100),
@@ -116,10 +116,9 @@ ALTER TABLE public.evaluated_user_profile
 
 CREATE TABLE IF NOT EXISTS public.evaluated_user (
    id_dataset integer NOT NULL,
-   id_evaluated_user integer NOT NULL,
+   id_evaluated_user serial NOT NULL,
    status integer NOT NULL,
    start_tour double precision,
-
    end_tour double precision,
    start_interaction double precision,
    end_interaction double precision,

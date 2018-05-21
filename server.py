@@ -1184,17 +1184,21 @@ class save_and_generate_newData_buckup(BaseHandler):
     print ("aqui acaba")
     self.write(json.dumps(""))
 
+
 # Class for Google authentication
-class GoogleOAuth2LoginHandler(tornado.web.RequestHandler, tornado.auth.GoogleOAuth2Mixin):
+class GoogleOAuth2LoginHandler(tornado.web.RequestHandler,
+                               tornado.auth.GoogleOAuth2Mixin):
   @tornado.gen.coroutine
   def get(self):
     if self.get_argument('code', False):
-      access = yield self.get_authenticated_user(
-        redirect_uri = 'http://' + self.request.host + self.request.path,
-        code = self.get_argument('code'))
-      user = yield self.oauth2_request(
-        "https://www.googleapis.com/oauth2/v1/userinfo",
-        access_token = access["access_token"])
+      access = yield self.get_authenticated_user(redirect_uri='http://' +
+                                                 self.request.host +
+                                                 self.request.path,
+                                                 code=self.get_argument('code')
+                                                 )
+      user = yield self.oauth2_request("https://www.googleapis.com/" +
+                                       "oauth2/v1/userinfo",
+                                       access_token=access["access_token"])
       self.set_secure_cookie("token", access["id_token"])
       self.set_secure_cookie("id", user["id"])
       self.set_secure_cookie("given_name", user["given_name"])
@@ -1202,19 +1206,59 @@ class GoogleOAuth2LoginHandler(tornado.web.RequestHandler, tornado.auth.GoogleOA
       self.set_secure_cookie("email", user["email"])
       self.set_secure_cookie("picture", user["picture"])
       self.set_secure_cookie("locale", user["locale"])
+
+      is_normal_user = True
+      for developer in self.settings["developers"]:
+        if developer == user["email"]:
+          is_normal_user = False
+
+      if is_normal_user:
+        conn = None
+        try:
+          params = config()
+          print "Connecting to the PostgreSQL database ..."
+          conn = psycopg2.connect(**params)
+          cur = conn.cursor()
+          cur.execute("SELECT COUNT(*) FROM dataset")
+          count_dataset = cur.fetchone()[0]
+          cur.execute("SELECT COUNT(*) FROM evaluated_user")
+          count_evaluated_user = cur.fetchone()[0]
+          id_dataset = (count_evaluated_user % count_dataset) + 1
+          cur.execute("INSERT INTO evaluated_user(id_dataset, status) " +
+                      "VALUES (%s, %s) RETURNING id_evaluated_user;",
+                      (id_dataset, 0))
+          id_evaluated_user = cur.fetchone()[0]
+          cur.execute("INSERT INTO evaluated_user_profile(id_dataset, " +
+                      "id_evaluated_user, email, given_name, family_name, " +
+                      "picture, locale) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                      (id_dataset, id_evaluated_user, user["email"],
+                       user["given_name"], user["family_name"],
+                       user["picture"], user["locale"]))
+          print "Insert user {0}.".format(user["email"])
+          cur.close()
+          conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+          print(error)
+        finally:
+          if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
       self.redirect('/')
     else:
-      yield self.authorize_redirect(
-        redirect_uri = 'http://' + self.request.host + self.request.path,
-        client_id = self.settings['google_oauth']['key'],
-        scope = ['profile', 'email'],
-        response_type = 'code',
-        extra_params = {'approval_prompt': 'auto'})
+      yield self.authorize_redirect(redirect_uri='http://' +
+                                    self.request.host + self.request.path,
+                                    client_id=self.settings['google_oauth']
+                                    ['key'], scope=['profile', 'email'],
+                                    response_type='code',
+                                    extra_params={'approval_prompt': 'auto'})
+
 
 class start_new_template_Viz(BaseHandler):
   def get(self):
     dbname = self.get_argument("g")
     self.render('vexus2.html', current_group=dbname)
+
 
 class get_data_projection(BaseHandler):
   def post(self):
@@ -1838,7 +1882,7 @@ def create_tables():
     cur.execute("SELECT version()")
     print(cur.fetchone())
     cur.execute(open("data_model_table_create.sql", "r").read())
-    print "CREATE TABLES IF NOT EXISTS ..."
+    print "Create tables if not exists."
     cur.close()
     conn.commit()
   except (Exception, psycopg2.DatabaseError) as error:
