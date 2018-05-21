@@ -32,6 +32,12 @@ Vexus 2 requires:
 
     `$ pip install --upgrade google-api-python-client`
 
+* [Python-PostgreSQL Database Adapter](https://github.com/psycopg/psycopg2)
+
+    `$ pip install psycopg2`
+
+    `$ pip install psycopg2-binary`
+
 ## Running
 
 `$ python server.py`

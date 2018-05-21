@@ -31,38 +31,62 @@ from scipy.stats import scoreatpercentile
 from copy import deepcopy
 import copy
 
+import psycopg2
+from config import config
+
 import my_algorithm
 import my_spreadsheet
 
 heatmap_movielens = [] 
 ratings_movielens = []
 
+
 class MyError(Exception):
   def __init__(self, value):
     self.value = value
+
   def __str__(self):
     return repr(self.value)
+
 
 class BaseHandler(tornado.web.RequestHandler):
   def prepare(self):
     if not self.current_user:
       self.redirect("auth/google")
       return
+
   def get_current_user(self):
     return self.get_secure_cookie("token")
 
+
 class MainHandler(BaseHandler):
   def get(self):
-    for developer in self.settings["developers"]:
-      if developer == self.get_secure_cookie("email"):
-        self.redirect('static/index.html')
-        return
-    dataset = self.get_secure_cookie("dataset")
-    if not dataset:
-      count_user()
-      path = "static/data/"
-      dataset = os.listdir(path)[count_user() % len(os.listdir(path))]
-      self.set_secure_cookie("dataset", dataset)
+    if self.get_secure_cookie("is_developer") == "1":
+      self.redirect('static/index.html')
+      return
+
+    dataset = ""
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT name FROM dataset INNER JOIN " +
+                  "evaluated_user_profile ON dataset.id_dataset = " +
+                  "evaluated_user_profile.id_dataset WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      dataset = cur.fetchone()[0]
+      print "Dataset {0}.".format(dataset)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
     self.redirect('vexus2?g=' + str(dataset))
 
 #### START #### MY CLASSES ###################
@@ -366,282 +390,229 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
 
   return arr_tsne, heatmap, mayores, brillo
 
+
 class is_load_spreadsheet(BaseHandler):
   def post(self):
     s_id = self.get_argument("id")
-    if my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email"), s_id):
+    if my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email"),
+                                          s_id):
       self.write("1")
     else:
       self.write("0")
+
 
 class get_email(BaseHandler):
   def post(self):
     self.write(self.get_secure_cookie("email"))
 
+
 class is_developer(BaseHandler):
   def post(self):
-    for developer in self.settings["developers"]:
-      if developer == self.get_secure_cookie("email"):
-        self.write("1")
-        return
+    if self.get_secure_cookie("is_developer") == "1":
+      self.write("1")
+      return
     self.write("0")
+
 
 class certified_user(BaseHandler):
   def post(self):
-    data = {}
-    data['user'] = []
-
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
-
+    status = "-1"
+    conn = None
     try:
-      for datum in data["user"]:
-        if datum["profile"]["email"] == self.get_secure_cookie("email"):
-          if datum["status"] == 0:
-            self.write("0")
-            return
-          elif datum["status"] == 1:
-            self.write("1")
-            return
-          elif datum["status"] == 2:
-            self.write("2")
-            return
-          elif datum["status"] == 3:
-            self.write("3")
-            return
-          break
-    except KeyError, e:
-      print 'I got a KeyError - reason "%s"' % str(e)
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("SELECT status FROM evaluated_user " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (id_dataset, id_evaluated_user))
+      status = cur.fetchone()[0]
+      print "User status ({0}, {1}): {2}.".format(id_dataset,
+                                                  id_evaluated_user, status)
 
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
-    self.write("-1")
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+    self.write(str(status))
+
 
 class register_user(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s, start_tour = %s " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (0, time(), id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
 
-    user = {}
-    user['id'] = self.get_secure_cookie("id")
-    user["dataset"] = self.get_secure_cookie("dataset")
-    user['start_tour'] = time()
-    user['end_tour'] = None
-    user['start_interaction'] = None
-    user['end_interaction'] = None
-    user['start_form'] = None
-    user['end_form'] = None
-    user['status'] = 0
-    user['profile'] = {}
-    user['profile']['given_name'] = self.get_secure_cookie("given_name")
-    user['profile']['family_name'] = self.get_secure_cookie("family_name")
-    user['profile']['email'] = self.get_secure_cookie("email")
-    user['profile']['picture'] = self.get_secure_cookie("picture")
-    user['profile']['locale'] = self.get_secure_cookie("locale")
-
-    change = True
-    for idx, datum in enumerate(data["user"]):
-      if datum["profile"]["email"] == user["profile"]["email"]:
-        change = False
-        data["user"][idx]["start_tour"] = time()
-        data["user"][idx]["status"] = 0
-        break
-
-    if change:
-      data['user'].append(user)
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
 
 class end_tour(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s, end_tour = %s " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (1, time(), id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
 
-    change = True
-    for idx, datum in enumerate(data["user"]):
-      if datum["profile"]["email"] == self.get_secure_cookie("email"):
-        change = False
-        data["user"][idx]["status"] = 1
-        data["user"][idx]["end_tour"] = time()
-        break
-
-    if change:
-      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
 
 class start_user(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s, " +
+                  "start_interaction = %s " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (1, time(), id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
 
-    change = True
-    for idx, datum in enumerate(data["user"]):
-      if datum["profile"]["email"] == self.get_secure_cookie("email"):
-        change = False
-        data["user"][idx]["status"] = 1
-        data["user"][idx]["start_interaction"] = time()
-        break
-
-    if change:
-      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
 
 class end_user(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s, " +
+                  "end_interaction = %s " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (2, time(), id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
 
-    change = True
-    for idx, datum in enumerate(data["user"]):
-      if datum["profile"]["email"] == self.get_secure_cookie("email"):
-        change = False
-        data["user"][idx]["status"] = 2
-        data["user"][idx]["end_interaction"] = time()
-        break
-
-    if change:
-      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
 
 class start_form(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s, " +
+                  "start_form = %s " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (2, time(), id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
 
-    change = True
-    for idx, datum in enumerate(data["user"]):
-      if datum["profile"]["email"] == self.get_secure_cookie("email"):
-        change = False
-        data["user"][idx]["status"] = 2
-        data["user"][idx]["start_form"] = time()
-        break
-
-    if change:
-      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
 
 class end_form(BaseHandler):
   def get(self):
-    data = {}
-    data['user'] = []
-
-    filename = 'log/users.json'
-    if not os.path.exists(os.path.dirname(filename)):
-      try:
-        os.makedirs(os.path.dirname(filename))
-      except OSError as exc:
-        if exc.errno != errno.EEXIST:
-          raise
-    else:
-      if os.path.exists(filename):
-        with open(filename) as json_data:
-          data = json.load(json_data)
-
-    change = True
-    for idx, datum in enumerate(data["user"]):
-      if datum["profile"]["email"] == self.get_secure_cookie("email"):
-        change = False
-        data["user"][idx]["status"] = 3
-        data["user"][idx]["end_form"] = time()
-        break
-
-    if change:
-      print "Cannot find the user %s" % str(self.get_secure_cookie("email"))
-    with open(filename, "w+") as outfile:
-      json.dump(data, outfile)
-
-def count_user():
-  data = {}
-  data['user'] = []
-
-  filename = 'log/users.json'
-  if not os.path.exists(os.path.dirname(filename)):
+    conn = None
     try:
-      os.makedirs(os.path.dirname(filename))
-    except OSError as exc:
-      if exc.errno != errno.EEXIST:
-        raise
-  else:
-    if os.path.exists(filename):
-      with open(filename) as json_data:
-        data = json.load(json_data)
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s, " +
+                  "end_form = %s " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (3, time(), id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
-  return len(data["user"])
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
 
-#This class save and generate the new files as dataViz and details .json
+
+# This class save and generate the new files as dataViz and details .json
 class save_and_generate_newData(BaseHandler):
   def post(self):
     details = json.loads(self.request.body)
@@ -1181,37 +1152,81 @@ class save_and_generate_newData_buckup(BaseHandler):
     print ("aqui acaba")
     self.write(json.dumps(""))
 
+
 # Class for Google authentication
-class GoogleOAuth2LoginHandler(tornado.web.RequestHandler, tornado.auth.GoogleOAuth2Mixin):
+class GoogleOAuth2LoginHandler(tornado.web.RequestHandler,
+                               tornado.auth.GoogleOAuth2Mixin):
   @tornado.gen.coroutine
   def get(self):
     if self.get_argument('code', False):
-      access = yield self.get_authenticated_user(
-        redirect_uri = 'http://' + self.request.host + self.request.path,
-        code = self.get_argument('code'))
-      user = yield self.oauth2_request(
-        "https://www.googleapis.com/oauth2/v1/userinfo",
-        access_token = access["access_token"])
+      access = yield self.get_authenticated_user(redirect_uri='http://' +
+                                                 self.request.host +
+                                                 self.request.path,
+                                                 code=self.get_argument('code')
+                                                 )
+      user = yield self.oauth2_request("https://www.googleapis.com/" +
+                                       "oauth2/v1/userinfo",
+                                       access_token=access["access_token"])
       self.set_secure_cookie("token", access["id_token"])
       self.set_secure_cookie("id", user["id"])
       self.set_secure_cookie("given_name", user["given_name"])
       self.set_secure_cookie("family_name", user["family_name"])
       self.set_secure_cookie("email", user["email"])
-      self.set_secure_cookie("picture", user["picture"])
-      self.set_secure_cookie("locale", user["locale"])
+
+      is_normal_user = True
+      self.set_secure_cookie("is_developer", "0")
+      for developer in self.settings["developers"]:
+        if developer == user["email"]:
+          is_normal_user = False
+          self.set_secure_cookie("is_developer", "1")
+
+      if is_normal_user:
+        conn = None
+        try:
+          params = config()
+          print "Connecting to the PostgreSQL database ..."
+          conn = psycopg2.connect(**params)
+          cur = conn.cursor()
+          cur.execute("SELECT COUNT(*) FROM dataset")
+          count_dataset = cur.fetchone()[0]
+          cur.execute("SELECT COUNT(*) FROM evaluated_user")
+          count_evaluated_user = cur.fetchone()[0]
+          id_dataset = (count_evaluated_user % count_dataset) + 1
+          cur.execute("INSERT INTO evaluated_user(id_dataset, status) " +
+                      "VALUES (%s, %s) RETURNING id_evaluated_user;",
+                      (id_dataset, 0))
+          id_evaluated_user = cur.fetchone()[0]
+          cur.execute("INSERT INTO evaluated_user_profile(id_dataset, " +
+                      "id_evaluated_user, email, given_name, family_name, " +
+                      "picture, locale) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                      (id_dataset, id_evaluated_user, user["email"],
+                       user["given_name"], user["family_name"],
+                       user["picture"], user["locale"]))
+          print "Insert user {0}.".format(user["email"])
+          cur.close()
+          conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+          print(error)
+        finally:
+          if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
       self.redirect('/')
     else:
-      yield self.authorize_redirect(
-        redirect_uri = 'http://' + self.request.host + self.request.path,
-        client_id = self.settings['google_oauth']['key'],
-        scope = ['profile', 'email'],
-        response_type = 'code',
-        extra_params = {'approval_prompt': 'auto'})
+      yield self.authorize_redirect(redirect_uri='http://' +
+                                    self.request.host + self.request.path,
+                                    client_id=self.settings['google_oauth']
+                                    ['key'], scope=['profile', 'email'],
+                                    response_type='code',
+                                    extra_params={'approval_prompt': 'auto'})
+
 
 class start_new_template_Viz(BaseHandler):
   def get(self):
     dbname = self.get_argument("g")
     self.render('vexus2.html', current_group=dbname)
+
 
 class get_data_projection(BaseHandler):
   def post(self):
@@ -1823,7 +1838,30 @@ def binary_search_movieID(data, target):
       upper = x
   return -1
 
-### functions for support  END  ###############
+
+def create_tables():
+  conn = None
+  try:
+    params = config()
+    print "Connecting to the PostgreSQL database ..."
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    print "PostgreSQL database version:"
+    cur.execute("SELECT version()")
+    print(cur.fetchone())
+    cur.execute(open("data_model_table_create.sql", "r").read())
+    print "Create tables if not exists."
+    cur.close()
+    conn.commit()
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+  finally:
+    if conn is not None:
+      conn.close()
+      print("Database connection closed.")
+
+
+# functions for support END
 
 settings = dict(
   template_path = os.path.join(os.path.dirname(__file__), "templates"),
@@ -1866,6 +1904,7 @@ application = tornado.web.Application([
 
 
 if __name__ == "__main__":
+  create_tables()
   print "Starting ..."
   global heatmap_movielens
   heatmap_movielens = load_json("static/data/Movielens only Rating/heatmap.json")
