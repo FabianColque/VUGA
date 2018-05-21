@@ -36,6 +36,8 @@ Vexus 2 requires:
 
     `$ pip install psycopg2`
 
+    `$ pip install psycopg2-binary`
+
 ## Running
 
 `$ python server.py`
