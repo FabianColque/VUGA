@@ -3,10 +3,13 @@ from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 
+service = None
+
 # Setup the Sheets API
 
 
 def setup_spreadsheet():
+    global service
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
     store = file.Storage('credentials.json')
     creds = store.get()
@@ -16,14 +19,14 @@ def setup_spreadsheet():
         args.noauth_local_webserver = True
         creds = tools.run_flow(flow, store, args)
     service = build('sheets', 'v4', http=creds.authorize(Http()))
-    return service
 
 # Call the Sheets API
 
 
 def is_load_spreadsheet(email, SPREADSHEET_ID):
+    global service
     RANGE_NAME = 'B2:B'
-    result = setup_spreadsheet().spreadsheets().values().get(
+    result = service.spreadsheets().values().get(
         spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
     values = result.get('values', [])
     if not values:
@@ -34,6 +37,3 @@ def is_load_spreadsheet(email, SPREADSHEET_ID):
                 if row[0] == email:
                     return True
     return False
-
-
-setup_spreadsheet()

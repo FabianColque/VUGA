@@ -1904,6 +1904,7 @@ application = tornado.web.Application([
 
 
 if __name__ == "__main__":
+  my_spreadsheet.setup_spreadsheet()
   create_tables()
   print "Starting ..."
   global heatmap_movielens
