@@ -38,7 +38,7 @@ def create_charts_titles_chart(dataViz):
         print "Connecting to the PostgreSQL database ..."
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
-        for dimension in dataViz["dimensions"]:
+        for dimension in dataViz["Dimensions_charts"]:
             cur.execute("INSERT INTO charts(id_dataset, name, type_chart) " +
                         "VALUES (%s, %s, %s) RETURNING id_chart;",
                         (id_dataset, dimension["name"], dimension["type_chart"]
@@ -69,13 +69,12 @@ def load_json(file):
 
 
 if __name__ == "__main__":
-    # global id_dataset  # tmp
     print "Write the dataset name:"
     dataset = raw_input()
     print "Starting migration ..."
     # create_dataset(dataset)
     id_dataset = 2  # tmp
-    path = str("static/data/" + dataset + "/dataViz.json")
-    dataViz = load_json(path)
-    create_charts_titles_chart(dataViz)
+    path = str("static/data/" + dataset + "/details.json")
+    details = load_json(path)
+    create_charts_titles_chart(details)
     print "End migration."
