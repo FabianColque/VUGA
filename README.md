@@ -38,6 +38,10 @@ Vexus 2 requires:
 
     `$ pip install psycopg2-binary`
 
+* [Configuration file parser](https://docs.python.org/2/library/configparser.html)
+
+    `$ pip install configparser`
+
 ## Running
 
 `$ python server.py`

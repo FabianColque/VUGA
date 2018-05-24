@@ -1202,7 +1202,7 @@ class GoogleOAuth2LoginHandler(tornado.web.RequestHandler,
                       (id_dataset, id_evaluated_user, user["email"],
                        user["given_name"], user["family_name"],
                        user["picture"], user["locale"]))
-          print "Insert user {0}.".format(user["email"])
+          print "Insert evaluated user {0}.".format(user["email"])
           cur.close()
           conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
