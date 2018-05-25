@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.user_chart (
    id_user integer NOT NULL,
    id_chart integer NOT NULL,
    id_title integer NOT NULL,
-   name varchar(150) NOT NULL,
+   name varchar(150),
    PRIMARY KEY (id_dataset, id_user, id_chart, id_title)
 );
 
