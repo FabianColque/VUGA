@@ -30,7 +30,7 @@ def create_dataset(dataset):
             print("Database connection closed.")
 
 
-def create_charts_titles_chart(details):
+def create_charts_w_titles_chart(details):
     global id_dataset
     conn = None
     try:
@@ -61,7 +61,7 @@ def create_charts_titles_chart(details):
             print("Database connection closed.")
 
 
-def create_user(dataViz, projection, details, object_1):
+def create_user_w_user_chart(dataViz, projection, details, object_1):
     global id_dataset
     conn = None
     try:
@@ -69,11 +69,19 @@ def create_user(dataViz, projection, details, object_1):
         print "Connecting to the PostgreSQL database ..."
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
-        for project in projection:
-            for instance in dataViz["instances"]:
+        for instance in dataViz["instances"]:
+            for project in projection:
                 if instance["id"] == project[2]:
                     instance["x"] = project[0]
                     instance["y"] = project[1]
+
+            index_0 = 2
+            while index_0 < len(object_1["headers"]):
+                for obj in object_1["body"]:
+                    if instance["id"] == obj[0]:
+                        instance[object_1["headers"][index_0]] = obj[index_0]
+
+                index_0 += 1
 
         index = 0
         while index < len(dataViz["instances"]):
@@ -103,11 +111,22 @@ def create_user(dataViz, projection, details, object_1):
                              details["Dimensions_charts"][index2]["titles"]
                              [dataViz["instances"][index]["values"][index2]]))
                 id_title = cur.fetchone()[0]
-                cur.execute("INSERT INTO user_chart(id_dataset, " +
-                            "id_user, id_chart, id_title) VALUES " +
-                            "(%s, %s, %s, %s);",
-                            (id_dataset, id_user, id_chart, id_title))
-                index += 1
+                if (details["Dimensions_charts"][index2]["name"]
+                   in dataViz["instances"][index]):
+                    cur.execute("INSERT INTO user_chart(id_dataset, " +
+                                "id_user, id_chart, id_title, name) VALUES " +
+                                "(%s, %s, %s, %s, %s);",
+                                (id_dataset, id_user, id_chart, id_title,
+                                 dataViz["instances"][index]
+                                 [details["Dimensions_charts"]
+                                  [index2]["name"]]))
+                else:
+                    cur.execute("INSERT INTO user_chart(id_dataset, " +
+                                "id_user, id_chart, id_title) VALUES " +
+                                "(%s, %s, %s, %s);",
+                                (id_dataset, id_user, id_chart, id_title))
+
+                index2 += 1
 
             print "Insert user {0}.".format(dataViz["instances"][index]["n"])
             index += 1
@@ -138,7 +157,7 @@ if __name__ == "__main__":
     id_dataset = 2  # tmp
     path = str("static/data/" + dataset + "/details.json")
     details = load_json(path)
-    # create_charts_titles_chart(details)
+    # create_charts_w_titles_chart(details)
 
     path = str("static/data/" + dataset + "/dataViz.json")
     dataViz = load_json(path)
@@ -146,6 +165,6 @@ if __name__ == "__main__":
     projection = load_json(path)
     path = str("static/data/" + dataset + "/object_1.json")
     object_1 = load_json(path)
-    create_user(dataViz, projection, details, object_1)
+    create_user_w_user_chart(dataViz, projection, details, object_1)
 
     print "End migration."
