@@ -141,6 +141,59 @@ def create_user_w_user_chart(dataViz, projection, details, object_1):
             print("Database connection closed.")
 
 
+def create_dimension_w_user_dim(dimensions, dimension_vector):
+    global id_dataset
+    conn = None
+    try:
+        params = config()
+        print "Connecting to the PostgreSQL database ..."
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        index = 1
+        while index < len(dimensions["headers"]):
+            cur.execute("INSERT INTO dimension(id_dataset, name) " +
+                        "VALUES (%s, %s) RETURNING id_dim;",
+                        (id_dataset, dimensions["headers"][index]))
+            id_dim = cur.fetchone()[0]
+            for dimension in dimensions["body"]:
+                cur.execute("SELECT id_user FROM public.user charts WHERE " +
+                            "id_dataset = %s AND id = %s;",
+                            (id_dataset, dimension[0]))
+                id_user = cur.fetchone()[0]
+
+                index2 = 0
+                while index2 < len(dimension_vector["names"]):
+                    if dimension_vector["names"][index2] == dimension[0]:
+                        break
+
+                    index2 += 1
+
+                if dimension_vector["body"][index2][index - 1] == 0:
+                    cur.execute("INSERT INTO user_dim(id_dataset, id_user, " +
+                                "id_dim, value, value_heat)" +
+                                " VALUES (%s, %s, %s, %s, %s);",
+                                (id_dataset, id_user, id_dim, dimension[index],
+                                 -1))
+                else:
+                    cur.execute("INSERT INTO user_dim(id_dataset, id_user, " +
+                                "id_dim, value, value_heat)" +
+                                " VALUES (%s, %s, %s, %s, %s);",
+                                (id_dataset, id_user, id_dim, dimension[index],
+                                 dimension_vector["body"][index2][index - 1]))
+
+            print "Insert dimension {0}.".format(dimensions["headers"][index])
+            index += 1
+
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
 def load_json(file):
   res = []
   with open(file) as jsonfile:
@@ -151,20 +204,25 @@ def load_json(file):
 if __name__ == "__main__":
     print "Write the dataset name:"
     dataset = raw_input()
-    print "Starting migration ..."
-    # create_dataset(dataset)
 
+    print "Starting migration ..."
     id_dataset = 2  # tmp
     path = str("static/data/" + dataset + "/details.json")
     details = load_json(path)
-    # create_charts_w_titles_chart(details)
-
     path = str("static/data/" + dataset + "/dataViz.json")
     dataViz = load_json(path)
     path = str("static/data/" + dataset + "/projection.json")
     projection = load_json(path)
     path = str("static/data/" + dataset + "/object_1.json")
     object_1 = load_json(path)
-    create_user_w_user_chart(dataViz, projection, details, object_1)
+    path = str("static/data/" + dataset + "/dimensions.json")
+    dimensions = load_json(path)
+    path = str("static/data/" + dataset + "/dimension_vector.json")
+    dimension_vector = load_json(path)
+
+    # create_dataset(dataset)
+    # create_charts_w_titles_chart(details)
+    # create_user_w_user_chart(dataViz, projection, details, object_1)
+    create_dimension_w_user_dim(dimensions, dimension_vector)
 
     print "End migration."
