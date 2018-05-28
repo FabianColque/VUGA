@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS public.user (
 CREATE TABLE IF NOT EXISTS public.dataset (
    id_dataset serial NOT NULL,
    name varchar(100) NOT NULL,
+   main_title varchar(100) NOT NULL,
    PRIMARY KEY (id_dataset)
 );
 
@@ -67,7 +68,7 @@ CREATE TABLE IF NOT EXISTS public.user_dim (
 CREATE TABLE IF NOT EXISTS public.object (
    id_dataset integer NOT NULL,
    id_object serial NOT NULL,
-   title varchar(100) NOT NULL,
+   id varchar(50) NOT NULL,
    PRIMARY KEY (id_dataset, id_object)
 );
 

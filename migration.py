@@ -5,7 +5,7 @@ from config import config
 id_dataset = None
 
 
-def create_dataset(dataset):
+def create_dataset(dataset, object_2):
     global id_dataset
     conn = None
     try:
@@ -16,8 +16,8 @@ def create_dataset(dataset):
         print "PostgreSQL database version:"
         cur.execute("SELECT version()")
         print(cur.fetchone())
-        cur.execute("INSERT INTO dataset(name) VALUES (%s) " +
-                    "RETURNING id_dataset;", (dataset,))
+        cur.execute("INSERT INTO dataset(name, main_title) VALUES (%s, %s) " +
+                    "RETURNING id_dataset;", (dataset, object_2["headers"][0]))
         id_dataset = cur.fetchone()[0]
         print "Insert dataset {0}.".format(dataset)
         cur.close()
@@ -194,6 +194,55 @@ def create_dimension_w_user_dim(dimensions, dimension_vector):
             print("Database connection closed.")
 
 
+def create_object_w_object_detail_w_object_title(object_2):
+    global id_dataset
+    conn = None
+    try:
+        params = config()
+        print "Connecting to the PostgreSQL database ..."
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        index_0 = 1
+        while index_0 < len(object_2["headers"]):
+            cur.execute("INSERT INTO object_title(id_dataset, name) " +
+                        "VALUES (%s, %s);",
+                        (id_dataset, object_2["headers"][index_0]))
+            print "Insert object title {0}.".format(object_2["headers"]
+                                                    [index_0])
+            index_0 += 1
+
+        index = 0
+        while index < len(object_2["body"]):
+            cur.execute("INSERT INTO object(id_dataset, id) " +
+                        "VALUES (%s, %s) RETURNING id_object;",
+                        (id_dataset, object_2["body"][index][0]))
+            id_object = cur.fetchone()[0]
+            index2 = 1
+            while index2 < len(object_2["body"][index]):
+                cur.execute("SELECT id_title FROM object_title WHERE " +
+                            "id_dataset = %s AND name = %s;",
+                            (id_dataset, object_2["headers"][index2]))
+                id_title = cur.fetchone()[0]
+                cur.execute("INSERT INTO object_detail(id_dataset, " +
+                            "id_object, id_title, value) " +
+                            "VALUES (%s, %s, %s, %s);",
+                            (id_dataset, id_object, id_title,
+                             object_2["body"][index][index2]))
+                index2 += 1
+
+            print "Insert object {0}.".format(object_2["body"][index][0])
+            index += 1
+
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+
+
 def load_json(file):
   res = []
   with open(file) as jsonfile:
@@ -219,10 +268,13 @@ if __name__ == "__main__":
     dimensions = load_json(path)
     path = str("static/data/" + dataset + "/dimension_vector.json")
     dimension_vector = load_json(path)
+    path = str("static/data/" + dataset + "/object_2.json")
+    object_2 = load_json(path)
 
-    # create_dataset(dataset)
+    # create_dataset(dataset, object_2)
     # create_charts_w_titles_chart(details)
     # create_user_w_user_chart(dataViz, projection, details, object_1)
-    create_dimension_w_user_dim(dimensions, dimension_vector)
+    # create_dimension_w_user_dim(dimensions, dimension_vector)
+    create_object_w_object_detail_w_object_title(object_2)
 
     print "End migration."
