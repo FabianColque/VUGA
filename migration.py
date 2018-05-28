@@ -243,6 +243,49 @@ def create_object_w_object_detail_w_object_title(object_2):
             print("Database connection closed.")
 
 
+def create_rating(ratings):
+    global id_dataset
+    conn = None
+    try:
+        params = config()
+        print "Connecting to the PostgreSQL database ..."
+        conn = psycopg2.connect(**params)
+        conn2 = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur2 = conn2.cursor()
+        cur.execute("SELECT id_user, id FROM public.user " +
+                    "WHERE id_dataset = %s;",
+                    (id_dataset,))
+        row = cur.fetchone()
+        while row is not None:
+            id_user = row[0]
+            for rating in ratings["body"][row[1]]:
+                cur2.execute("SELECT id_object FROM object " +
+                             "WHERE id_dataset = %s AND id = %s",
+                             (id_dataset, str(rating["o2"])))
+                id_object = cur2.fetchone()[0]
+                value = rating["r"]
+                cur2.execute("INSERT INTO rating(id_dataset, id_user, " +
+                             "id_object, value) VALUES (%s, %s, %s, %s);",
+                             (id_dataset, id_user, id_object, value))
+            print "Insert rating for user {0}.".format(row[1])
+            row = cur.fetchone()
+
+        cur2.close()
+        cur.close()
+        conn.commit()
+        conn2.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Database connection closed.")
+        if conn2 is not None:
+            conn2.close()
+            print("Database connection closed.")
+
+
 def load_json(file):
   res = []
   with open(file) as jsonfile:
@@ -270,11 +313,13 @@ if __name__ == "__main__":
     dimension_vector = load_json(path)
     path = str("static/data/" + dataset + "/object_2.json")
     object_2 = load_json(path)
+    path = str("static/data/" + dataset + "/ratings.json")
+    ratings = load_json(path)
 
     # create_dataset(dataset, object_2)
     # create_charts_w_titles_chart(details)
     # create_user_w_user_chart(dataViz, projection, details, object_1)
     # create_dimension_w_user_dim(dimensions, dimension_vector)
-    create_object_w_object_detail_w_object_title(object_2)
-
+    # create_object_w_object_detail_w_object_title(object_2)
+    create_rating(ratings)
     print "End migration."
