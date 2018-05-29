@@ -1,6 +1,7 @@
 import psycopg2
 import json
 import time
+import sys
 from config import config
 
 id_dataset = None
@@ -21,7 +22,6 @@ def create_dataset(dataset, object_2):
         cur.execute("INSERT INTO dataset(name, main_title) VALUES (%s, %s) " +
                     "RETURNING id_dataset;", (dataset, object_2["headers"][0]))
         id_dataset = cur.fetchone()[0]
-        print "Insert dataset {0}.".format(dataset)
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -50,8 +50,6 @@ def create_charts_w_titles_chart(details):
                 cur.execute("INSERT INTO titles_chart(id_dataset, id_chart, " +
                             "value) VALUES (%s, %s, %s);",
                             (id_dataset, id_chart, title))
-
-            print "Insert chart {0}.".format(dimension["name"])
 
         cur.close()
         conn.commit()
@@ -130,7 +128,6 @@ def create_user_w_user_chart(dataViz, projection, details, object_1):
 
                 index2 += 1
 
-            print "Insert user {0}.".format(dataViz["instances"][index]["n"])
             index += 1
 
         cur.close()
@@ -183,7 +180,6 @@ def create_dimension_w_user_dim(dimensions, dimension_vector):
                                 (id_dataset, id_user, id_dim, dimension[index],
                                  dimension_vector["body"][index2][index - 1]))
 
-            print "Insert dimension {0}.".format(dimensions["headers"][index])
             index += 1
 
         cur.close()
@@ -209,8 +205,6 @@ def create_object_w_object_detail_w_object_title(object_2):
             cur.execute("INSERT INTO object_title(id_dataset, name) " +
                         "VALUES (%s, %s);",
                         (id_dataset, object_2["headers"][index_0]))
-            print "Insert object title {0}.".format(object_2["headers"]
-                                                    [index_0])
             index_0 += 1
 
         index = 0
@@ -232,7 +226,6 @@ def create_object_w_object_detail_w_object_title(object_2):
                              object_2["body"][index][index2]))
                 index2 += 1
 
-            print "Insert object {0}.".format(object_2["body"][index][0])
             index += 1
 
         cur.close()
@@ -270,8 +263,6 @@ def create_rating(ratings, object_2):
                             "id_object, value) VALUES (%s, %s, %s, %s);",
                             (id_dataset, id_user, id_object, value))
 
-            print "Insert ratings for user {0}.".format(row[1])
-
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -291,9 +282,9 @@ def load_json(file):
 
 def mark_time():
     global start
-    end = time.time()
-    time_m = (end - start) % 60
-    time_s = (end - start) / 60
+    end = int(time.time())
+    time_m = (end - start) / 60
+    time_s = (end - start) % 60
     start = end
     return "{0}m {1}s".format(time_m, time_s)
 
@@ -301,10 +292,14 @@ def mark_time():
 if __name__ == "__main__":
     print "Write the dataset name:"
     dataset = raw_input()
+    print "The dataset exist in dataset table?: (y/n)"
+    yn = str(raw_input())
+    if yn != "y" and yn != "n":
+        print "You wrote a different option."
+        sys.exit()
 
     print "Starting migration ..."
-    start = time.time()
-    id_dataset = 2  # tmp
+    start = int(time.time())
     path = str("static/data/" + dataset + "/details.json")
     details = load_json(path)
     path = str("static/data/" + dataset + "/dataViz.json")
@@ -323,15 +318,20 @@ if __name__ == "__main__":
     ratings = load_json(path)
     print "Loading json's: {0}.".format(mark_time())
 
-    # create_dataset(dataset, object_2)
-    print "Inserting dataset data: {0}.".format(mark_time())
-    # create_charts_w_titles_chart(details)
+    if yn == "y":
+        print "Write the id_dataset:"
+        id_dataset = int(raw_input())
+    elif yn == "n":
+        create_dataset(dataset, object_2)
+        print "Inserting dataset data: {0}.".format(mark_time())
+
+    create_charts_w_titles_chart(details)
     print "Inserting charts and titles_chart data: {0}.".format(mark_time())
-    # create_user_w_user_chart(dataViz, projection, details, object_1)
+    create_user_w_user_chart(dataViz, projection, details, object_1)
     print "Inserting user and user_chart data: {0}.".format(mark_time())
-    # create_dimension_w_user_dim(dimensions, dimension_vector)
+    create_dimension_w_user_dim(dimensions, dimension_vector)
     print "Inserting dimension and user_dim data: {0}.".format(mark_time())
-    # create_object_w_object_detail_w_object_title(object_2)
+    create_object_w_object_detail_w_object_title(object_2)
     print "Inserting object, object_detail and object_title data: {0}.".format(
           mark_time())
     create_rating(ratings, object_2)
