@@ -1868,7 +1868,7 @@ settings = dict(
   static_path = "static",
   debug = True,
   google_oauth = {"key": "299815581530-s2rcg6jr3kg1maom42p9c1eqs6otnf1b.apps.googleusercontent.com", "secret": "W2Jg6Za1wAthcfHotWa2h5nK"},
-  developers = ["goesrex@gmail.com", "fbcolque@gmail.com", "joao.comba@gmail.com", "Melina.loreto@gmail.com", "viviane.p.moreira@gmail.com"]
+  developers = ["goesrex@gmail.com", "fbcolque@gmail.com", "joao.comba@gmail.com", "Melina.loreto@gmail.com", "viviane.p.moreira@gmail.com", "behrooz.omidvar@gmail.com", "sihemameryahia@gmail.com"]
 )    
 
 application = tornado.web.Application([
