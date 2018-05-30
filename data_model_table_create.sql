@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS public.object_detail (
    id_dataset integer NOT NULL,
    id_object integer NOT NULL,
    id_title integer NOT NULL,
-   value varchar(200) NOT NULL,
+   value varchar(500) NOT NULL,
    PRIMARY KEY (id_dataset, id_object, id_title)
 );
 
