@@ -186,7 +186,7 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #svg_projection": "<p align ='left'>Please, using your mouse, select a set of users (circles).</p>",
+          "next #svg_projection": "<p align ='left'>Please, using your mouse, <text style='color: #00a6eb'><font size='7'><b>select</b></font></text> a set of users (circles).</p>",
 			 "showSkip": false
       },
       {
@@ -302,7 +302,7 @@ function test_enjoyhint_with_skip() {
 			 "showSkip": true
       },
       {
-          "next #svg_projection": "<p align ='left'>Please, using your mouse, select a set of users (circles).</p>",
+          "next #svg_projection": "<p align ='left'>Please, using your mouse, <text style='color: #00a6eb'><font size='7'><b>select</b></font></text> a set of users (circles).</p>",
 			 "showSkip": true
       },
       {
