@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS public.dataset (
    id_dataset serial NOT NULL,
    name varchar(100) NOT NULL,
    main_title varchar(100) NOT NULL,
+   form_url varchar(300),
+   id_spreadsheet varchar(100),
    PRIMARY KEY (id_dataset)
 );
 

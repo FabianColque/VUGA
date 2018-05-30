@@ -391,7 +391,70 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
   return arr_tsne, heatmap, mayores, brillo
 
 
+class get_form_url(BaseHandler):
+  def post(self):
+    form_url = None
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT form_url FROM dataset INNER JOIN " +
+                  "evaluated_user_profile ON dataset.id_dataset = " +
+                  "evaluated_user_profile.id_dataset WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      form_url = cur.fetchone()[0]
+      print "Form URL {0}.".format(form_url)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+    if form_url is None:
+      self.write("")
+    else:
+      self.write(str(form_url) + str(self.get_secure_cookie("email")))
+
+
 class is_load_spreadsheet(BaseHandler):
+  def post(self):
+    s_id = None
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_spreadsheet FROM dataset INNER JOIN " +
+                  "evaluated_user_profile ON dataset.id_dataset = " +
+                  "evaluated_user_profile.id_dataset WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      s_id = cur.fetchone()[0]
+      print "ID Spreadsheet {0}.".format(s_id)
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+    if s_id is None:
+      self.write("0")
+    elif my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email"),
+                                            s_id):
+      self.write("1")
+    else:
+      self.write("0")
+
+
+class is_load_spreadsheet_w_id(BaseHandler):
   def post(self):
     s_id = self.get_argument("id")
     if my_spreadsheet.is_load_spreadsheet(self.get_secure_cookie("email"),
@@ -1890,7 +1953,9 @@ application = tornado.web.Application([
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/is_developer", is_developer),
+  (r"/get_form_url", get_form_url),
   (r"/is_load_spreadsheet", is_load_spreadsheet),
+  (r"/is_load_spreadsheet_w_id", is_load_spreadsheet_w_id),
   (r"/get_email", get_email),
   (r"/certified_user", certified_user),
   (r"/register_user", register_user),

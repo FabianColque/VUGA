@@ -227,7 +227,8 @@ function test_enjoyhint() {
       },
       {
           "next #idsavearea_obj1": "<p align ='left'>This is the Save Area.<br>Here, we display a list of the saved users.</p>",
-			 "showSkip": false
+			 "showSkip": false,
+          "right": 50
       },
       {
           "next #config_groups": "<p align ='left'> Also, we have 3 options of configuration to explore groups:<br><text style='color: #00a6eb'>Max. Groups</text> - It is the number of user groups that you want as result.<br><text style='color: #00a6eb'>Top Dimensions</text> - For choose the percentage of relevant dimensions.<br><text style='color: #00a6eb'>+ Similarity/- Similarity</text> - If you want find the more similar/less similar users.</p>",
@@ -342,7 +343,8 @@ function test_enjoyhint_with_skip() {
       },
       {
           "next #idsavearea_obj1": "<p align ='left'>This is the Save Area.<br>Here, we display a list of the saved users.</p>",
-			 "showSkip": true
+			 "showSkip": true,
+          "right": 50
       },
       {
           "next #config_groups": "<p align ='left'> Also, we have 3 options of configuration to explore groups:<br><text style='color: #00a6eb'>Max. Groups</text> - It is the number of user groups that you want as result.<br><text style='color: #00a6eb'>Top Dimensions</text> - For choose the percentage of relevant dimensions.<br><text style='color: #00a6eb'>+ Similarity/- Similarity</text> - If you want find the more similar/less similar users.</p>",
