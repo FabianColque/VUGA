@@ -1291,6 +1291,7 @@ class start_new_template_Viz(BaseHandler):
     self.render('vexus2.html', current_group=dbname)
 
 
+#*****************************************************************************************************************************
 class get_data_projection(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
@@ -1299,11 +1300,51 @@ class get_data_projection(BaseHandler):
     path = str(path)
     
     time0 = time()
-    res = load_json(path)
+    status, res = get_data_projection_db(mydata)
     time1 = time()
-    print_message("get_data_projection", time1 - time0)
+    print ("get_data_projection DB", time1 - time0)
+    if not status:
+      #time0 = time()
+      #res = load_json(path)
+      #time1 = time()
+      #print ("get_data_projection", time1 - time0)
+      self.write(json.dumps(res))
+    else:
+      time0 = time()
+      res = load_json(path)
+      time1 = time()
+      print_message("get_data_projection", time1 - time0)
 
-    self.write(json.dumps(res))
+      self.write(json.dumps(res))
+
+
+def get_data_projection_db(data):
+
+  conn = None
+  res =[]
+  status = False
+  try:
+    params = config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    #print "vmjhvjhgmhgvmv"
+    cur.execute("SELECT x,y,id FROM public.user u, Dataset d WHERE u.id_dataset = d.id_dataset AND d.name = %s;", (data.get("dbname"),))
+    #cur.execute("select * from Dataset where name = 'Movielens only Rating'")
+    #print "qeeeeeeeeeeeeeeeeeee"
+    res = cur.fetchall()
+    #print("nooooo", res[0])
+    status = True
+    cur.close()
+    conn.commit()
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+    status = False
+  finally:
+    if conn is not None:
+      conn.close()
+
+  return (status, res)
+#*****************************************************************************************************************************
 
 class getData_Viz(BaseHandler):
   def post(self):
@@ -1437,7 +1478,7 @@ class get_heatmap(BaseHandler):
 
     self.write(json.dumps(res))
 
-
+#*****************************************************************************************************************************************************
 class getDimension_legend(BaseHandler):
   def post(self):
     mydata = json.loads(self.request.body)
@@ -1498,90 +1539,36 @@ class getDimension_legend(BaseHandler):
 
     self.write(json.dumps(res))
 
-class getDimension_legend_buckup(BaseHandler):
-  def post(self):
-    mydata = json.loads(self.request.body)
-    dbname = mydata.get("dbname")
-    dim_num = mydata.get("dimension_num")
-    select = mydata.get("select")
-    print ("ssss", select, dim_num)
-    colors = ["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]                    
 
-    time0 = time()
+def getDimension_legend_db(data):
 
-    data = load_json(getpath_db(dbname) + "heatmap.json")
-    details = load_json(getpath_db(dbname) + "details.json")
-    obj1 = load_json(getpath_db(dbname) + "object_1.json")
-    res = {"selector": "#areaMainsvg_projection", "title": "", "hasChecks": 1, "body": []}
-    dddd = []
-    if len(details["Dimensions_charts"]) > dim_num:
-      res["mode"] = "static"
-      res["names"] = details["Dimensions_charts"][dim_num]["titles"]
-      res["colors"] = colors[0:len(details["Dimensions_charts"][dim_num]["titles"])]
+  conn = None
+  res =[]
+  status = False
+  try:
+    params = config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    #print "vmjhvjhgmhgvmv"
+    cur.execute("SELECT x,y,id FROM public.user u, Dataset d WHERE u.id_dataset = d.id_dataset AND d.name = %s;", (data.get("dbname"),))
+    #cur.execute("select * from Dataset where name = 'Movielens only Rating'")
+    #print "qeeeeeeeeeeeeeeeeeee"
+    res = cur.fetchall()
+    #print("nooooo", res[0])
+    status = True
+    cur.close()
+    conn.commit()
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+    status = False
+  finally:
+    if conn is not None:
+      conn.close()
 
-      
-      if dim_num == 0:#gender
-        res["title"] = "Gender"
-        for i in xrange(0, len(obj1["body"])):
-          if obj1["body"][i][2] == "F":
-            dddd.append(0)
-          else:
-            dddd.append(1)
-      elif dim_num == 1:
-        res["title"] = "Age"
-        for i in xrange(0, len(obj1["body"])):
-          if obj1["body"][i][3] == "1":
-            dddd.append(0)
-          elif obj1["body"][i][3] == "18":
-            dddd.append(1/6.0)
-          elif obj1["body"][i][3] == "25":
-            dddd.append(2/6.0)
-          elif obj1["body"][i][3] == "35":
-            dddd.append(3/6.0)
-          elif obj1["body"][i][3] == "45":
-            dddd.append(4/6.0)
-          elif obj1["body"][i][3] == "50":
-            dddd.append(5/6.0)
-          elif obj1["body"][i][3] == "56":
-            dddd.append(6/6.0)
-      elif dim_num == 2:
-        res["title"] = "Occupation"
-        for i in xrange(0, len(obj1["body"])):
-          ggg = int(obj1["body"][i][4]) * (1/20.0)
-          dddd.append(ggg)
+  return (status, res)
+    
+#********************************************************************************************************************************************************
 
-    else:
-      res["title"] = data["headers"][dim_num-3]
-      res["mode"] = "dynamic"
-      res["names"] = ["Min", "Max"]
-      res["colors"] = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']#['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026']
-      for dd in data["body"]:
-        dddd.append(dd[dim_num-3])  
-
-    res["body"] = dddd
-    """if select == "all":
-      for dd in data["body"]:
-        res["body"].append(dd[dim_num])  
-    else:
-      for ss in select:
-        res["body"].append(data["body"][ss][dim_num])
-    """
-    hh = res["body"][:]
-    hh = sorted(hh)
-    sz = len(hh)
-    med = math.floor(sz/2)
-    medd = hh[int(med)]
-    q1 = hh[int(med - math.floor(med/2))]
-    q3 = hh[int(med + math.floor(med/2))]    
-    iqr = q3 - q1
-    lim = iqr * 0.9
-
-    res["outlier"] = [medd, q1, q3, lim]
-
-    time1 = time()
-    print_message("getDimension_legend", time1 - time0)
-
-    self.write(json.dumps(res))
     
 class get_Details_options(BaseHandler):
   def post(self):
