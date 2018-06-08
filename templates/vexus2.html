@@ -198,14 +198,14 @@
                 <div class="row">
                   <div class="col-sm-12">
                     Max. Groups
-                    <input type="number" id="iK_groups" name="quantity" min="2" value="5" style="width: 40px">
+                    <input type="number" id="iK_groups" name="quantity" min="2" max="20" value="5" oninput="restrict_numbers_inputs_save_area(this)" style="width: 40px">
                   </div>
                 </div>
                 <br>
                 <div class="row">
                   <div class="col-sm-12">
                     Top Dimensions
-                    <input type="number" id="iP_groups" name="quantity" min="1" value="100" style="width: 40px">
+                    <input type="number" id="iP_groups" name="quantity" min="1" max="100" value="100" oninput="restrict_numbers_inputs_save_area(this)" style="width: 40px">
                     %
                     <!--<select class="optionSimi">
                       <option>+ Similarity</option>
@@ -529,6 +529,13 @@
       $("#main_body").css('margin-right', '0');
       $("#tasks_button").removeClass('ui-state-active');
 	 }
+
+   function restrict_numbers_inputs_save_area(object){
+      if(object.value > object.max)
+        object.value = object.max;
+      if(object.value < object.min)
+        object.value = object.min
+    }
 
     start()   
   </script>
