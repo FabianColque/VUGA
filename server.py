@@ -391,6 +391,45 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
   return arr_tsne, heatmap, mayores, brillo
 
 
+class have_task(BaseHandler):
+  def post(self):
+    n_task = None
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("SELECT COUNT(*) FROM task " +
+                  "WHERE id_dataset = %s AND id_task IN " +
+                  "(SELECT id_task FROM task_evaluated_user " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s " +
+                  "AND end_task IS NOT null " +
+                  "ORDER BY id_task ASC);",
+                  (id_dataset, id_dataset, id_evaluated_user,))
+      n_task = cur.fetchone()[0]
+
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+    if n_task is None:
+      self.write("0")
+    elif n_task == 0:
+      self.write("0")
+    else:
+      self.write("1")
+
+
 class get_form_url(BaseHandler):
   def post(self):
     forms_url = None
@@ -405,8 +444,13 @@ class get_form_url(BaseHandler):
                   (self.get_secure_cookie("email"),))
       id_dataset, id_evaluated_user = cur.fetchone()
       cur.execute("SELECT id_dataset, id_task, form_url FROM task " +
-                  "WHERE id_dataset = %s ORDER BY id_task ASC;",
-                  (id_dataset,))
+                  "WHERE id_dataset = %s AND id_task NOT IN " +
+                  "(SELECT id_task FROM task_evaluated_user " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s " +
+                  "AND end_task IS NOT null " +
+                  "ORDER BY id_task ASC) " +
+                  "ORDER BY id_task ASC;",
+                  (id_dataset, id_dataset, id_evaluated_user,))
       rows = cur.fetchall()
       forms_url = []
       for row in rows:
@@ -2028,6 +2072,7 @@ application = tornado.web.Application([
   (r"/getNroUsersbyConcept", getNroUsersbyConcept),
   (r"/getDataObj2_and_concepts", getDataObj2_and_concepts),
   (r"/is_developer", is_developer),
+  (r"/have_task", have_task),
   (r"/get_form_url", get_form_url),
   (r"/is_load_spreadsheet", is_load_spreadsheet),
   (r"/is_load_spreadsheet_w_id", is_load_spreadsheet_w_id),
