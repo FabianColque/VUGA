@@ -90,20 +90,44 @@ $( function() {
 						$("#help_button").button("option", "disabled", false);
 						$("#sidenav_tasks").css("width", "400px");
 						$("#tasks_button").addClass("ui-state-active");
-						$.post("/get_form_url", function(form_url) {
-							document.getElementById("iframe_tasks").src = form_url;
-							$("#iframe_tasks").load(function() {
-								$.post("/is_load_spreadsheet", function(is_load) {
-									if (is_load == 1) {
+						$.post("/get_form_url", function(forms_url) {
+							forms_url = jQuery.parseJSON(forms_url);
+							if (forms_url.length!=0) {
+								$.post("/start_task", {id_dataset: forms_url[0]["id_dataset"], id_task: forms_url[0]["id_task"]});
+								document.getElementById("iframe_tasks").src = forms_url[0]["form_url"];
+								var tasks = forms_url;
+								$("#iframe_tasks").load(function() {
+									console.log(tasks);
+									if (tasks.length==0) {
 										$.get("/end_user");
 										$("#sidenav_tasks").css("width", "0");
 										$("#tasks_button").removeClass("ui-state-active");
-                              $("#tasks_button").button("option", "disabled", true);
-                              $("#help_button").button("option", "disabled", true);
+										$("#tasks_button").button("option", "disabled", true);
+										$("#help_button").button("option", "disabled", true);
 										$("#dialog-end").dialog("open");
 									}
+									else {
+										$.post("/is_load_spreadsheet", {id_dataset: tasks[0]["id_dataset"], id_task: tasks[0]["id_task"]}, function(is_load) {
+											if (is_load == 1) {
+												$.post("/end_task", {id_dataset: tasks[0]["id_dataset"], id_task: tasks[0]["id_task"]});
+												tasks.splice(0, 1);
+												if (tasks.length==0) {
+													$.get("/end_user");
+													$("#sidenav_tasks").css("width", "0");
+													$("#tasks_button").removeClass("ui-state-active");
+													$("#tasks_button").button("option", "disabled", true);
+													$("#help_button").button("option", "disabled", true);
+													$("#dialog-end").dialog("open");
+												}
+												else {
+													$.post("/start_task", {id_dataset: tasks[0]["id_dataset"], id_task: tasks[0]["id_task"]});
+													document.getElementById("iframe_tasks").src = tasks[0]["form_url"];
+												}
+											}
+										});
+									}
 								});
-							});
+							}
 						});
 					}
 				});
@@ -200,9 +224,9 @@ $( function() {
 					disabled: buttonsDisabled
 				});
 				$("#help_button").click(function(event) {
-               test_enjoyhint_with_skip();
+					test_enjoyhint_with_skip();
 				});
-            $("#help_button").css("height", $("#tasks_button").css("height"));
+				$("#help_button").css("height", $("#tasks_button").css("height"));
 			});
 		}
 		else if (is_d == 1) {

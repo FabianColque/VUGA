@@ -393,19 +393,29 @@ def modiying_BX_data_dimension(arr_tsne, dimensionsData, heatmap):
 
 class get_form_url(BaseHandler):
   def post(self):
-    form_url = None
+    forms_url = None
     conn = None
     try:
       params = config()
       print "Connecting to the PostgreSQL database ..."
       conn = psycopg2.connect(**params)
       cur = conn.cursor()
-      cur.execute("SELECT form_url FROM dataset INNER JOIN " +
-                  "evaluated_user_profile ON dataset.id_dataset = " +
-                  "evaluated_user_profile.id_dataset WHERE email = %s;",
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
                   (self.get_secure_cookie("email"),))
-      form_url = cur.fetchone()[0]
-      print "Form URL {0}.".format(form_url)
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("SELECT id_dataset, id_task, form_url FROM task " +
+                  "WHERE id_dataset = %s ORDER BY id_task ASC;",
+                  (id_dataset,))
+      rows = cur.fetchall()
+      forms_url = []
+      for row in rows:
+        form_url = {"id_dataset": row[0],
+                    "id_task": row[1],
+                    "form_url": str(row[2]) +
+                    str(self.get_secure_cookie("email"))}
+        forms_url.append(form_url)
+
       cur.close()
       conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -415,14 +425,17 @@ class get_form_url(BaseHandler):
         conn.close()
         print("Database connection closed.")
 
-    if form_url is None:
-      self.write("")
+    if forms_url is None:
+      end_forms = []
+      self.write(json.dumps(end_forms))
     else:
-      self.write(str(form_url) + str(self.get_secure_cookie("email")))
+      self.write(json.dumps(forms_url))
 
 
 class is_load_spreadsheet(BaseHandler):
   def post(self):
+    id_dataset = self.get_argument("id_dataset")
+    id_task = self.get_argument("id_task")
     s_id = None
     conn = None
     try:
@@ -430,10 +443,9 @@ class is_load_spreadsheet(BaseHandler):
       print "Connecting to the PostgreSQL database ..."
       conn = psycopg2.connect(**params)
       cur = conn.cursor()
-      cur.execute("SELECT id_spreadsheet FROM dataset INNER JOIN " +
-                  "evaluated_user_profile ON dataset.id_dataset = " +
-                  "evaluated_user_profile.id_dataset WHERE email = %s;",
-                  (self.get_secure_cookie("email"),))
+      cur.execute("SELECT id_spreadsheet FROM task " +
+                  "WHERE id_dataset = %s AND id_task = %s;",
+                  (id_dataset, id_task,))
       s_id = cur.fetchone()[0]
       print "ID Spreadsheet {0}.".format(s_id)
       cur.close()
@@ -575,10 +587,9 @@ class start_user(BaseHandler):
                   "evaluated_user_profile WHERE email = %s;",
                   (self.get_secure_cookie("email"),))
       id_dataset, id_evaluated_user = cur.fetchone()
-      cur.execute("UPDATE evaluated_user SET status = %s, " +
-                  "start_interaction = %s " +
+      cur.execute("UPDATE evaluated_user SET status = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (1, time(), id_dataset, id_evaluated_user))
+                  (1, id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -603,11 +614,88 @@ class end_user(BaseHandler):
                   "evaluated_user_profile WHERE email = %s;",
                   (self.get_secure_cookie("email"),))
       id_dataset, id_evaluated_user = cur.fetchone()
-      cur.execute("UPDATE evaluated_user SET status = %s, " +
-                  "end_interaction = %s " +
+      cur.execute("UPDATE evaluated_user SET status = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (2, time(), id_dataset, id_evaluated_user))
+                  (2, id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
+
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+
+class start_task(BaseHandler):
+  def post(self):
+    id_dataset = self.get_argument("id_dataset")
+    id_task = self.get_argument("id_task")
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_evaluated_user = cur.fetchone()[0]
+      cur.execute("UPDATE task_evaluated_user SET start_task = %s " +
+                  "WHERE id_dataset = %s AND id_task = %s " +
+                  "AND id_evaluated_user = %s;",
+                  (time(), id_dataset, id_task, id_evaluated_user))
+      cur.execute("INSERT INTO task_evaluated_user(id_dataset, id_task, " +
+                  "id_evaluated_user, start_task) " +
+                  "SELECT %s, %s, %s, %s WHERE NOT EXISTS" +
+                  "(SELECT 1 FROM task_evaluated_user " +
+                  "WHERE id_dataset=%s AND id_task=%s" +
+                  "AND id_evaluated_user=%s);",
+                  (id_dataset, id_task, id_evaluated_user, time(),
+                   id_dataset, id_task, id_evaluated_user))
+      print "Task {0}: updated user ({1}, {2}).".format(id_task, id_dataset,
+                                                        id_evaluated_user)
+
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+
+class end_task(BaseHandler):
+  def post(self):
+    id_dataset = self.get_argument("id_dataset")
+    id_task = self.get_argument("id_task")
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_evaluated_user = cur.fetchone()[0]
+      cur.execute("UPDATE task_evaluated_user SET end_task = %s " +
+                  "WHERE id_dataset = %s AND id_task = %s " +
+                  "AND id_evaluated_user = %s;",
+                  (time(), id_dataset, id_task, id_evaluated_user))
+      cur.execute("INSERT INTO task_evaluated_user(id_dataset, id_task, " +
+                  "id_evaluated_user, end_task) " +
+                  "SELECT %s, %s, %s, %s WHERE NOT EXISTS" +
+                  "(SELECT 1 FROM task_evaluated_user " +
+                  "WHERE id_dataset=%s AND id_task=%s" +
+                  "AND id_evaluated_user=%s);",
+                  (id_dataset, id_task, id_evaluated_user, time(),
+                   id_dataset, id_task, id_evaluated_user))
+      print "Task {0}: updated user ({1}, {2}).".format(id_task, id_dataset,
+                                                        id_evaluated_user)
 
       cur.close()
       conn.commit()
@@ -1949,10 +2037,12 @@ application = tornado.web.Application([
   (r"/end_tour", end_tour),
   (r"/start_user", start_user),
   (r"/end_user", end_user),
+  (r"/start_task", start_task),
+  (r"/end_task", end_task),
   (r"/start_form", start_form),
   (r"/end_form", end_form),
-  (r"/(.*)", tornado.web.StaticFileHandler, {'path' : './static/', 'default_filename': 'index.html'})
-  ], cookie_secret = "9a1d9181811cae798768a4f3c0d8fe3d", **settings)
+  (r"/(.*)", tornado.web.StaticFileHandler, {'path': './static/', 'default_filename': 'index.html'})
+  ], cookie_secret="9a1d9181811cae798768a4f3c0d8fe3d", **settings)
 
 
 if __name__ == "__main__":

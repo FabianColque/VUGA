@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS public.dataset (
    id_dataset serial NOT NULL,
    name varchar(100) NOT NULL,
    main_title varchar(100) NOT NULL,
-   form_url varchar(300),
-   id_spreadsheet varchar(100),
    PRIMARY KEY (id_dataset)
 );
 
@@ -123,11 +121,29 @@ CREATE TABLE IF NOT EXISTS public.evaluated_user (
    status integer NOT NULL,
    start_tour double precision,
    end_tour double precision,
-   start_interaction double precision,
-   end_interaction double precision,
    start_form double precision,
    end_form double precision,
    PRIMARY KEY (id_dataset, id_evaluated_user)
+);
+
+
+CREATE TABLE IF NOT EXISTS public.task (
+   id_dataset integer NOT NULL,
+   id_task serial NOT NULL,
+   name varchar(100) NOT NULL,
+   form_url varchar(300) NOT NULL,
+   id_spreadsheet varchar(100) NOT NULL,
+   PRIMARY KEY (id_dataset, id_task)
+);
+
+
+CREATE TABLE IF NOT EXISTS public.task_evaluated_user (
+   id_dataset integer NOT NULL,
+   id_task integer NOT NULL,
+   id_evaluated_user integer NOT NULL,
+   start_task double precision,
+   end_task double precision,
+   PRIMARY KEY (id_dataset, id_task, id_evaluated_user)
 );
 
 
@@ -174,3 +190,11 @@ ALTER TABLE public.evaluated_user ADD CONSTRAINT FK_evaluated_user__id_dataset F
 
 ALTER TABLE public.evaluated_user_profile DROP CONSTRAINT IF EXISTS FK_evaluated_user_profile__id_dataset__id_evaluated_user;
 ALTER TABLE public.evaluated_user_profile ADD CONSTRAINT FK_evaluated_user_profile__id_dataset__id_evaluated_user FOREIGN KEY (id_dataset, id_evaluated_user) REFERENCES public.evaluated_user(id_dataset, id_evaluated_user);
+
+ALTER TABLE public.task DROP CONSTRAINT IF EXISTS FK_task__id_dataset;
+ALTER TABLE public.task ADD CONSTRAINT FK_task__id_dataset FOREIGN KEY (id_dataset) REFERENCES public.dataset(id_dataset);
+
+ALTER TABLE public.task_evaluated_user DROP CONSTRAINT IF EXISTS FK_task_evaluated_user__id_dataset__id_task;
+ALTER TABLE public.task_evaluated_user ADD CONSTRAINT FK_task_evaluated_user__id_dataset__id_task FOREIGN KEY (id_dataset, id_task) REFERENCES public.task(id_dataset, id_task);
+ALTER TABLE public.task_evaluated_user DROP CONSTRAINT IF EXISTS FK_task_evaluated_user__id_dataset__id_evaluated_user;
+ALTER TABLE public.task_evaluated_user ADD CONSTRAINT FK_task_evaluated_user__id_dataset__id_evaluated_user FOREIGN KEY (id_dataset, id_evaluated_user) REFERENCES public.evaluated_user(id_dataset, id_evaluated_user);
