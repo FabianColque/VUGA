@@ -93,6 +93,10 @@ function btnSave_Obj1_All(){
 	var data_save = []
 	data_save = $("#id_tabla_obj1").DataTable();
 	data_save = data_save.rows().data();
+	if(data_save.length > 300){
+		alert("Recommendation\nTry saving less users");
+		return;
+	}
 	var aux = {}
 	for(var  i = 0 ; i < data_save.length; i ++ ){
 		aux[data_save[i]["idx"].toString()] = {"id": data_save[i]["id"], "n": data_save[i]["n"]}
@@ -112,6 +116,14 @@ function btnSave_Obj1_individuals(){
 	data_save = $("#id_tabla_obj1").DataTable()
 	data_save = data_save.rows(".selected")
 	data_save = data_save.data();
+	if(data_save.length == 0){
+		alert("Recommendation\nThere are 0 users selected\nSelect some users in Table of Users");
+		return;
+	}
+	if(data_save.length > 300){
+		alert("Recommendation\nTry saving less users");
+		return;
+	}
 	var aux = {}
 	for(var  i = 0 ; i < data_save.length; i ++ ){
 		aux[data_save[i]["idx"].toString()] = {"id": data_save[i]["id"], "n": data_save[i]["n"]}

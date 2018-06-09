@@ -6,12 +6,27 @@ import my_knn as myknn
 import math
 import random
 
+from multiprocessing import Pool
+#from multiprocessing.pool import ThreadPool as Pool
+from functools import partial
+
 #pTop es un array con las dimensiones top segun la eleccion del usuario
 def generate_groups(dataset, data_selected, k_groups, pTop, simi):
   n_random = 1
   lis_knn = []
-  for i in xrange(0,len(data_selected)):
-    lis_knn.append(myknn.my_knn(data_selected[i], dataset, pTop, simi))
+  
+  #for i in xrange(0,len(data_selected)):
+    #lis_knn.append(myknn.my_knn(data_selected[i], dataset, pTop, simi))
+  
+  
+  pool = Pool(processes=10)
+  aaa = range(0, len(data_selected))
+  #def my_knn(idx, data, pTop, simi, K = 50):
+  parcial = partial(myknn.my_knn, data = dataset, pTop = pTop, simi = simi)  
+  lis_knn = pool.map(parcial, data_selected)
+  pool.close()
+  pool.join()
+  
   print ("paso los lis_knn")
   
   newgroups = []
@@ -264,7 +279,8 @@ def process_similarity(data_heatmap, newGroups, data_ori):
 
 
 def bhattacharyya(h1, h2):
-  return np.sum(np.sqrt(np.multiply(h1, h2)))
+  delta = 0.05
+  return np.sum(np.sqrt(np.multiply(h1, h2)))-delta
 
 def kl_divergence(histo_1, histo_2):
   """

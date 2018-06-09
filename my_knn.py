@@ -14,8 +14,8 @@ def my_knn(idx, data, pTop, simi, K = 50):
   res = findK_NN(idx, data, pTop, simi)
 
   res2 = sorted(res)
-  print ("mas cercano", res[0])
-  print ("mas lejano", res[-2])
+  #print ("mas cercano", res[0])
+  #print ("mas lejano", res[-2])
   """if simi == 0:
     vec = sorted(aux_arr, cmp = myFn)
   else:
@@ -24,7 +24,7 @@ def my_knn(idx, data, pTop, simi, K = 50):
   vec = sorted(aux_arr, cmp = myFn)
   #print ("que quieres de mi 2: ", vec)
   #distanciamaxima(data)
-  print "halle los k mejores"
+  #print "halle los k mejores"
   if simi == 0:
     return vec[0:K]
   return vec[len(vec)-K-1:len(vec)-1]
