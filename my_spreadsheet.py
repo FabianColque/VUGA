@@ -2,6 +2,7 @@ from __future__ import print_function
 from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
+import time
 
 service = None
 
@@ -23,7 +24,7 @@ def setup_spreadsheet():
 # Call the Sheets API
 
 
-def is_load_spreadsheet(email, SPREADSHEET_ID):
+def is_load_spreadsheet_one(email, SPREADSHEET_ID):
     global service
     RANGE_NAME = 'B2:B'
     result = service.spreadsheets().values().get(
@@ -37,3 +38,18 @@ def is_load_spreadsheet(email, SPREADSHEET_ID):
                 if row[0] == email:
                     return True
     return False
+
+
+def is_load_spreadsheet(email, SPREADSHEET_ID):
+    n = 10
+    i = 0
+    resp = False
+    while i < n:
+        time.sleep(1)
+        resp = is_load_spreadsheet_one(email, SPREADSHEET_ID)
+        if resp is True:
+            break
+
+        i = i + 1
+
+    return resp

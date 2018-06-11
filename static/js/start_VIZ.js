@@ -214,11 +214,7 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select one user.</p>",
-			 "showSkip": false
-      },
-      {
-          "click #id_tabla_obj1>tbody>tr:last": "<p align ='left'>Select another user.</p>",
+          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select the user.</p>",
 			 "showSkip": false
       },
       {
@@ -330,11 +326,7 @@ function test_enjoyhint_with_skip() {
 			 "showSkip": true
       },
       {
-          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select one user.</p>",
-			 "showSkip": true
-      },
-      {
-          "click #id_tabla_obj1>tbody>tr:last": "<p align ='left'>Select another user.</p>",
+          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select the user.</p>",
 			 "showSkip": true
       },
       {
