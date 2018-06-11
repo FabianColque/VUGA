@@ -2,6 +2,7 @@ log/
 credentials.json
 .eslintrc.js
 .flake8
+.stylelintrc
 *.swp
 #Byte-compiled / optimized / DLL files
 __pycache__/

@@ -13,25 +13,25 @@ $( function() {
          var dialogFormAutoOpen = false;
          var dialogThanksAutoOpen = false;
          $.post("/certified_user", function(data_status) {
-            if (data_status == 0) {
+            if (data_status == 1) {
                dialogInteractiveTourOpen = true;
                dialogStartAutoOpen = false;
                dialogFormAutoOpen = false;
                dialogThanksAutoOpen = false;
             }
-            else if (data_status == 1) {
+            else if (data_status == 2) {
                dialogInteractiveTourOpen = false;
                dialogStartAutoOpen = true;
                dialogFormAutoOpen = false;
                dialogThanksAutoOpen = false;
             }
-            else if (data_status == 2) {
+            else if (data_status == 3) {
                dialogInteractiveTourOpen = false;
                dialogStartAutoOpen = false;
                dialogFormAutoOpen = true;
                dialogThanksAutoOpen = false;
             }
-            else if (data_status == 3) {
+            else if (data_status == 4) {
                dialogInteractiveTourOpen = false;
                dialogStartAutoOpen = false;
                dialogFormAutoOpen = false;

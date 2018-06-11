@@ -65,6 +65,63 @@ class MainHandler(BaseHandler):
       self.redirect('static/index.html')
       return
 
+    status = "-1"
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("SELECT status FROM evaluated_user " +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (id_dataset, id_evaluated_user))
+      status = cur.fetchone()[0]
+      print "User status ({0}, {1}): {2}.".format(id_dataset,
+                                                  id_evaluated_user, status)
+
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+    if int(status) == 0:
+      self.redirect('static/intro.html')
+    else:
+      dataset = ""
+      conn = None
+      try:
+        params = config()
+        print "Connecting to the PostgreSQL database ..."
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute("SELECT name FROM dataset INNER JOIN " +
+                    "evaluated_user_profile ON dataset.id_dataset = " +
+                    "evaluated_user_profile.id_dataset WHERE email = %s;",
+                    (self.get_secure_cookie("email"),))
+        dataset = cur.fetchone()[0]
+        print "Dataset {0}.".format(dataset)
+        cur.close()
+        conn.commit()
+      except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+      finally:
+        if conn is not None:
+          conn.close()
+          print("Database connection closed.")
+
+      self.redirect("/vexus2?g=" + str(dataset))
+
+
+class ChooseDatasetHandler(BaseHandler):
+  def post(self):
     dataset = ""
     conn = None
     try:
@@ -87,7 +144,7 @@ class MainHandler(BaseHandler):
         conn.close()
         print("Database connection closed.")
 
-    self.redirect('vexus2?g=' + str(dataset))
+    self.write(str(dataset))
 
 #### START #### MY CLASSES ###################
 
@@ -565,6 +622,33 @@ class certified_user(BaseHandler):
     self.write(str(status))
 
 
+class pre_register_user(BaseHandler):
+  def get(self):
+    conn = None
+    try:
+      params = config()
+      print "Connecting to the PostgreSQL database ..."
+      conn = psycopg2.connect(**params)
+      cur = conn.cursor()
+      cur.execute("SELECT id_dataset, id_evaluated_user FROM " +
+                  "evaluated_user_profile WHERE email = %s;",
+                  (self.get_secure_cookie("email"),))
+      id_dataset, id_evaluated_user = cur.fetchone()
+      cur.execute("UPDATE evaluated_user SET status = %s" +
+                  "WHERE id_dataset = %s AND id_evaluated_user = %s;",
+                  (1, id_dataset, id_evaluated_user))
+      print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
+
+      cur.close()
+      conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+        conn.close()
+        print("Database connection closed.")
+
+
 class register_user(BaseHandler):
   def get(self):
     conn = None
@@ -579,7 +663,7 @@ class register_user(BaseHandler):
       id_dataset, id_evaluated_user = cur.fetchone()
       cur.execute("UPDATE evaluated_user SET status = %s, start_tour = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (0, time(), id_dataset, id_evaluated_user))
+                  (1, time(), id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -606,7 +690,7 @@ class end_tour(BaseHandler):
       id_dataset, id_evaluated_user = cur.fetchone()
       cur.execute("UPDATE evaluated_user SET status = %s, end_tour = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (1, time(), id_dataset, id_evaluated_user))
+                  (2, time(), id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -633,7 +717,7 @@ class start_user(BaseHandler):
       id_dataset, id_evaluated_user = cur.fetchone()
       cur.execute("UPDATE evaluated_user SET status = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (1, id_dataset, id_evaluated_user))
+                  (2, id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -660,7 +744,7 @@ class end_user(BaseHandler):
       id_dataset, id_evaluated_user = cur.fetchone()
       cur.execute("UPDATE evaluated_user SET status = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (2, id_dataset, id_evaluated_user))
+                  (3, id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -766,7 +850,7 @@ class start_form(BaseHandler):
       cur.execute("UPDATE evaluated_user SET status = %s, " +
                   "start_form = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (2, time(), id_dataset, id_evaluated_user))
+                  (3, time(), id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -794,7 +878,7 @@ class end_form(BaseHandler):
       cur.execute("UPDATE evaluated_user SET status = %s, " +
                   "end_form = %s " +
                   "WHERE id_dataset = %s AND id_evaluated_user = %s;",
-                  (3, time(), id_dataset, id_evaluated_user))
+                  (4, time(), id_dataset, id_evaluated_user))
       print "Updated user ({0}, {1}).".format(id_dataset, id_evaluated_user)
 
       cur.close()
@@ -2059,6 +2143,7 @@ application = tornado.web.Application([
   (r"/recover_name_datasets", recover_name_datasets),
   (r"/get_data_projection", get_data_projection),
   (r"/auth/google", GoogleOAuth2LoginHandler),
+  (r"/choose_dataset", ChooseDatasetHandler),
   (r"/vexus2", start_new_template_Viz),
   (r"/getData_Viz", getData_Viz),
   (r"/getDataObj2_table", getDataObj2_table),
@@ -2078,6 +2163,7 @@ application = tornado.web.Application([
   (r"/is_load_spreadsheet_w_id", is_load_spreadsheet_w_id),
   (r"/get_email", get_email),
   (r"/certified_user", certified_user),
+  (r"/pre_register_user", pre_register_user),
   (r"/register_user", register_user),
   (r"/end_tour", end_tour),
   (r"/start_user", start_user),
