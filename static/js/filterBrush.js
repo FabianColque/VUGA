@@ -18,7 +18,7 @@ function myBrush(namediv){
   this.init = function(){
     //esto es provicional, debo borrarlo
    //if(name_dataset != "Movielens only Rating" && name_dataset != "NewBookCrossing")
-    d3.select("#timerow").style("display", "block");
+   // d3.select("#timerow").style("display", "block");
   }
 
   this.resetBrush_all = function(){
