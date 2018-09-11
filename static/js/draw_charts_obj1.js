@@ -934,14 +934,32 @@ function drawing_histo_obj1(){
   }
 
   function draw_barChart(id_dim, data){
+
+    //console.log("id_dim", id_dim, data, data[id_dim].titles);
+
+    if(id_dim == 2 && data[id_dim].name == "Ocupation" && name_dataset == "Movielens only Rating"){
+      //console.log("aqui");
+      //console.log("antes: ", data[id_dim].titles)
+      data[id_dim].name = "Occupation";
+      if(data[id_dim].titles[0] == "other"){
+        data[id_dim].titles = data[id_dim].titles.slice(1);
+        data[id_dim].titles.push("other");
+      }
+      //console.log("despues: ", data[id_dim].titles)
+    }
+    
     var colores_generales = colorsArray2//["#e6194b", "#3cb44b", "#ffe119", "#0082c8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#d2f53c", "#fabebe", "#008080", "#e6beff", "#aa6e28", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000080", "#b15928", "#6a3d9a", "#33a02c"]
+
     array_charts[id_dim]
       .width(document.getElementById("projection_area").scrollWidth - document.getElementById("projection_area").scrollWidth*0.16)//.width(600)
       .height(180)
       .margins({top: 20, right: 50, bottom: 50, left: 50})
       .dimension(dims_groups[id_dim]["dim"])
       .group(dims_groups[id_dim]["group"])
-      .ordering(function(t){return t.value})
+      .ordering(function(t){
+        //console.log("value: ", t.value, name_dataset);
+        return t.value
+      })
       .colors("#0082c8")
       .elasticY(true)
       .centerBar(false)
@@ -992,7 +1010,10 @@ function drawing_histo_obj1(){
         break;
       case "Bar Chart":
         //aux.dim = ndx.dimension(function(d){return data[nosemayor[h]].titles[d.values[nosemayor[h]]]});
-        aux.dim = ndx.dimension(function(d){return data_dimensions[i].titles[d.values[i]]})
+        aux.dim = ndx.dimension(function(d){
+          //console.log("search opcupation movielens: ", data_dimensions[i].titles[d.values[i]], name_dataset)
+          return data_dimensions[i].titles[d.values[i]];
+        })
         aux.group = aux["dim"].group();
         break;  
       case "Pie Chart":
