@@ -56,7 +56,7 @@
           <span class="icon-bar"></span>
         </button>
         
-        <a class="navbar-brand" >VEXUS 2</a>
+        <a class="navbar-brand" >VugA</a>
       </div>
 
       <div class="navbar-collapse collapse">
@@ -107,14 +107,14 @@
           <div class="chart-title">
            <div class="row">
               <div class="col-sm-4">
-                <p id="name-VIZ">dbname VIZ </p>  
+                <p id="name-VIZ">Projection Area</p>  
               </div>  
               <div class="col-sm-4" style="display: none">
                 Dimension
                 <select class="select_proj"></select>  
               </div>
-              <div class="col-sm-4">
-                Colors
+              <div class="col-sm-6">
+                Color Mapping
                 <select class="select_color"></select>  
               </div>
            </div>
@@ -127,7 +127,7 @@
                 
                 <div class="switch__container" style="font-size: 10px; width:80px; color: black">
                   Lasso off/on
-                  <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
+                  <input id="switch-shadow" class="switch switch--shadow" type="checkbox" checked>
                   <label id="switch-shadow-label" for="switch-shadow"></label>
                 </div>
                 <div class="btn_3_lassos">
@@ -147,7 +147,7 @@
               
             </div>
             <div class="col-sm-4">
-              <input type="button" class="btn btn-success" value="Visualize Users" id="explore-viz" style="display:none;" title="Visualize details of users selected" />    
+              <input type="button" class="btn btn-success" value="Explore Users" id="explore-viz" style="display:none;" title="Visualize details of users selected" />    
             </div>
             <div class="col-sm-3">
               <div class="totalPoints" style="margin-left: 2%; -webkit-text-stroke-width: 1px">Total Users: </div>
@@ -196,15 +196,19 @@
 
                 <div id="config_groups">
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                     Max. Groups
+                  </div>
+                  <div class="col-sm-6">
                     <input type="number" id="iK_groups" name="quantity" min="2" max="20" value="5"  style="width: 40px">
                   </div>
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                     Top Dimensions
+                  </div>
+                  <div class="col-sm-6">
                     <input type="number" id="iP_groups" name="quantity" min="1" max="100" value="100"  style="width: 40px">
                     %
                     <!--<select class="optionSimi">
@@ -215,10 +219,13 @@
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
+                    New Group Types
+                  </div>
+                  <div class="col-sm-6">
                     <select class="optionSimi">
-                      <option>+ Similarity</option>
-                      <option>- Similarity</option>
+                      <option>Similar </option>
+                      <option>Dissimilar</option>
                     </select>
                   </div>
                 </div>
@@ -244,7 +251,7 @@
       
       <div class="col-sm-5">
           <div class="chart-wrapper" id="groups_id">
-              <div class="chart-title"> Group VIZ </div>
+              <div class="chart-title"> Group Generation Graph </div>
               <div class="chart-stage"><!-- style="height: 475px;"-->
                   <!--<img data-src="holder.jsk/100%x450/white">-->
                   <div id="vizArea_Groups"></div>
@@ -291,7 +298,7 @@
            <div class="row">
              <div class="col-sm-12">
                <div class="chart-wrapper">
-                 <div class="chart-title"> Comparison Matrix</div>
+                 <div class="chart-title">Comparison Genre Charts</div>
                  <div class="chart-stage" id="charts_comparison">
 
                 <div class="col-sm-12">
