@@ -5,6 +5,7 @@ var link_app = ""
 var viz_proj = "";
 //Variable vizualization charts from object 1
 var histograms_obj1 = ""
+var histograms_obj_ori = ""
 
 //variable visualization of Legend
 var mylegend = null;
@@ -49,12 +50,18 @@ var fabian = null;
 function start(){
   
   //some details
-  if(name_dataset == "health1")
+  if(name_dataset == "health1") {
     d3.select("#name_obj2").text("Actions")
-  else if(name_dataset == "NewBookCrossing")
+    d3.select("#ori_name_obj2").text("Original Actions")
+  }
+  else if(name_dataset == "NewBookCrossing") {
     d3.select("#name_obj2").text("Books")
-  else
+    d3.select("#ori_name_obj2").text("Original Books")
+  }
+  else {
     d3.select("#name_obj2").text("Movies")
+    d3.select("#ori_name_obj2").text("Original Movies")
+  }
   
   var data_projection = post_to_server_global({"dbname": name_dataset}, "get_data_projection");
   viz_proj = new vis_projection();

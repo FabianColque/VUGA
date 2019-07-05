@@ -23,6 +23,7 @@ d3.select("#btn_back_Projection")
 		        viz_proj.setDataSelected(original_save)
 		        viz_proj.draw_only_selected()
 		        histograms_obj1.refresh_All_Data(datahisto.instances)	
+		        histograms_obj_ori.refresh_All_Data(datahisto.instances)	
 			}
 			fn_loading(false)
 		})
@@ -179,6 +180,12 @@ d3.select("#explore-viz")
 					histograms_obj1.init(datahisto);
 				}else{//otherwise
 					histograms_obj1.refresh_All_Data(datahisto.instances)
+				}
+            if(histograms_obj_ori == ""){
+					histograms_obj_ori = new drawing_histo_obj_ori();
+					histograms_obj_ori.init(datahisto);
+				}else{//otherwise
+					histograms_obj_ori.refresh_All_Data(datahisto.instances)
 				}
 				viz_proj.draw_only_selected();	
 			}else{
