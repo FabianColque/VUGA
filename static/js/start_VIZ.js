@@ -89,6 +89,14 @@ function start(){
 
   document.getElementsByClassName("select_color")[0].selectedIndex = auxdefault;
   d3.select("#parentsaveArea").attr("height", document.getElementById("projection_area").scrollHeight + "px")
+
+  jQuery.fn.d3Click = function () {
+    this.each(function (i, e) {
+      var evt = new MouseEvent("click");
+      e.dispatchEvent(evt);
+    });
+  };
+  $("#switch-shadow").d3Click();
 }
 
 

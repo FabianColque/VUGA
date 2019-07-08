@@ -77,6 +77,7 @@ d3.select("#btn_ExploreGroups")
 			if(!mynewGroups)
 				mynewGroups = new draw_groups();
 			mynewGroups.init(groups)
+
 			fn_loading(false)
 		//}, 0)
 	})
@@ -188,6 +189,8 @@ d3.select("#explore-viz")
 					histograms_obj_ori.refresh_All_Data(datahisto.instances)
 				}
 				viz_proj.draw_only_selected();	
+            d3.select("#ori_card_1").style("display", "none");
+            d3.select("#ori_card_2").style("display", "none");
 			}else{
 				window.alert("Zero users selected. Please, select users using Lasso");
 				//eturn;
