@@ -1,16 +1,16 @@
-# Vexus 2
+# VugA
 
 ## Installation
 
-Vexus 2 requires Python >= 2.7.
+VugA requires Python >= 2.7.
 
-The easiest way to install Vexus2 is using [PyPA pip](https://pip.pypa.io/):
+The easiest way to install VugA is using [PyPA pip](https://pip.pypa.io/):
 
 `$ sudo apt install python-pip`
 
 ### Dependencies
 
-Vexus 2 requires:
+VugA requires:
 
 * [Tornado](http://www.tornadoweb.org)
 

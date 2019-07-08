@@ -181,94 +181,94 @@ function test_enjoyhint() {
   // config steps
   var enjoyhint_script_steps = [
       {
-          "next #svg_projection": "<p align ='left'>This is the Projection Area.<br>Here, we display the users represented by circles.</p>",
+          "next #svg_projection": "<p align ='left'>Esta é a Projection Area.<br>Aqui, os usuários são representados por círculos.</p>",
 			 "showSkip": false
       },
       {
-          "next #mylegend": "<p align ='left'>Users use this set of colors. Each user is colored by the dominant dimension.<br>Also, This legend helps us to filter the dimensions for a best exploration:<br><text style='color: #00a6eb'>deselectAll</text> - Deselect all the dimensions.<br><text style='color: #00a6eb'>selectAll</text> - Select all the dimensions.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Select/deselect one dimension.</p>",
+          "next #mylegend": "<p align ='left'>. Cada círculo recebe a cor do gênero do filme para o qual o usuário escreveu mais reviews. Cores mais claras indicam uma maior dominância do gênero cinematográfico.<br>Essa legenda também permite filtrar os usuários para facilitar a exploração:<br><text style='color: #00a6eb'>deselectAll</text> - Desselecionar todos.<br><text style='color: #00a6eb'>selectAll</text> - Selecionar todos.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Selecionar/desselecionar um gênero cinematográfico.</p>",
 			 "showSkip": false
       },
       {
-          "next .select_color": "<p align ='left'>Here, we can change the dimensions.</p>",
+          "next .select_color": "<p align ='left'>Aqui é possível selecionar outro gênero cinematográfico.</p>",
 			 "showSkip": false
       },
       {
-          "click #switch-shadow-label": "<p align ='left'>You need to click here to continue the exploration:<br><text style='color: #00a6eb'>Lasso on</text> - For active the Lasso tool to select a subset of users.<br><text style='color: #00a6eb'>Lasso off</text> - Zoom the Projection Area with the scroll mouse button and move it with the pressed left mouse button.</p>",
+          "next #switch-shadow-label": "<p align ='left'><text style='color: #00a6eb'>Lasso on</text> - Para ativar a Lasso tool e selecionar um subconjunto de usuários.<br><text style='color: #00a6eb'>Lasso off</text> - Para aumentar o zoom da Projection Area, utilize o botão de rolagem do mouse e mova o mouse com o botão esquerdo pressionado.</p>",
 			 "showSkip": false,
 			 "shape": "circle"
       },
       {
-          "next .btn_3_lassos": "<p align ='left'>Also, we have 3 options to use the Lasso tool for select one or more regions in the Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - For clear a previous selection.<br><text style='color: #00a6eb'>Select All</text> - For select all visible users.<br><text style='color: #00a6eb'>Reset All</text> - For return at the complete projection.</p>",
+          "next .btn_3_lassos": "<p align ='left'> Há 3 opções de uso do lasso tool para selecionar uma ou mais regiões na Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - Para desfazer seleções prévias.<br><text style='color: #00a6eb'>Select All</text> - Para selecionar todos os usuários mostrados.<br><text style='color: #00a6eb'>Reset All</text> - Para mostrar novamente todos os usuários na Projection Area.</p>",
 			 "showSkip": false
       },
       {
-          "next #svg_projection": "<p align ='left'>Please, using your mouse, <text style='color: #00a6eb'><font size='7'><b>select</b></font></text> a set of users (circles).</p>",
+          "next #svg_projection": "<p align ='left'>Agora, utilizando seu mouse, <text style='color: #00a6eb'><font size='7'><b>selecione</b></font></text> um conjunto de usuários (círculos).</p>",
 			 "showSkip": false
       },
       {
-          "click #explore-viz": "<p align ='left'>Click here to display the information of the users selected.</p>",
+          "click #explore-viz": "<p align ='left'>Clique aqui para mostrar as informações dos usuários selecionados. </p>",
 			 "showSkip": false
       },
       {
-          "next #dataTable_obj1": "<p align ='left'>Here, we have the list of users and the general information of each one.</p>",
+          "next #dataTable_obj1": "<p align ='left'>Aqui temos a lista de usuários com suas informações.</p>",
 			 "showSkip": false
       },
       {
-          "next #charts_w_time": "<p align ='left'>Now, the information of users but summarized are displayed with the charts.</p>",
+          "next #charts_w_time": "<p align ='left'>Os diagramas mostram as informações dos usuários selecionados.</p>",
 			 "showSkip": false
       },
       {
-          "next #div_graphs_obj1_0": "<p align ='left'>Click in a category inside the chart to filter the users based in that attribute.</p>",
+          "next #div_graphs_obj1_0": "<p align ='left'>Clique em uma das barras do diagrama para selecionar os usuários que têm aquela característica (valor de atributo).</p>",
 			 "showSkip": false
       },
       {
-          "next #dataTable_obj2": "<p align ='left'>Here, we display a list of " + d3.select("#name_obj2").text() + " about the users currently selected.</p>",
+          "next #dataTable_obj2": "<p align ='left'>Aqui é mostrada uma lista de " + d3.select("#name_obj2").text() + " sobre os usuários selecionados.</p>",
 			 "showSkip": false
       },
       {
-          "next #charts_without_detail": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>In this part, we have some charts with the distribution of users by each attribute.</text></p>",
+           "next #charts_without_detail": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Nesta seção temos alguns diagramas que mostram a distribuição de usuários por atributo. </text></p>",
 			 "showSkip": false
       },
       {
-          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select the user.</p>",
+          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Selecione o usuário.</p>",
 			 "showSkip": false
       },
       {
-          "click #Save_obj1": "<p align ='left'>Click here to save the selected users into 'Save Area'.<br>Also, we can click in <text style='color: #00a6eb'>Save All</text> button to save all users into 'Save Area'.</p>",
+          "click #Save_obj1": "<p align ='left'>Clique aqui para salvar os usuários selecionados na 'Save Area'.<br>Ao clicar no botão <text style='color: #00a6eb'>Save All</text> todos os usuários selecionados serão salvos na 'Save Area'.</p>",
 			 "showSkip": false
       },
       {
-          "next #idsavearea_obj1": "<p align ='left'>This is the Save Area.<br>Here, we display a list of the saved users.</p>",
+          "next #idsavearea_obj1": "<p align ='left'>Esta é a Save Area.<br>Aqui são mostrados os usuários salvos.</p>",
 			 "showSkip": false,
           "right": 50
       },
       {
-          "next #config_groups": "<p align ='left'> Also, we have 3 options of configuration to explore groups:<br><text style='color: #00a6eb'>Max. Groups</text> - It is the number of user groups that you want as result.<br><text style='color: #00a6eb'>Top Dimensions</text> - For choose the percentage of relevant dimensions.<br><text style='color: #00a6eb'>+ Similarity/- Similarity</text> - If you want find the more similar/less similar users.</p>",
+          "next #config_groups": "<p align ='left'> Há 3 possibilidades para explorar grupos.<br><text style='color: #00a6eb'>Max. Groups</text> - É o número de grupos de usuários que se deseja criar. <br><text style='color: #00a6eb'>Top Dimensions</text> - Para escolher a porcentagem de gêneros cinematográficos dominantes.<br><text style='color: #00a6eb'># of Users by Groups</text> - O número mínimo e máximo de usuários per grupo.<br><text style='color: #00a6eb'>New Group Types</text> - Permite escolher formar grupos com usuários mais similares ou dissimilares.</p>",
 			 "showSkip": false
       },
       {
-          "click #btn_ExploreGroups": "<p align ='left'>Click here to explore groups.</p>",
+          "click #btn_ExploreGroups": "<p align ='left'>Clique aqui para explorar grupos de usuários.</p>",
 			 "showSkip": false
       },
       {
-          "next #vizArea_Groups": "<p align ='left'>The result is a set of user groups with the number of users in each group, the similarity with the original group (purple) and<br>the intersection (number of users in common) with the original group. The light blue lines are the groups with users in common.</p>",
+          "next #vizArea_Groups": "<p align ='left'>Cada círculo é um novo grupo formado.<br>Os números mostram quantos usuários há em cada grupo, a similaridade em relação ao grupo original (chamado de “semente”), mostrado em roxo e a <br>interseção (número de usuários em comum) com o grupo semente. As linhas azuis representam que há usuários em comum entre os grupos.</p>",
 			 "showSkip": false
       },
       {
-          "click #node1": "<p align ='left'>Click in this group for visualize its information.</p>",
+          "click #node1": "<p align ='left'>Clique no grupo para visualizar suas informações.</p>",
 			 "showSkip": false,
 			 "shape": "circle"
       },
       {
-          "next #dataTable_obj1": "<p align ='left'>Clicking in a group, we have the list of users and the general information of the selected group.</p>",
+           "next #dataTable_obj1": "<p align ='left'>Ao clicar no grupo, é mostrada a lista de usuários do grupo e informações sobre as características do grupo.</p>",
 			 "showSkip": false
       },
       {
-          "next #charts_w_time": "<p align ='left'>Also, the charts of the selected group.</p>",
+           "next #charts_w_time": "<p align ='left'>E também os diagramas com informações do grupo.</p>",
 			 "showSkip": false
       },
       {
-          "next #charts_without_detail_compair": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Finally, we can compare the original group and the group selected.</text></p>",
+          "next #charts_without_detail_compair": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Assim é possível comparer o grupo selecionado com o grupo semente.</text></p>",
 			 "showSkip": false
       }
   ];
@@ -293,94 +293,94 @@ function test_enjoyhint_with_skip() {
   // config steps
   var enjoyhint_script_steps = [
       {
-          "next #svg_projection": "<p align ='left'>This is the Projection Area.<br>Here, we display the users represented by circles.</p>",
+          "next #svg_projection": "<p align ='left'>Esta é a Projection Area.<br>Aqui, os usuários são representados por círculos.</p>",
 			 "showSkip": true
       },
       {
-          "next #mylegend": "<p align ='left'>Users use this set of colors. Each user is colored by the dominant dimension.<br>Also, This legend helps us to filter the dimensions for a best exploration:<br><text style='color: #00a6eb'>deselectAll</text> - Deselect all the dimensions.<br><text style='color: #00a6eb'>selectAll</text> - Select all the dimensions.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Select/deselect one dimension.</p>",
+          "next #mylegend": "<p align ='left'>. Cada círculo recebe a cor do gênero do filme para o qual o usuário escreveu mais reviews. Cores mais claras indicam uma maior dominância do gênero cinematográfico.<br>Essa legenda também permite filtrar os usuários para facilitar a exploração:<br><text style='color: #00a6eb'>deselectAll</text> - Desselecionar todos.<br><text style='color: #00a6eb'>selectAll</text> - Selecionar todos.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Selecionar/desselecionar um gênero cinematográfico.</p>",
 			 "showSkip": true
       },
       {
-          "next .select_color": "<p align ='left'>Here, we can change the dimensions.</p>",
+          "next .select_color": "<p align ='left'>Aqui é possível selecionar outro gênero cinematográfico.</p>",
 			 "showSkip": true
       },
       {
-          "click #switch-shadow-label": "<p align ='left'>You need to click here to continue the exploration:<br><text style='color: #00a6eb'>Lasso on</text> - For active the Lasso tool to select a subset of users.<br><text style='color: #00a6eb'>Lasso off</text> - Zoom the Projection Area with the scroll mouse button and move it with the pressed left mouse button.</p>",
+          "click #switch-shadow-label": "<p align ='left'><text style='color: #00a6eb'>Lasso on</text> - Para ativar a Lasso tool e selecionar um subconjunto de usuários.<br><text style='color: #00a6eb'>Lasso off</text> - Para aumentar o zoom da Projection Area, utilize o botão de rolagem do mouse e mova o mouse com o botão esquerdo pressionado.</p>",
 			 "showSkip": true,
 			 "shape": "circle"
       },
       {
-          "next .btn_3_lassos": "<p align ='left'>Also, we have 3 options to use the Lasso tool for select one or more regions in the Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - For clear a previous selection.<br><text style='color: #00a6eb'>Select All</text> - For select all visible users.<br><text style='color: #00a6eb'>Reset All</text> - For return at the complete projection.</p>",
+          "next .btn_3_lassos": "<p align ='left'> Há 3 opções de uso do lasso tool para selecionar uma ou mais regiões na Projection Area:<br><text style='color: #00a6eb'>Lasso Reset</text> - Para desfazer seleções prévias.<br><text style='color: #00a6eb'>Select All</text> - Para selecionar todos os usuários mostrados.<br><text style='color: #00a6eb'>Reset All</text> - Para mostrar novamente todos os usuários na Projection Area.</p>",
 			 "showSkip": true
       },
       {
-          "next #svg_projection": "<p align ='left'>Please, using your mouse, <text style='color: #00a6eb'><font size='7'><b>select</b></font></text> a set of users (circles).</p>",
+          "next #svg_projection": "<p align ='left'>Agora, utilizando seu mouse, <text style='color: #00a6eb'><font size='7'><b>selecione</b></font></text> um conjunto de usuários (círculos).</p>",
 			 "showSkip": true
       },
       {
-          "click #explore-viz": "<p align ='left'>Click here to display the information of the users selected.</p>",
+          "click #explore-viz": "<p align ='left'>Clique aqui para mostrar as informações dos usuários selecionados. </p>",
 			 "showSkip": true
       },
       {
-          "next #dataTable_obj1": "<p align ='left'>Here, we have the list of users and the general information of each one.</p>",
+          "next #dataTable_obj1": "<p align ='left'>Aqui temos a lista de usuários com suas informações.</p>",
 			 "showSkip": true
       },
       {
-          "next #charts_w_time": "<p align ='left'>Now, the information of users but summarized are displayed with the charts.</p>",
+          "next #charts_w_time": "<p align ='left'>Os diagramas mostram as informações dos usuários selecionados.</p>",
 			 "showSkip": true
       },
       {
-          "next #div_graphs_obj1_0": "<p align ='left'>Click in a category inside the chart to filter the users based in that attribute.</p>",
+          "next #div_graphs_obj1_0": "<p align ='left'>Clique em uma das barras do diagrama para selecionar os usuários que têm aquela característica (valor de atributo).</p>",
 			 "showSkip": true
       },
       {
-          "next #dataTable_obj2": "<p align ='left'>Here, we display a list of " + d3.select("#name_obj2").text() + " about the users currently selected.</p>",
+          "next #dataTable_obj2": "<p align ='left'>Aqui é mostrada uma lista de " + d3.select("#name_obj2").text() + " sobre os usuários selecionados.</p>",
 			 "showSkip": true
       },
       {
-          "next #charts_without_detail": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>In this part, we have some charts with the distribution of users by each attribute.</text></p>",
+           "next #charts_without_detail": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Nesta seção temos alguns diagramas que mostram a distribuição de usuários por atributo. </text></p>",
 			 "showSkip": true
       },
       {
-          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Select the user.</p>",
+          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Selecione o usuário.</p>",
 			 "showSkip": true
       },
       {
-          "click #Save_obj1": "<p align ='left'>Click here to save the selected users into 'Save Area'.<br>Also, we can click in <text style='color: #00a6eb'>Save All</text> button to save all users into 'Save Area'.</p>",
+          "click #Save_obj1": "<p align ='left'>Clique aqui para salvar os usuários selecionados na 'Save Area'.<br>Ao clicar no botão <text style='color: #00a6eb'>Save All</text> todos os usuários selecionados serão salvos na 'Save Area'.</p>",
 			 "showSkip": true
       },
       {
-          "next #idsavearea_obj1": "<p align ='left'>This is the Save Area.<br>Here, we display a list of the saved users.</p>",
+          "next #idsavearea_obj1": "<p align ='left'>Esta é a Save Area.<br>Aqui são mostrados os usuários salvos.</p>",
 			 "showSkip": true,
           "right": 50
       },
       {
-          "next #config_groups": "<p align ='left'> Also, we have 3 options of configuration to explore groups:<br><text style='color: #00a6eb'>Max. Groups</text> - It is the number of user groups that you want as result.<br><text style='color: #00a6eb'>Top Dimensions</text> - For choose the percentage of relevant dimensions.<br><text style='color: #00a6eb'>+ Similarity/- Similarity</text> - If you want find the more similar/less similar users.</p>",
+          "next #config_groups": "<p align ='left'> Há 3 possibilidades para explorar grupos.<br><text style='color: #00a6eb'>Max. Groups</text> - É o número de grupos de usuários que se deseja criar. <br><text style='color: #00a6eb'>Top Dimensions</text> - Para escolher a porcentagem de gêneros cinematográficos dominantes.<br><text style='color: #00a6eb'># of Users by Groups</text> - O número mínimo e máximo de usuários per grupo.<br><text style='color: #00a6eb'>New Group Types</text> - Permite escolher formar grupos com usuários mais similares ou dissimilares.</p>",
 			 "showSkip": true
       },
       {
-          "click #btn_ExploreGroups": "<p align ='left'>Click here to explore groups.</p>",
+          "click #btn_ExploreGroups": "<p align ='left'>Clique aqui para explorar grupos de usuários.</p>",
 			 "showSkip": true
       },
       {
-          "next #vizArea_Groups": "<p align ='left'>The result is a set of user groups with the number of users in each group, the similarity with the original group (purple) and<br>the intersection (number of users in common) with the original group. The light blue lines are the groups with users in common.</p>",
+          "next #vizArea_Groups": "<p align ='left'>Cada círculo é um novo grupo formado.<br>Os números mostram quantos usuários há em cada grupo, a similaridade em relação ao grupo original (chamado de “semente”), mostrado em roxo e a <br>interseção (número de usuários em comum) com o grupo semente. As linhas azuis representam que há usuários em comum entre os grupos.</p>",
 			 "showSkip": true
       },
       {
-          "click #node1": "<p align ='left'>Click in this group for visualize its information.</p>",
+          "click #node1": "<p align ='left'>Clique no grupo para visualizar suas informações.</p>",
 			 "showSkip": true,
 			 "shape": "circle"
       },
       {
-          "next #dataTable_obj1": "<p align ='left'>Clicking in a group, we have the list of users and the general information of the selected group.</p>",
+           "next #dataTable_obj1": "<p align ='left'>Ao clicar no grupo, é mostrada a lista de usuários do grupo e informações sobre as características do grupo.</p>",
 			 "showSkip": true
       },
       {
-          "next #charts_w_time": "<p align ='left'>Also, the charts of the selected group.</p>",
+           "next #charts_w_time": "<p align ='left'>E também os diagramas com informações do grupo.</p>",
 			 "showSkip": true
       },
       {
-          "next #charts_without_detail_compair": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Finally, we can compare the original group and the group selected.</text></p>",
+          "next #charts_without_detail_compair": "<p align ='right'><text style='color: white; background-color: #00a6eb;'>Assim é possível comparer o grupo selecionado com o grupo semente.</text></p>",
 			 "showSkip": true
       }
   ];

@@ -185,7 +185,7 @@ $( function() {
 					},
 					width: "90%",
 					height: ($(window).height() - 100),
-					title: "Vexus 2 Questions",
+					title: "VugA Questions",
 					open: function(event, ui) {
 						$.post("/get_email", function(email) {
 							document.getElementById("iframe_form").src = "https://docs.google.com/forms/d/e/1FAIpQLSdvagDwi3UsroT7xViFJwJh8ILlJwXAHUEPViFqmuHCiV_emw/viewform?embedded=true&entry.945529671=" + email;
