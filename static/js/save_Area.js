@@ -58,7 +58,7 @@ function draw_saveArea(){
     d3.selectAll("#idsavearea_obj1 *").remove()
     var selection = d3.select("#idsavearea_obj1")
       .style("height", function(d){
-        return document.getElementById("projection_area").scrollHeight * 0.556 + "px";
+        return document.getElementById("projection_area").scrollHeight * 0.3 + "px";
       })
       .style("overflow-y", "scroll")  
       .selectAll("p")
@@ -69,7 +69,7 @@ function draw_saveArea(){
     selection.enter()
       .append("p")
       .text(function(d){
-        return 'Obj_' + data_selected_save[d.toString()].n })
+        return data_selected_save[d.toString()].n })
       .style("background-color", function(){
         return "#bebada";
       })
