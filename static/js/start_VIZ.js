@@ -51,16 +51,16 @@ function start(){
   
   //some details
   if(name_dataset == "health1") {
-    d3.select("#name_obj2").text("Actions")
-    d3.select("#ori_name_obj2").text("Original Actions")
+    d3.select("#name_obj2").text("Actions Table")
+    d3.select("#ori_name_obj2").text("Original Actions Table")
   }
   else if(name_dataset == "NewBookCrossing") {
-    d3.select("#name_obj2").text("Books")
-    d3.select("#ori_name_obj2").text("Original Books")
+    d3.select("#name_obj2").text("Books Table")
+    d3.select("#ori_name_obj2").text("Original Books Table")
   }
   else {
-    d3.select("#name_obj2").text("Movies")
-    d3.select("#ori_name_obj2").text("Original Movies")
+    d3.select("#name_obj2").text("Movies Table")
+    d3.select("#ori_name_obj2").text("Original Movies Table")
   }
   
   var data_projection = post_to_server_global({"dbname": name_dataset}, "get_data_projection");
