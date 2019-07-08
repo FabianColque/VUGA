@@ -72,6 +72,18 @@
 }
 
 /*font to table of obj2*/
+#ori_id_tabla_obj2_wrapper{
+  font-size: 11px
+}
+
+/**CSS to Matrix Obj1**/
+#ori_dataTable_obj1{
+  padding: 12px;
+  font-size: 11px;
+  overflow-x: scroll;
+}
+
+/*font to table of obj2*/
 #id_tabla_obj2_wrapper{
   font-size: 11px
 }
@@ -87,6 +99,14 @@
   cursor: pointer;
 } 
 
+#ori_card_1 {
+  display: none;
+}
+
+
+#ori_card_2 {
+  display: none;
+}
 
 /*CSS for comparison matrix*/
 #comparison-matrix{

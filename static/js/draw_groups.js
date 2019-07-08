@@ -219,11 +219,16 @@ var draw_groups = function(){
 
         /*************Update are projection and histograms*************************/
         histograms_obj1.resetAllBtn()
+        histograms_obj_ori.resetAllBtn()
+        var datahisto_ori = post_to_server_global({"data_selected": dataGroups.content[0].objects, "dbname": name_dataset, "original_group": original_save}, "getData_Viz")
         var datahisto = post_to_server_global({"data_selected": dataGroups.content[selectionDataGroups[0]].objects, "dbname": name_dataset, "original_group": original_save}, "getData_Viz")
         viz_proj.setDataSelected(dataGroups.content[selectionDataGroups[0]].objects)
         viz_proj.draw_only_selected()
         histograms_obj1.refresh_All_Data(datahisto.instances)
+        histograms_obj_ori.refreshTables(datahisto_ori.instances)
 
+        d3.select("#ori_card_1").style("display", "block");
+        d3.select("#ori_card_2").style("display", "block");
         /*histos = [];
         for(var i = 0; i < dataGroups["histo_ori"].length; i++){
           histos.push({"val": dataGroups["histo_ori"][i], "di": headers_data[i].name, "nada": Math.random()})

@@ -1412,7 +1412,7 @@ class save_and_generate_newData_buckup(BaseHandler):
     
     print ("pretending", arr_tsne2)
 
-    #Here i will try get the projection by each dimension
+    # Here i will try get the projection by each dimension
     """print ("starting the tsne by each dimensions")
     for i in xrange(0, len(arr_tsne2[0])):
       time0 = time()
@@ -1466,11 +1466,12 @@ class GoogleOAuth2LoginHandler(tornado.web.RequestHandler,
           print "Connecting to the PostgreSQL database ..."
           conn = psycopg2.connect(**params)
           cur = conn.cursor()
-          cur.execute("SELECT COUNT(*) FROM dataset")
-          count_dataset = cur.fetchone()[0]
-          cur.execute("SELECT COUNT(*) FROM evaluated_user")
-          count_evaluated_user = cur.fetchone()[0]
-          id_dataset = (count_evaluated_user % count_dataset) + 1
+          # cur.execute("SELECT COUNT(*) FROM dataset")
+          # count_dataset = cur.fetchone()[0]
+          # cur.execute("SELECT COUNT(*) FROM evaluated_user")
+          # count_evaluated_user = cur.fetchone()[0]
+          # id_dataset = (count_evaluated_user % count_dataset) + 1
+          id_dataset = 1
           cur.execute("INSERT INTO evaluated_user(id_dataset, status) " +
                       "VALUES (%s, %s) RETURNING id_evaluated_user;",
                       (id_dataset, 0))
