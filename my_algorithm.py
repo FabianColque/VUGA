@@ -11,7 +11,7 @@ from multiprocessing import Pool
 from functools import partial
 
 #pTop es un array con las dimensiones top segun la eleccion del usuario
-def generate_groups(dataset, data_selected, k_groups, pTop, simi):
+def generate_groups(dataset, data_selected, k_groups, pTop, simi, umin, umax):
   n_random = 1
   lis_knn = []
   
@@ -34,7 +34,9 @@ def generate_groups(dataset, data_selected, k_groups, pTop, simi):
     newgroups.append([])
 
   for k in xrange(0, k_groups):
-    for u in xrange(0, len(data_selected)):
+    randSize = random.randint(umin, umax)
+    randArray = np.random.randint(0, len(data_selected), randSize)
+    for u in randArray: #xrange(0, len(data_selected)):
       for r in xrange(0, n_random):
         flag = False
         cc = 0

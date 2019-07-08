@@ -1809,7 +1809,8 @@ class getNewGroups(BaseHandler):
     k = mydata.get("K")
     P = mydata.get("P")
     simi = mydata.get("type_simi")
-    
+    umax = mydata.get("umax")
+    umin = mydata.get("umin")    
 
     #dataset = heatmap with the complete matrix normalized
     time0 = time()
@@ -1848,7 +1849,7 @@ class getNewGroups(BaseHandler):
     #My algorithm
     time0 = time()
     #res = my_algorithm.generate(dataset, data_selected, k, dimensionsFull, features, dataViz)#I want 5 new groups
-    res = my_algorithm.generate_groups(dataset, data_selected, k, P, simi)
+    res = my_algorithm.generate_groups(dataset, data_selected, k, P, simi, umin, umax)
     time1 = time()
     print_message("getNewGroups", time1 - time0)
 

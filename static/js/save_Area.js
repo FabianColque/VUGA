@@ -37,6 +37,11 @@ function draw_saveArea(){
         return "There are " + data_idx.length + " elements";
       })
 
+    d3.select("#iemin_groups").property("value", data_idx.length);
+    d3.select("#iemax_groups").property("value", data_idx.length);
+    d3.select("#iemin_groups").property("max", data_idx.length)
+    d3.select("#iemax_groups").property("max", data_idx.length)
+
     if(data_idx.length > 0){
       d3.select("#btn_ExploreGroups")
         .style("background-color", "#5cb85c")

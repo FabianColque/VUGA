@@ -61,13 +61,27 @@ d3.select("#btn_ExploreGroups")
 			//if(data_selected.length == 0)return;	
 			var iK_groups = parseInt(d3.select("#iK_groups").property("value"))
 			var iP_groups = parseInt(d3.select("#iP_groups").property("value"))
+			var maxusu    = parseInt(d3.select("#iemax_groups").property("value"))
+			var minusu    = parseInt(d3.select("#iemin_groups").property("value"))
 			
+			if(data_selected.length < maxusu || data_selected.length < minusu){
+				alert("Error range of number of users in new groups. The range must be less than the number of users in save area.");
+				fn_loading(false)
+				return;
+			}
+
+			if(maxusu < minusu){
+				fn_loading(false)
+				alert("Error in range.");
+				return;
+			}
+
 			var sz  =  pro.length;
 
 			var porcentage = Math.round((iP_groups*sz)/100.0)
 
 			original_save = data_selected
-			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups, "P": pro.slice(0, porcentage+1), "per": perce, "type_simi": simi}, "getNewGroups")
+			var groups = post_to_server_global({"dbname": name_dataset, "data_selected": data_selected, "K": iK_groups, "P": pro.slice(0, porcentage+1), "per": perce, "type_simi": simi, "umax": maxusu, "umin": minusu}, "getNewGroups")
 			groups["content"] = [{"objects": data_selected, "id": 0, "histo": perce, "similarity": 1.0}].concat(groups["content"]);
 			for(var i = 1; i < groups["content"].length; i++)
 				groups["content"][i]["id"]++;
@@ -158,7 +172,7 @@ d3.select("#explore-viz")
 			mynewGroups.clearAll();
 			if(comparison_groups)
 				comparison_groups.clearAll();
-			var_save_area.clearAll()
+			//var_save_area.clearAll()
 		}
 
 		if(comparison_original == null){
