@@ -49,7 +49,7 @@ $( function() {
 						at: "center",
 						of: window
 					},
-					title: "Start interactive guided tour",
+					title: "Interactive guided tour",
 					buttons: [
 						{
 							text: "START",
@@ -75,7 +75,7 @@ $( function() {
 						at: "center",
 						of: window
 					},
-					title: "Start interaction",
+					title: "Welcome to VugA",
 					buttons: [
 						{
 							text: "START",
@@ -157,7 +157,7 @@ $( function() {
 						at: "center",
 						of: window
 					},
-					title: "Continue with questions",
+					title: "Evaluation questions",
 					open: function(event, ui) {
 						$.get("/start_form");
 					},
