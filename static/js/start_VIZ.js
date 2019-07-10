@@ -185,11 +185,11 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #mylegend": "<p align ='left'>. Cada círculo recebe a cor do gênero do filme para o qual o usuário escreveu mais reviews. Cores mais claras indicam uma maior dominância do gênero cinematográfico.<br>Essa legenda também permite filtrar os usuários para facilitar a exploração:<br><text style='color: #00a6eb'>deselectAll</text> - Desselecionar todos.<br><text style='color: #00a6eb'>selectAll</text> - Selecionar todos.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Selecionar/desselecionar um gênero cinematográfico.</p>",
+          "next #mylegend": "<p align ='left'>Cada círculo recebe a cor do gênero do filme para o qual o usuário escreveu mais reviews. Cores mais claras indicam uma maior dominância do gênero cinematográfico.<br>Essa legenda também permite filtrar os usuários para facilitar a exploração:<br><text style='color: #00a6eb'>deselectAll</text> - Desselecionar todos.<br><text style='color: #00a6eb'>selectAll</text> - Selecionar todos.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Selecionar/desselecionar um gênero cinematográfico.</p>",
 			 "showSkip": false
       },
       {
-          "next .select_color": "<p align ='left'>Aqui é possível selecionar outro gênero cinematográfico.</p>",
+          "next .select_color": "<p align ='left'>Aqui é possível selecionar/mudar o atributo usado para o mapeamento das cores.</p>",
 			 "showSkip": false
       },
       {
@@ -222,7 +222,7 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "next #dataTable_obj2": "<p align ='left'>Aqui é mostrada uma lista de " + d3.select("#name_obj2").text() + " sobre os usuários selecionados.</p>",
+          "next #dataTable_obj2": "<p align ='left'>Aqui é mostrada a " + d3.select("#name_obj2").text() + " com informações sobres os filmes avaliados pelos usuários selecionados.</p>",
 			 "showSkip": false
       },
       {
@@ -230,7 +230,15 @@ function test_enjoyhint() {
 			 "showSkip": false
       },
       {
-          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Selecione o usuário.</p>",
+          "click #id_tabla_obj1>tbody>tr:eq(0)": "<p align ='left'>Selecione o usuário.</p>",
+			 "showSkip": false
+      },
+      {
+          "click #id_tabla_obj1>tbody>tr:eq(1)": "<p align ='left'>Selecione o usuário.</p>",
+			 "showSkip": false
+      },
+      {
+          "click #id_tabla_obj1>tbody>tr:eq(2)": "<p align ='left'>Selecione o usuário.</p>",
 			 "showSkip": false
       },
       {
@@ -243,7 +251,7 @@ function test_enjoyhint() {
           "right": 50
       },
       {
-          "next #config_groups": "<p align ='left'> Há 3 possibilidades para explorar grupos.<br><text style='color: #00a6eb'>Max. Groups</text> - É o número de grupos de usuários que se deseja criar. <br><text style='color: #00a6eb'>Top Dimensions</text> - Para escolher a porcentagem de gêneros cinematográficos dominantes.<br><text style='color: #00a6eb'># of Users by Groups</text> - O número mínimo e máximo de usuários per grupo.<br><text style='color: #00a6eb'>New Group Types</text> - Permite escolher formar grupos com usuários mais similares ou dissimilares.</p>",
+          "next #config_groups": "<p align ='left'> Há 4 possibilidades para explorar grupos.<br><text style='color: #00a6eb'>Max. Groups</text> - É o número de grupos de usuários que se deseja criar. <br><text style='color: #00a6eb'>Top Dimensions</text> - Para escolher a porcentagem de gêneros cinematográficos dominantes.<br><text style='color: #00a6eb'># of Users by Groups</text> - O número mínimo e máximo de usuários per grupo.<br><text style='color: #00a6eb'>New Group Types</text> - Permite escolher formar grupos com usuários mais similares ou dissimilares.</p>",
 			 "showSkip": false
       },
       {
@@ -297,11 +305,11 @@ function test_enjoyhint_with_skip() {
 			 "showSkip": true
       },
       {
-          "next #mylegend": "<p align ='left'>. Cada círculo recebe a cor do gênero do filme para o qual o usuário escreveu mais reviews. Cores mais claras indicam uma maior dominância do gênero cinematográfico.<br>Essa legenda também permite filtrar os usuários para facilitar a exploração:<br><text style='color: #00a6eb'>deselectAll</text> - Desselecionar todos.<br><text style='color: #00a6eb'>selectAll</text> - Selecionar todos.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Selecionar/desselecionar um gênero cinematográfico.</p>",
+          "next #mylegend": "<p align ='left'>Cada círculo recebe a cor do gênero do filme para o qual o usuário escreveu mais reviews. Cores mais claras indicam uma maior dominância do gênero cinematográfico.<br>Essa legenda também permite filtrar os usuários para facilitar a exploração:<br><text style='color: #00a6eb'>deselectAll</text> - Desselecionar todos.<br><text style='color: #00a6eb'>selectAll</text> - Selecionar todos.<br><text style='color: #00a6eb'>Check buttons <span style='background-color: #00a6eb' class='ui-icon ui-icon-check'></span></text> - Selecionar/desselecionar um gênero cinematográfico.</p>",
 			 "showSkip": true
       },
       {
-          "next .select_color": "<p align ='left'>Aqui é possível selecionar outro gênero cinematográfico.</p>",
+          "next .select_color": "<p align ='left'>Aqui é possível selecionar/mudar o atributo usado para o mapeamento das cores.</p>",
 			 "showSkip": true
       },
       {
@@ -334,7 +342,7 @@ function test_enjoyhint_with_skip() {
 			 "showSkip": true
       },
       {
-          "next #dataTable_obj2": "<p align ='left'>Aqui é mostrada uma lista de " + d3.select("#name_obj2").text() + " sobre os usuários selecionados.</p>",
+          "next #dataTable_obj2": "<p align ='left'>Aqui é mostrada a " + d3.select("#name_obj2").text() + " com informações sobres os filmes avaliados pelos usuários selecionados.</p>",
 			 "showSkip": true
       },
       {
@@ -342,7 +350,15 @@ function test_enjoyhint_with_skip() {
 			 "showSkip": true
       },
       {
-          "click #id_tabla_obj1>tbody>tr:first": "<p align ='left'>Selecione o usuário.</p>",
+          "click #id_tabla_obj1>tbody>tr:eq(0)": "<p align ='left'>Selecione o usuário.</p>",
+			 "showSkip": true
+      },
+      {
+          "click #id_tabla_obj1>tbody>tr:eq(1)": "<p align ='left'>Selecione o usuário.</p>",
+			 "showSkip": true
+      },
+      {
+          "click #id_tabla_obj1>tbody>tr:eq(2)": "<p align ='left'>Selecione o usuário.</p>",
 			 "showSkip": true
       },
       {
@@ -355,7 +371,7 @@ function test_enjoyhint_with_skip() {
           "right": 50
       },
       {
-          "next #config_groups": "<p align ='left'> Há 3 possibilidades para explorar grupos.<br><text style='color: #00a6eb'>Max. Groups</text> - É o número de grupos de usuários que se deseja criar. <br><text style='color: #00a6eb'>Top Dimensions</text> - Para escolher a porcentagem de gêneros cinematográficos dominantes.<br><text style='color: #00a6eb'># of Users by Groups</text> - O número mínimo e máximo de usuários per grupo.<br><text style='color: #00a6eb'>New Group Types</text> - Permite escolher formar grupos com usuários mais similares ou dissimilares.</p>",
+          "next #config_groups": "<p align ='left'> Há 4 possibilidades para explorar grupos.<br><text style='color: #00a6eb'>Max. Groups</text> - É o número de grupos de usuários que se deseja criar. <br><text style='color: #00a6eb'>Top Dimensions</text> - Para escolher a porcentagem de gêneros cinematográficos dominantes.<br><text style='color: #00a6eb'># of Users by Groups</text> - O número mínimo e máximo de usuários per grupo.<br><text style='color: #00a6eb'>New Group Types</text> - Permite escolher formar grupos com usuários mais similares ou dissimilares.</p>",
 			 "showSkip": true
       },
       {
