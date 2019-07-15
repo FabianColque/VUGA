@@ -313,7 +313,7 @@ function test_enjoyhint_with_skip() {
 			 "showSkip": true
       },
       {
-          "click #switch-shadow-label": "<p align ='left' style='color: #33a02c; text-shadow: 0 0 1px #000;'><text style='color: #00a6eb'>Lasso on</text> - Para ativar a Lasso tool e selecionar um subconjunto de usuários.<br><text style='color: #00a6eb'>Lasso off</text> - Para aumentar o zoom da Projection Area, utilize o botão de rolagem do mouse e mova o mouse com o botão esquerdo pressionado.</p>",
+          "next #switch-shadow-label": "<p align ='left' style='color: #33a02c; text-shadow: 0 0 1px #000;'><text style='color: #00a6eb'>Lasso on</text> - Para ativar a Lasso tool e selecionar um subconjunto de usuários.<br><text style='color: #00a6eb'>Lasso off</text> - Para aumentar o zoom da Projection Area, utilize o botão de rolagem do mouse e mova o mouse com o botão esquerdo pressionado.</p>",
 			 "showSkip": true,
 			 "shape": "circle"
       },
