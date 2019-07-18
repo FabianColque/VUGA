@@ -51,6 +51,8 @@ class MyError(Exception):
 
 class BaseHandler(tornado.web.RequestHandler):
   def prepare(self):
+    self.set_secure_cookie("is_developer", "1")
+    return
     if not self.current_user:
       self.redirect("auth/google")
       return
@@ -61,6 +63,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class MainHandler(BaseHandler):
   def get(self):
+    self.redirect('static/index.html')
+    return
     if self.get_secure_cookie("is_developer") == "1":
       self.redirect('static/index.html')
       return
@@ -1433,6 +1437,7 @@ class save_and_generate_newData_buckup(BaseHandler):
 
 
 # Class for Google authentication
+'''
 class GoogleOAuth2LoginHandler(tornado.web.RequestHandler,
                                tornado.auth.GoogleOAuth2Mixin):
   @tornado.gen.coroutine
@@ -1500,7 +1505,7 @@ class GoogleOAuth2LoginHandler(tornado.web.RequestHandler,
                                     ['key'], scope=['profile', 'email'],
                                     response_type='code',
                                     extra_params={'approval_prompt': 'auto'})
-
+'''
 
 class start_new_template_Viz(BaseHandler):
   def get(self):
@@ -2144,7 +2149,7 @@ application = tornado.web.Application([
   (r"/save_new_dataset_configuration", save_new_dataset_configuration),
   (r"/recover_name_datasets", recover_name_datasets),
   (r"/get_data_projection", get_data_projection),
-  (r"/auth/google", GoogleOAuth2LoginHandler),
+  #(r"/auth/google", GoogleOAuth2LoginHandler),
   (r"/choose_dataset", ChooseDatasetHandler),
   (r"/vexus2", start_new_template_Viz),
   (r"/getData_Viz", getData_Viz),
