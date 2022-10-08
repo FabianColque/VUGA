@@ -22,7 +22,7 @@ VugA requires:
 
 * [SciPy](https://www.scipy.org)
 
-    `$ pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose`
+    `$ pip install --user numpy scipy matplotlib ipython pandas sympy nose`
 
 * [simplejson](https://simplejson.readthedocs.io)
 
@@ -45,6 +45,14 @@ VugA requires:
 
     `$ pip install configparser`
     
+* [Create database]
+  
+     `sudo -u postgress psql`
+     `create database vexus2;`
+     `alter user postgres WITH PASSWORD 'postgres';`
+     `\l para verficar`
+     `\q para salir`
+     `sudo -u postgres psql -h hostname -d vexus2 < data_model_table_create.sql`
 
 ## Running
 
