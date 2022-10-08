@@ -37,10 +37,14 @@ VugA requires:
     `$ pip install psycopg2`
 
     `$ pip install psycopg2-binary`
+    
+    `sudo apt install -y postgresql postgresql-contrib postgresql-client`
+    
 
 * [Configuration file parser](https://docs.python.org/2/library/configparser.html)
 
     `$ pip install configparser`
+    
 
 ## Running
 
